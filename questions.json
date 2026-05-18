@@ -1,54 +1,71 @@
 {
   "_readme": {
     "title": "CSE Professional Reviewer — Question Bank",
-    "version": "2.0",
-    "total_questions": 90,
+    "version": "3.0",
     "how_to_add_questions": [
       "═══════════════════════════════════════════════════════════════",
-      "  GUIDE FOR AI ASSISTANTS & CONTRIBUTORS ADDING NEW QUESTIONS  ",
+      "  GUIDE FOR AI ASSISTANTS & CONTRIBUTORS — READ THIS FIRST     ",
       "═══════════════════════════════════════════════════════════════",
       "",
-      "STRUCTURE: Each question object must have exactly these fields:",
-      "  id          → string, unique. Format: first letter of category + number",
-      "                  verbal → v31, v32 ... | numerical → n31, n32 ...",
-      "                  geninfo → g31, g32 ... | analytics → a21, a22 ...",
-      "                  civil_service → c21, c22 ...",
-      "  question    → string, the question text",
-      "  choices     → array of exactly 4 strings (A, B, C, D)",
-      "  answer      → integer 0–3 (index of the correct choice in choices[])",
-      "                  0 = A, 1 = B, 2 = C, 3 = D",
-      "  explanation → string, brief explanation of why the answer is correct",
+      "╔══════════════════════════════════════════════════════════════╗",
+      "║  HOW TO ADD NEW QUESTIONS TO AN EXISTING TOPIC               ║",
+      "║  → Just append objects to the end of the topic's 'questions' ║",
+      "║    array. No need to find a specific spot.                   ║",
+      "╚══════════════════════════════════════════════════════════════╝",
       "",
-      "CATEGORIES (add questions inside the matching category's 'questions' array):",
-      "  verbal       → English grammar, vocabulary, synonyms, antonyms, idioms, sentence correction",
-      "  numerical    → Math, algebra, word problems, number series, percentages, geometry",
-      "  geninfo      → Philippine history, government, Filipino language, laws, culture",
-      "  analytics    → Logical reasoning, data interpretation, pattern recognition, analogies",
-      "  civil_service→ RA 6713, RA 3019, CSC rules, government ethics, public service laws",
+      "╔══════════════════════════════════════════════════════════════╗",
+      "║  HOW TO ADD A BRAND NEW TOPIC                                ║",
+      "║  → Append a new topic object at the END of the 'topics'      ║",
+      "║    array (bottom of the file, before the closing bracket).   ║",
+      "║  → Copy the topic template below. That's it.                 ║",
+      "╚══════════════════════════════════════════════════════════════╝",
       "",
-      "RULES FOR QUALITY QUESTIONS:",
-      "  1. Only one answer must be unambiguously correct.",
-      "  2. All 4 choices must be plausible (no obviously silly distractors).",
-      "  3. Explanations must be factual and cite the rule or reason clearly.",
-      "  4. Avoid repeating topics already covered by existing questions.",
-      "  5. IDs must be unique across the entire file — check before adding.",
-      "  6. Filipino/Tagalog questions are welcome in geninfo and civil_service.",
-      "  7. Do NOT change existing question IDs or answers.",
-      "",
-      "EXAMPLE (copy-paste this template for a new question):",
+      "NEW TOPIC TEMPLATE (copy-paste this at the bottom of 'topics'):",
       "  {",
-      "    \"id\": \"v31\",",
-      "    \"question\": \"Your question text here.\",",
-      "    \"choices\": [\"Choice A\", \"Choice B\", \"Choice C\", \"Choice D\"],",
-      "    \"answer\": 0,",
-      "    \"explanation\": \"Why Choice A is correct.\"",
+      "    \"id\": \"your_topic_id\",",
+      "    \"name\": \"Topic Display Name\",",
+      "    \"icon\": \"📌\",",
+      "    \"questions\": [",
+      "      {",
+      "        \"id\": \"yourtopicid_1\",",
+      "        \"question\": \"Question text here.\",",
+      "        \"choices\": [\"Choice A\", \"Choice B\", \"Choice C\", \"Choice D\"],",
+      "        \"answer\": 0,",
+      "        \"explanation\": \"Why Choice A is correct.\"",
+      "      }",
+      "    ]",
       "  }",
       "",
-      "NEXT AVAILABLE IDs: v31+, n31+, g31+, a21+, c21+"
+      "QUESTION FIELD RULES:",
+      "  id          → string, unique across ALL topics.",
+      "                Format suggestion: topicid_N (e.g. verbal_31, science_1)",
+      "  question    → string, the question text",
+      "  choices     → array of exactly 4 strings",
+      "  answer      → integer 0-3 (index of correct choice; 0=A, 1=B, 2=C, 3=D)",
+      "  explanation → string, brief explanation of the correct answer",
+      "",
+      "QUALITY RULES:",
+      "  1. Only one answer must be unambiguously correct.",
+      "  2. All 4 choices must be plausible — no silly distractors.",
+      "  3. Explanations must be factual and clear.",
+      "  4. IDs must be unique across the ENTIRE file.",
+      "  5. Do NOT change existing question IDs or answers.",
+      "",
+      "SESSION BEHAVIOR:",
+      "  The reviewer randomly picks up to 60 questions per topic per session.",
+      "  If a topic has 80 questions, only 60 are shown — a new set each time.",
+      "  This means you can safely add as many questions as you want per topic.",
+      "",
+      "EXISTING TOPIC IDs: verbal, numerical, geninfo, analytics, civil_service",
+      "NEXT SAFE IDs: verbal_31+, numerical_31+, geninfo_31+, analytics_21+, civil_service_21+"
     ]
   },
   "exam": "Civil Service Exam - Professional Level Reviewer",
-  "categories": [
+  "settings": {
+    "max_questions_per_topic": 60,
+    "max_questions_all_topics": 60
+  },
+  "topics": [
     {
       "id": "verbal",
       "name": "Verbal Ability & English",
@@ -1008,12 +1025,7 @@
         {
           "id": "c5",
           "question": "A public employee who solicits or accepts gifts in connection with their duties commits what offense?",
-          "choices": [
-            "Negligence",
-            "Misconduct",
-            "Bribery",
-            "Insubordination"
-          ],
+          "choices": ["Negligence", "Misconduct", "Bribery", "Insubordination"],
           "answer": 2,
           "explanation": "Soliciting or accepting gifts in connection with official duties constitutes bribery under RA 3019 and is also a violation of RA 6713's prohibition on receiving gifts."
         },
@@ -1027,12 +1039,7 @@
         {
           "id": "c7",
           "question": "The principle that no person shall be tried twice for the same offense is known as:",
-          "choices": [
-            "Due process",
-            "Equal protection",
-            "Double jeopardy",
-            "Habeas corpus"
-          ],
+          "choices": ["Due process", "Equal protection", "Double jeopardy", "Habeas corpus"],
           "answer": 2,
           "explanation": "Double jeopardy is the constitutional principle found in Article III (Bill of Rights) of the 1987 Constitution that protects a person from being prosecuted twice for the same offense."
         },
@@ -1070,7 +1077,7 @@
             "Moonlighting prohibition"
           ],
           "answer": 0,
-          "explanation": "This falls under the principle of 'conflict of interest' — public officials must avoid situations where personal interests conflict with their official duties. RA 6713 Section 7 covers post-employment restrictions and outside employment."
+          "explanation": "This falls under the principle of 'conflict of interest' — public officials must avoid situations where personal interests conflict with their official duties."
         },
         {
           "id": "c11",
@@ -1082,7 +1089,7 @@
             "Conduct prejudicial to the best interest of the service"
           ],
           "answer": 2,
-          "explanation": "Simple neglect of duty is classified as a less grave offense. However, when comparing the choices, Simple neglect of duty is the least severe among them and is often cited as a less grave/light offense in practice."
+          "explanation": "Simple neglect of duty is classified as a less grave offense and is the least severe among the choices listed."
         },
         {
           "id": "c12",
@@ -1098,10 +1105,10 @@
         },
         {
           "id": "c13",
-          "question": "Under civil service law, what is the minimum passing rate for the Civil Service Exam (Professional Level)?",
-          "choices": ["70%", "75%", "80%", "85%"],
-          "answer": 1,
-          "explanation": "The minimum passing mark for the Civil Service Examination at both Professional and Sub-professional levels is 80% — wait: the official CSC passing score is 80%. Actually the required passing rate is 80 out of 100, which is 80%."
+          "question": "Under civil service law, what is the minimum passing score for the Civil Service Exam (Professional Level)?",
+          "choices": ["70", "75", "80", "85"],
+          "answer": 2,
+          "explanation": "The minimum passing score for the Civil Service Examination (Professional and Sub-professional levels) is 80 out of 100."
         },
         {
           "id": "c14",
@@ -1113,14 +1120,14 @@
             "Automatic acquittal for first offenses"
           ],
           "answer": 1,
-          "explanation": "Due process means that a person must be given fair treatment and an opportunity to be heard before any adverse action is taken against them, in accordance with established legal procedures."
+          "explanation": "Due process means that a person must be given fair treatment and an opportunity to be heard before any adverse action is taken against them."
         },
         {
           "id": "c15",
           "question": "A government employee who is absent without approved leave (AWOL) for how many consecutive working days may be dropped from the rolls?",
           "choices": ["15 days", "20 days", "30 days", "45 days"],
           "answer": 2,
-          "explanation": "Under CSC rules, a government employee who is absent without approved leave for 30 or more consecutive working days may be dropped from the rolls, which is a non-disciplinary action."
+          "explanation": "Under CSC rules, a government employee absent without approved leave for 30 or more consecutive working days may be dropped from the rolls."
         },
         {
           "id": "c16",
@@ -1139,7 +1146,7 @@
             "Failure to declare assets in the SALN"
           ],
           "answer": 1,
-          "explanation": "Under RA 7080, plunder is committed by a public officer who amasses, accumulates, or acquires ill-gotten wealth through a combination or series of overt criminal acts with an aggregate amount of at least ₱50 million."
+          "explanation": "Under RA 7080, plunder is committed by a public officer who amasses ill-gotten wealth through a combination of overt criminal acts with an aggregate amount of at least ₱50 million."
         },
         {
           "id": "c18",
@@ -1163,7 +1170,7 @@
             "Delivery of basic services"
           ],
           "answer": 2,
-          "explanation": "The Anti-Red Tape Act covers frontline services — those that directly deal with citizens and clients. Internal administrative functions (processes among employees) are generally not covered."
+          "explanation": "The Anti-Red Tape Act covers frontline services — those that directly deal with citizens. Internal administrative functions among employees are generally not covered."
         },
         {
           "id": "c20",
