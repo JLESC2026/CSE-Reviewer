@@ -440,7 +440,7 @@
           "choices": ["Simile", "Personification", "Metaphor", "Hyperbole"],
           "answer": 2,
           "explanation": "This is a METAPHOR — a direct comparison between two unlike things without using 'like' or 'as.' A simile would say 'like a zoo.'"
-        }
+        },
         {
           "id": "verbal_41",
           "question": "Choose the word most similar in meaning to ACUMEN.",
@@ -863,7 +863,7 @@
           "choices": ["BIG", "BIG", "CIG", "AIG"],
           "answer": 0,
           "explanation": "2=B, 9=I, 7=G. The word is BIG."
-        }
+        },
         {
           "id": "analytical_31",
           "question": "All diamonds are precious stones. Some precious stones are rare. Which conclusion must be true?",
@@ -1236,7 +1236,7 @@
           "choices": ["₱3,000", "₱3,500", "₱4,000", "₱5,000"],
           "answer": 2,
           "explanation": "Commission = 5% × ₱80,000 = ₱4,000"
-        }
+        },
           {
     "id": "numerical_31",
     "question": "What is 22% of 450?",
@@ -1834,7 +1834,7 @@
           ],
           "answer": 2,
           "explanation": "The Commission on Elections (COMELEC) is constitutionally mandated to administer and enforce election laws and regulations."
-        }
+        },
           {
     "id": "geninfo_51",
     "question": "According to the 1987 Philippine Constitution, what is the minimum age requirement to run for a seat in the Senate?",
@@ -2222,7 +2222,7 @@
           "choices": ["Palalo", "Hambog", "Mapagmataas", "Mahinhin at hindi nagmamataas"],
           "answer": 3,
           "explanation": "'Mapagkumbaba' ay nangangahulugang humble — isang taong hindi nagmamataas at kinikilala ang kanyang kakulangan."
-        }
+        },
          {
     "id": "filipino_31",
     "question": "Piliin ang wastong salita para sa pangungusap: '_______ kami ng masarap na hapunan kagabi.'",
