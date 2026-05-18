@@ -6,404 +6,18 @@
 <title>CSE Professional Reviewer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0e1117;
-    --surface: #161b27;
-    --surface2: #1e2535;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #eef0f5;
-    --muted: #8b91a8;
-    --accent: #4f8ef7;
-    --accent2: #2d6ce6;
-    --gold: #f5c842;
-    --success: #3ecf8e;
-    --danger: #f26464;
-    --cat-verbal: #7c6ff7;
-    --cat-num: #3ecf8e;
-    --cat-gen: #f5a742;
-    --radius: 12px;
-    --radius-sm: 8px;
-  }
-
-  body {
-    font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    line-height: 1.6;
-  }
-
-  /* HEADER */
-  .header {
-    background: linear-gradient(135deg, #0e1117 0%, #161b27 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 2rem 1.5rem 1.5rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: '';
-    position: absolute;
-    top: -60px; left: 50%; transform: translateX(-50%);
-    width: 400px; height: 200px;
-    background: radial-gradient(ellipse, rgba(79,142,247,0.12) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.6rem, 4vw, 2.4rem);
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    color: var(--text);
-    position: relative;
-  }
-  .header h1 span { color: var(--accent); }
-  .header p {
-    font-size: 0.9rem;
-    color: var(--muted);
-    margin-top: 0.4rem;
-    position: relative;
-  }
-  .badge {
-    display: inline-block;
-    background: rgba(79,142,247,0.15);
-    border: 1px solid rgba(79,142,247,0.3);
-    color: var(--accent);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin-bottom: 0.8rem;
-  }
-
-  /* LAYOUT */
-  .container { max-width: 860px; margin: 0 auto; padding: 2rem 1rem; }
-
-  /* USERNAME SCREEN */
-  #username-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 70vh;
-  }
-  .login-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 18px;
-    padding: 2.5rem 2rem;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    animation: fadeUp 0.4s ease;
-  }
-  .login-card .icon { font-size: 3rem; margin-bottom: 1rem; }
-  .login-card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    margin-bottom: 0.4rem;
-  }
-  .login-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
-  .input-wrap { position: relative; margin-bottom: 1rem; }
-  .input-wrap input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border2);
-    background: var(--surface2);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-    text-align: center;
-    letter-spacing: 0.5px;
-  }
-  .input-wrap input:focus { border-color: var(--accent); }
-  .input-wrap input::placeholder { color: var(--muted); }
-  .input-error { color: var(--danger); font-size: 0.8rem; margin-top: 0.3rem; display: none; }
-
-  /* SCORE SUMMARY */
-  .summary-bar {
-    display: flex;
-    gap: 1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-  }
-  .summary-item { flex: 1; min-width: 100px; text-align: center; }
-  .summary-item .val {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    display: block;
-    line-height: 1;
-  }
-  .summary-item .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .sep { width: 1px; background: var(--border); align-self: stretch; }
-
-  /* PROGRESS BAR */
-  .progress-wrap { margin-bottom: 2rem; }
-  .progress-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }
-  .progress-track { height: 6px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.4s ease; }
-
-  /* CATEGORY TABS */
-  .tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
-  .tab {
-    padding: 0.5rem 1.1rem;
-    border-radius: 99px;
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--muted);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .tab:hover { border-color: var(--accent); color: var(--text); }
-  .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-  /* QUESTION CARD */
-  .q-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.75rem;
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.3s ease;
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }
-  .q-num { font-size: 0.75rem; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
-  .q-cat-pill { font-size: 0.7rem; font-weight: 600; padding: 2px 9px; border-radius: 99px; letter-spacing: 0.3px; }
-  .q-text { font-size: 1.05rem; font-weight: 500; color: var(--text); margin-bottom: 1.25rem; line-height: 1.6; }
-  .choices { display: flex; flex-direction: column; gap: 0.6rem; }
-  .choice {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    cursor: pointer;
-    transition: all 0.18s;
-    font-size: 0.95rem;
-    color: var(--text);
-    text-align: left;
-    width: 100%;
-    font-family: 'IBM Plex Sans', sans-serif;
-  }
-  .choice:hover:not(:disabled) { border-color: var(--accent); background: rgba(79,142,247,0.08); }
-  .choice .letter {
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    border: 1px solid var(--border2);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.75rem; font-weight: 600;
-    flex-shrink: 0;
-    transition: all 0.18s;
-    color: var(--muted);
-  }
-  .choice.correct { border-color: var(--success); background: rgba(62,207,142,0.1); }
-  .choice.correct .letter { background: var(--success); border-color: var(--success); color: #fff; }
-  .choice.wrong { border-color: var(--danger); background: rgba(242,100,100,0.1); }
-  .choice.wrong .letter { background: var(--danger); border-color: var(--danger); color: #fff; }
-  .choice:disabled { cursor: default; }
-
-  /* EXPLANATION */
-  .explanation {
-    margin-top: 1rem;
-    padding: 0.9rem 1rem;
-    background: rgba(79,142,247,0.07);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    font-size: 0.88rem;
-    color: var(--muted);
-    display: none;
-  }
-  .explanation.show { display: block; animation: fadeUp 0.25s ease; }
-  .explanation strong { color: var(--accent); }
-
-  .q-status { margin-left: auto; font-size: 1.1rem; }
-
-  /* SHUFFLE INDICATOR */
-  .shuffle-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: rgba(62,207,142,0.1);
-    border: 1px solid rgba(62,207,142,0.25);
-    color: var(--success);
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 99px;
-    margin-bottom: 1.25rem;
-  }
-
-  /* NAVIGATION */
-  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; gap: 1rem; flex-wrap: wrap; }
-  .btn {
-    padding: 0.6rem 1.4rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.18s;
-  }
-  .btn:hover { border-color: var(--accent); color: var(--accent); }
-  .btn:disabled { opacity: 0.35; cursor: default; }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn.primary:hover { background: var(--accent2); border-color: var(--accent2); color: #fff; }
-  .btn.shuffle { background: rgba(62,207,142,0.12); border-color: rgba(62,207,142,0.35); color: var(--success); }
-  .btn.shuffle:hover { background: rgba(62,207,142,0.2); }
-
-  /* MODE TOGGLE */
-  .mode-toggle { display: flex; gap: 0.5rem; background: var(--surface2); border-radius: 99px; padding: 4px; border: 1px solid var(--border); margin-bottom: 2rem; width: fit-content; }
-  .mode-btn { padding: 0.45rem 1.2rem; border-radius: 99px; border: none; background: transparent; color: var(--muted); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-  .mode-btn.active { background: var(--accent); color: #fff; }
-
-  /* TOP CONTROLS */
-  .top-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-
-  /* RESULTS */
-  #results-screen { display: none; }
-  .results-card {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 18px;
-    padding: 2.5rem 2rem;
-    text-align: center;
-    max-width: 560px;
-    margin: 0 auto;
-    animation: fadeUp 0.4s ease;
-  }
-  .results-score {
-    font-family: 'Playfair Display', serif;
-    font-size: 5rem;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-    margin: 0.5rem 0;
-  }
-  .results-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 1rem; }
-  .rating-msg { font-size: 1rem; font-weight: 600; margin-bottom: 1.5rem; }
-  .results-breakdown { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
-  .breakdown-item { background: var(--surface2); border-radius: var(--radius-sm); padding: 1rem; text-align: center; min-width: 110px; flex: 1; }
-  .b-score { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; }
-  .b-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
-
-  /* LEADERBOARD */
-  #leaderboard-screen { display: none; }
-  .lb-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .lb-header h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; }
-  .lb-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
-  .lb-table thead { background: var(--surface2); }
-  .lb-table th { padding: 0.85rem 1rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); font-weight: 600; }
-  .lb-table td { padding: 0.85rem 1rem; font-size: 0.88rem; border-top: 1px solid var(--border); color: var(--text); }
-  .lb-table tbody tr:hover { background: rgba(255,255,255,0.03); }
-  .rank-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    font-size: 0.75rem;
-    font-weight: 700;
-    background: var(--surface2);
-    color: var(--muted);
-  }
-  .rank-badge.gold { background: rgba(245,200,66,0.2); color: var(--gold); }
-  .rank-badge.silver { background: rgba(200,200,220,0.15); color: #c8c8d4; }
-  .rank-badge.bronze { background: rgba(205,127,50,0.2); color: #cd7f32; }
-  .score-pill {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 99px;
-    font-size: 0.78rem;
-    font-weight: 700;
-  }
-  .score-pill.high { background: rgba(62,207,142,0.15); color: var(--success); }
-  .score-pill.mid { background: rgba(79,142,247,0.15); color: var(--accent); }
-  .score-pill.low { background: rgba(242,100,100,0.15); color: var(--danger); }
-  .lb-empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
-  .lb-loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
-
-  /* TOP NAV */
-  .topnav {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-  }
-  .topnav-btn {
-    padding: 0.4rem 1rem;
-    border-radius: 99px;
-    border: 1px solid var(--border2);
-    background: transparent;
-    color: var(--muted);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .topnav-btn:hover { color: var(--text); border-color: var(--accent); }
-  .topnav-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .user-chip {
-    padding: 0.4rem 1rem;
-    border-radius: 99px;
-    background: rgba(79,142,247,0.1);
-    border: 1px solid rgba(79,142,247,0.25);
-    color: var(--accent);
-    font-size: 0.82rem;
-    font-weight: 600;
-    margin-left: auto;
-  }
-
-  .log-status { font-size: 0.8rem; margin-top: 0.75rem; min-height: 1.2em; }
-  .log-status.ok { color: var(--success); }
-  .log-status.err { color: var(--danger); }
-  .log-status.saving { color: var(--muted); }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<!-- ══ HEADER ══ -->
 <div class="header">
   <div class="badge">Philippines · Professional Level</div>
   <h1>CSE <span>Reviewer</span></h1>
-  <p>Civil Service Exam Practice · 2025 Edition</p>
+  <p>Civil Service Exam Practice · 170 Items · Official Structure</p>
 </div>
 
+<!-- ══ TOP NAV (hidden until login) ══ -->
 <div class="topnav" id="topnav" style="display:none">
   <button class="topnav-btn active" id="nav-quiz" onclick="showSection('quiz')">📝 Quiz</button>
   <button class="topnav-btn" id="nav-lb" onclick="showSection('leaderboard')">🏆 Score Log</button>
@@ -412,470 +26,202 @@
 
 <div class="container">
 
-  <!-- USERNAME SCREEN -->
+  <!-- ══ USERNAME / START SCREEN ══ -->
   <div id="username-screen">
     <div class="login-card">
       <div class="icon">📋</div>
       <h2>Welcome, Reviewer!</h2>
-      <p>Enter your username to start the exam and track your scores.</p>
+      <p>Enter your username to start the exam and track your scores on the leaderboard.</p>
+
       <div class="input-wrap">
-        <input type="text" id="username-input" placeholder="Type your username…" maxlength="30" autocomplete="off"
-          onkeydown="if(event.key==='Enter')startWithUsername()"/>
-        <div class="input-error" id="username-error">Please enter a valid username (letters, numbers, spaces only).</div>
+        <input
+          type="text"
+          id="username-input"
+          placeholder="Your username…"
+          maxlength="30"
+          autocomplete="off"
+          onkeydown="if(event.key==='Enter') startWithUsername()"
+        />
+        <div class="input-error" id="username-error">
+          Please enter a valid username (1–30 characters, letters/numbers/spaces only).
+        </div>
       </div>
-      <button class="btn primary" style="width:100%;padding:0.75rem" onclick="startWithUsername()">Start Reviewing →</button>
+
+      <!-- Timer mode picker -->
+      <div class="timer-picker">
+        <label>⏱ Timer Mode</label>
+        <div class="timer-options">
+          <label class="timer-option selected" data-value="per-question" onclick="selectTimerOption('per-question')">
+            <input type="radio" name="timer-mode" value="per-question" checked>
+            <div class="timer-option-text">
+              <strong>Per Question</strong>
+              <span>1 minute per question — resets when you navigate</span>
+            </div>
+          </label>
+          <label class="timer-option" data-value="full-exam" onclick="selectTimerOption('full-exam')">
+            <input type="radio" name="timer-mode" value="full-exam">
+            <div class="timer-option-text">
+              <strong>Full Exam Countdown</strong>
+              <span>Total time = 1 min × number of questions</span>
+            </div>
+          </label>
+          <label class="timer-option" data-value="none" onclick="selectTimerOption('none')">
+            <input type="radio" name="timer-mode" value="none">
+            <div class="timer-option-text">
+              <strong>No Timer</strong>
+              <span>Practice at your own pace</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <button class="btn primary" style="width:100%;padding:0.75rem;margin-top:0.5rem" onclick="startWithUsername()">
+        Start Reviewing →
+      </button>
     </div>
   </div>
 
-  <div id="loading" style="display:none;text-align:center;padding:4rem 1rem;color:var(--muted)">Loading questions…</div>
+  <!-- ══ LOADING ══ -->
+  <div id="loading" style="display:none;text-align:center;padding:4rem 1rem;color:var(--muted)">
+    Loading questions…
+  </div>
 
-  <!-- QUIZ SCREEN -->
+  <!-- ══ QUIZ SCREEN ══ -->
   <div id="quiz-screen" style="display:none">
+
+    <!-- Live score summary -->
     <div class="summary-bar">
-      <div class="summary-item"><span class="val" id="stat-score" style="color:var(--accent)">0%</span><div class="lbl">Score</div></div>
+      <div class="summary-item">
+        <span class="val" id="stat-score" style="color:var(--accent)">0%</span>
+        <div class="lbl">Score</div>
+      </div>
       <div class="sep"></div>
-      <div class="summary-item"><span class="val" id="stat-correct" style="color:var(--success)">0</span><div class="lbl">Correct</div></div>
+      <div class="summary-item">
+        <span class="val" id="stat-correct" style="color:var(--success)">0</span>
+        <div class="lbl">Correct</div>
+      </div>
       <div class="sep"></div>
-      <div class="summary-item"><span class="val" id="stat-wrong" style="color:var(--danger)">0</span><div class="lbl">Wrong</div></div>
+      <div class="summary-item">
+        <span class="val" id="stat-wrong" style="color:var(--danger)">0</span>
+        <div class="lbl">Wrong</div>
+      </div>
       <div class="sep"></div>
-      <div class="summary-item"><span class="val" id="stat-remaining" style="color:var(--muted)">—</span><div class="lbl">Remaining</div></div>
+      <div class="summary-item">
+        <span class="val" id="stat-remaining" style="color:var(--muted)">—</span>
+        <div class="lbl">Remaining</div>
+      </div>
     </div>
 
-    <!-- Mode + Shuffle controls -->
+    <!-- Timer bar (hidden when no-timer mode) -->
+    <div class="timer-bar" id="timer-bar">
+      <span class="timer-icon">⏱</span>
+      <span class="timer-label" id="timer-label">Time per question</span>
+      <div class="timer-track">
+        <div class="timer-fill" id="timer-fill" style="width:100%"></div>
+      </div>
+      <span class="timer-digits" id="timer-digits">01:00</span>
+    </div>
+
+    <!-- Weak topic radar banner -->
+    <div class="weak-radar" id="weak-radar">
+      ⚠️ <span>Weak topics detected — focus on: <strong id="weak-topics-list"></strong></span>
+    </div>
+
+    <!-- Bookmarked banner -->
+    <div class="bookmarked-banner" id="bookmarked-banner">
+      <span>🔖 You have <strong id="bk-count">0</strong> bookmarked question(s).</span>
+      <button class="btn" style="padding:0.3rem 0.8rem;font-size:0.78rem" onclick="jumpToBookmarks()">
+        Review Flagged →
+      </button>
+    </div>
+
+    <!-- Practice / Exam mode toggle -->
     <div class="top-controls">
-      <div class="mode-toggle" style="margin-bottom:0">
+      <div class="mode-toggle">
         <button class="mode-btn active" id="mode-practice" onclick="setMode('practice')">📖 Practice</button>
         <button class="mode-btn" id="mode-exam" onclick="setMode('exam')">🎯 Exam</button>
       </div>
-      <button class="btn shuffle" id="btn-reshuffle" onclick="reshuffleAll()" title="Shuffle questions and choices again">🔀 Reshuffle</button>
     </div>
 
-    <!-- Shuffle status -->
-    <div class="shuffle-badge" id="shuffle-badge">🔀 Questions &amp; choices are randomized this session</div>
+    <!-- Shuffle indicator -->
+    <div class="shuffle-badge">🔀 Questions &amp; choices are randomized each session</div>
 
+    <!-- Progress bar -->
     <div class="progress-wrap">
       <div class="progress-label">
-        <span id="prog-label">Question 1 of 30</span>
-        <span id="prog-pct">0%</span>
+        <span id="prog-label">Question 1 of 170</span>
+        <span id="prog-pct">0% answered</span>
       </div>
-      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="progress-track">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
     </div>
 
+    <!-- Category tabs -->
     <div class="tabs" id="cat-tabs"></div>
+
+    <!-- Question card injected here -->
     <div id="questions-container"></div>
 
+    <!-- Navigation -->
     <div class="nav">
       <button class="btn" id="btn-prev" onclick="navigate(-1)">← Previous</button>
-      <span id="nav-counter" style="color:var(--muted);font-size:0.85rem"></span>
+      <span class="nav-counter" id="nav-counter">0 / 0 answered</span>
       <button class="btn" id="btn-next" onclick="navigate(1)">Next →</button>
     </div>
-    <div style="text-align:center;margin-top:1.5rem;">
-      <button class="btn primary" onclick="finishQuiz()">Submit &amp; See Results</button>
-    </div>
-  </div>
 
-  <!-- RESULTS SCREEN -->
-  <div id="results-screen">
+    <!-- Submit -->
+    <div style="text-align:center;margin-top:1.75rem;">
+      <button class="btn primary" style="padding:0.75rem 2.5rem" onclick="finishQuiz()">
+        Submit &amp; See Results
+      </button>
+    </div>
+
+  </div><!-- /quiz-screen -->
+
+  <!-- ══ RESULTS SCREEN ══ -->
+  <div id="results-screen" style="display:none">
     <div class="results-card">
-      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.5rem">YOUR SCORE</p>
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:1px">Your Score</p>
       <div class="results-score" id="res-score">—</div>
       <p class="results-sub" id="res-fraction">— / — correct</p>
       <div class="rating-msg" id="res-rating"></div>
       <div class="results-breakdown" id="res-breakdown"></div>
       <div class="log-status" id="log-status"></div>
-      <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-top:1rem">
-        <button class="btn primary" onclick="restartQuiz()">🔄 Try Again (New Shuffle)</button>
-        <button class="btn" onclick="showSection('leaderboard')">🏆 View Score Log</button>
+      <div class="result-actions">
+        <button class="btn primary" onclick="restartQuiz()">🔄 New Shuffle</button>
+        <button class="btn danger" id="btn-retry-wrong" onclick="retryWrongAnswers()" style="display:none">
+          🎯 Retry Wrong
+        </button>
+        <button class="btn" onclick="showSection('leaderboard')">🏆 Score Log</button>
       </div>
     </div>
-  </div>
 
-  <!-- LEADERBOARD SCREEN -->
-  <div id="leaderboard-screen">
+    <!-- Wrong answer review -->
+    <div id="wrong-review" style="display:none">
+      <div class="section-divider">
+        <h3>❌ Wrong Answer Review</h3>
+      </div>
+      <div style="text-align:center;margin-bottom:1rem">
+        <button class="btn" id="btn-toggle-review" onclick="toggleWrongReview()">▼ Show Wrong Answers</button>
+      </div>
+      <div id="wrong-review-list" style="display:none"></div>
+    </div>
+  </div><!-- /results-screen -->
+
+  <!-- ══ LEADERBOARD SCREEN ══ -->
+  <div id="leaderboard-screen" style="display:none">
     <div class="lb-header">
       <h2>🏆 Score Log</h2>
       <button class="btn" onclick="loadLeaderboard()">↻ Refresh</button>
     </div>
-    <div id="lb-content"><div class="lb-loading">Loading scores…</div></div>
+    <div id="lb-content">
+      <div class="lb-loading">Loading scores…</div>
+    </div>
   </div>
 
-</div>
+</div><!-- /container -->
 
-<script>
-const API_URL = 'api.php';
-const QUESTIONS_URL = 'questions.json';
-
-let data = null;
-let allQuestions = [];      // original, unshuffled master list
-let displayQuestions = [];  // shuffled display order (with shuffled choices baked in)
-let currentIndex = 0;
-let answers = {};           // keyed by original question id
-let mode = 'practice';
-let currentCategory = 'all';
-let currentUsername = '';
-
-const CAT_COLORS = {
-  verbal: '#7c6ff7',
-  numerical: '#3ecf8e',
-  geninfo: '#f5a742'
-};
-
-/* ── FISHER-YATES SHUFFLE ── */
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/*
- * shuffleQuestionChoices(q)
- * Returns a new question object where `choices` is shuffled and
- * `answer` index is updated to point to the same correct text.
- * Stores `shuffledChoices` and `shuffledAnswer` on the object.
- */
-function shuffleQuestionChoices(q) {
-  const correctText = q.choices[q.answer]; // save the correct answer text
-  const shuffledChoices = shuffle(q.choices);
-  const shuffledAnswer = shuffledChoices.indexOf(correctText);
-  return { ...q, shuffledChoices, shuffledAnswer };
-}
-
-/* ── USERNAME ── */
-function startWithUsername() {
-  const input = document.getElementById('username-input');
-  const err   = document.getElementById('username-error');
-  const val   = input.value.trim();
-  if (!val || !/^[a-zA-Z0-9 _\-\.]{1,30}$/.test(val)) {
-    err.style.display = 'block';
-    input.focus();
-    return;
-  }
-  err.style.display = 'none';
-  currentUsername = val;
-  document.getElementById('user-chip').textContent = '👤 ' + val;
-  document.getElementById('username-screen').style.display = 'none';
-  document.getElementById('topnav').style.display = 'flex';
-  document.getElementById('loading').style.display = 'block';
-  loadQuestions();
-}
-
-/* ── SECTION NAV ── */
-function showSection(section) {
-  document.getElementById('quiz-screen').style.display        = section === 'quiz'        ? 'block' : 'none';
-  document.getElementById('results-screen').style.display     = section === 'results'     ? 'block' : 'none';
-  document.getElementById('leaderboard-screen').style.display = section === 'leaderboard' ? 'block' : 'none';
-  document.querySelectorAll('.topnav-btn').forEach(b => b.classList.remove('active'));
-  const map = { quiz: 'nav-quiz', leaderboard: 'nav-lb' };
-  if (map[section]) document.getElementById(map[section]).classList.add('active');
-  if (section === 'leaderboard') loadLeaderboard();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ── LOAD QUESTIONS ── */
-async function loadQuestions() {
-  try {
-    const res = await fetch(QUESTIONS_URL);
-    data = await res.json();
-    initQuiz();
-  } catch(e) {
-    document.getElementById('loading').innerHTML =
-      '<p style="color:var(--danger)">⚠️ Could not load questions.json. Make sure it is in the same folder.</p>';
-  }
-}
-
-function initQuiz() {
-  // Build flat master list (original order, original choices)
-  allQuestions = [];
-  data.categories.forEach(cat => {
-    cat.questions.forEach(q => {
-      allQuestions.push({ ...q,
-        catId: cat.id,
-        catName: cat.name,
-        catColor: CAT_COLORS[cat.id] || '#8b91a8'
-      });
-    });
-  });
-  applyShuffleToAll();
-  buildTabs();
-  filterAndRender();
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('quiz-screen').style.display = 'block';
-  document.getElementById('stat-remaining').textContent = allQuestions.length;
-}
-
-/*
- * applyShuffleToAll()
- * Shuffles the question order and randomizes each question's choices.
- * Clears all answers since the layout has changed.
- */
-function applyShuffleToAll() {
-  answers = {};
-  const shuffledOrder = shuffle(allQuestions);
-  displayQuestions = shuffledOrder.map(q => shuffleQuestionChoices(q));
-}
-
-/* Reshuffle button — called mid-quiz too */
-function reshuffleAll() {
-  const confirmed = Object.keys(answers).length === 0 ||
-    confirm('Reshuffling will clear your current answers. Continue?');
-  if (!confirmed) return;
-  currentIndex = 0;
-  applyShuffleToAll();
-  filterAndRender();
-  updateStats();
-}
-
-function buildTabs() {
-  const tabs = document.getElementById('cat-tabs');
-  tabs.innerHTML = '';
-  tabs.appendChild(makeTab('all', '🗂 All Topics', '#4f8ef7'));
-  data.categories.forEach(cat => {
-    tabs.appendChild(makeTab(cat.id, cat.icon + ' ' + cat.name, CAT_COLORS[cat.id]));
-  });
-}
-
-function makeTab(id, label, color) {
-  const btn = document.createElement('button');
-  btn.className = 'tab' + (id === currentCategory ? ' active' : '');
-  btn.innerHTML = label;
-  btn.onclick = () => {
-    currentCategory = id;
-    currentIndex = 0;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    filterAndRender();
-  };
-  return btn;
-}
-
-function getFilteredQuestions() {
-  if (currentCategory === 'all') return displayQuestions;
-  return displayQuestions.filter(q => q.catId === currentCategory);
-}
-
-function filterAndRender() {
-  const qs = getFilteredQuestions();
-  renderQuestion(qs);
-  updateStats();
-}
-
-function renderQuestion(qs) {
-  const container = document.getElementById('questions-container');
-  if (!qs.length) {
-    container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:2rem">No questions in this category.</p>';
-    return;
-  }
-  const q = qs[currentIndex];
-
-  // Use shuffled choices + shuffled answer index
-  const choices      = q.shuffledChoices;
-  const correctIdx   = q.shuffledAnswer;
-  const answered     = answers[q.id]; // stored as index into shuffledChoices
-
-  const letters = ['A','B','C','D'];
-  const pill = `<span class="q-cat-pill" style="background:${q.catColor}22;color:${q.catColor};border:1px solid ${q.catColor}44">${q.catName}</span>`;
-
-  let choicesHTML = choices.map((ch, i) => {
-    let cls = 'choice';
-    let status = '';
-    if (answered !== undefined) {
-      if (i === correctIdx)                          { cls += ' correct'; status = i === answered ? '✓' : ''; }
-      else if (i === answered && answered !== correctIdx) { cls += ' wrong'; status = '✗'; }
-    }
-    return `<button class="${cls}" onclick="selectAnswer('${q.id}', ${i}, ${correctIdx})" ${answered !== undefined ? 'disabled' : ''}>
-      <span class="letter">${letters[i]}</span>
-      <span>${ch}</span>
-      ${status ? `<span class="q-status">${status}</span>` : ''}
-    </button>`;
-  }).join('');
-
-  const explainShow = (answered !== undefined && mode === 'practice') ? 'show' : '';
-  container.innerHTML = `
-    <div class="q-card">
-      <div class="q-meta">
-        <span class="q-num">Q${currentIndex + 1} of ${qs.length}</span>
-        ${pill}
-      </div>
-      <div class="q-text">${q.question}</div>
-      <div class="choices">${choicesHTML}</div>
-      <div class="explanation ${explainShow}">
-        <strong>Explanation:</strong> ${q.explanation}
-      </div>
-    </div>
-  `;
-  updateProgress(qs);
-}
-
-function selectAnswer(qId, chosen, correctIdx) {
-  if (answers[qId] !== undefined) return;
-  answers[qId] = chosen;
-  const qs = getFilteredQuestions();
-  renderQuestion(qs);
-  updateStats();
-}
-
-function navigate(dir) {
-  const qs = getFilteredQuestions();
-  currentIndex = Math.max(0, Math.min(qs.length - 1, currentIndex + dir));
-  renderQuestion(qs);
-}
-
-function updateProgress(qs) {
-  const answered = qs.filter(q => answers[q.id] !== undefined).length;
-  const pct = qs.length ? Math.round((answered / qs.length) * 100) : 0;
-  document.getElementById('prog-label').textContent = `Question ${currentIndex + 1} of ${qs.length}`;
-  document.getElementById('prog-pct').textContent = pct + '% answered';
-  document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('btn-prev').disabled = currentIndex === 0;
-  document.getElementById('btn-next').disabled = currentIndex === qs.length - 1;
-  document.getElementById('nav-counter').textContent = `${answered} / ${qs.length} answered`;
-}
-
-function updateStats() {
-  const total    = displayQuestions.length;
-  const answered = displayQuestions.filter(q => answers[q.id] !== undefined);
-  const correct  = answered.filter(q => answers[q.id] === q.shuffledAnswer).length;
-  const wrong    = answered.length - correct;
-  const pct      = answered.length ? Math.round((correct / answered.length) * 100) : 0;
-  document.getElementById('stat-score').textContent     = pct + '%';
-  document.getElementById('stat-correct').textContent   = correct;
-  document.getElementById('stat-wrong').textContent     = wrong;
-  document.getElementById('stat-remaining').textContent = total - answered.length;
-}
-
-function setMode(m) {
-  mode = m;
-  document.getElementById('mode-practice').classList.toggle('active', m === 'practice');
-  document.getElementById('mode-exam').classList.toggle('active', m === 'exam');
-  renderQuestion(getFilteredQuestions());
-}
-
-/* ── FINISH & LOG SCORE ── */
-async function finishQuiz() {
-  const total   = displayQuestions.length;
-  const correct = displayQuestions.filter(q => answers[q.id] === q.shuffledAnswer).length;
-  const pct     = Math.round((correct / total) * 100);
-
-  let rating = '';
-  if (pct >= 80)      rating = '🏆 Excellent! You\'re ready for the CSE!';
-  else if (pct >= 60) rating = '👍 Good job! Keep reviewing.';
-  else if (pct >= 40) rating = '📖 Keep practicing — you\'re getting there!';
-  else                rating = '💪 More review needed. Don\'t give up!';
-
-  document.getElementById('res-score').textContent    = pct + '%';
-  document.getElementById('res-fraction').textContent = `${correct} out of ${total} correct`;
-  document.getElementById('res-rating').textContent   = rating;
-
-  const breakdown = document.getElementById('res-breakdown');
-  breakdown.innerHTML = data.categories.map(cat => {
-    const catQs      = displayQuestions.filter(q => q.catId === cat.id);
-    const catCorrect = catQs.filter(q => answers[q.id] === q.shuffledAnswer).length;
-    const catPct     = catQs.length ? Math.round((catCorrect / catQs.length) * 100) : 0;
-    return `<div class="breakdown-item">
-      <div class="b-score" style="color:${CAT_COLORS[cat.id]}">${catPct}%</div>
-      <div class="b-label">${cat.icon} ${cat.name}</div>
-      <div style="font-size:0.75rem;color:var(--muted);margin-top:4px">${catCorrect}/${catQs.length}</div>
-    </div>`;
-  }).join('');
-
-  document.getElementById('quiz-screen').style.display    = 'none';
-  document.getElementById('results-screen').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  const logEl = document.getElementById('log-status');
-  logEl.className = 'log-status saving';
-  logEl.textContent = 'Saving your score…';
-  try {
-    const payload = { username: currentUsername, score_pct: pct, correct, total, mode };
-    const resp = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const json = await resp.json();
-    if (json.success) {
-      logEl.className = 'log-status ok';
-      logEl.textContent = '✓ Score saved to leaderboard!';
-    } else {
-      logEl.className = 'log-status err';
-      logEl.textContent = '⚠️ Score not saved: ' + (json.error || 'unknown error');
-    }
-  } catch(e) {
-    logEl.className = 'log-status err';
-    logEl.textContent = '⚠️ Could not reach api.php — score not saved.';
-  }
-}
-
-/* ── RESTART ── */
-function restartQuiz() {
-  currentIndex = 0;
-  currentCategory = 'all';
-  applyShuffleToAll();  // fresh shuffle every restart
-  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === 0));
-  document.getElementById('results-screen').style.display = 'none';
-  document.getElementById('quiz-screen').style.display    = 'block';
-  document.getElementById('log-status').textContent = '';
-  filterAndRender();
-  showSection('quiz');
-}
-
-/* ── LEADERBOARD ── */
-async function loadLeaderboard() {
-  document.getElementById('lb-content').innerHTML = '<div class="lb-loading">Loading scores…</div>';
-  try {
-    const resp = await fetch(API_URL + '?action=scores');
-    const json = await resp.json();
-    if (!json.success) throw new Error(json.error);
-    renderLeaderboard(json.data);
-  } catch(e) {
-    document.getElementById('lb-content').innerHTML =
-      `<div class="lb-empty">⚠️ Could not load scores.<br><small style="color:var(--muted)">${e.message}</small></div>`;
-  }
-}
-
-function renderLeaderboard(rows) {
-  if (!rows || rows.length === 0) {
-    document.getElementById('lb-content').innerHTML =
-      '<div class="lb-empty">No scores yet. Complete a quiz to be the first!</div>';
-    return;
-  }
-  const rankClass  = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
-  const scoreClass = p => p >= 80 ? 'high' : p >= 50 ? 'mid' : 'low';
-  const rows_html  = rows.map((r, i) => `
-    <tr>
-      <td><span class="rank-badge ${rankClass(i)}">${i+1}</span></td>
-      <td><strong>${escHtml(r.username)}</strong></td>
-      <td><span class="score-pill ${scoreClass(r.score_pct)}">${r.score_pct}%</span></td>
-      <td>${r.correct} / ${r.total}</td>
-      <td style="color:var(--muted)">${r.mode === 'exam' ? '🎯 Exam' : '📖 Practice'}</td>
-      <td style="color:var(--muted);font-size:0.8rem">${formatDate(r.taken_at)}</td>
-    </tr>
-  `).join('');
-  document.getElementById('lb-content').innerHTML = `
-    <table class="lb-table">
-      <thead>
-        <tr><th>#</th><th>Username</th><th>Score</th><th>Correct</th><th>Mode</th><th>Date</th></tr>
-      </thead>
-      <tbody>${rows_html}</tbody>
-    </table>
-    <p style="text-align:center;color:var(--muted);font-size:0.78rem;margin-top:1rem">
-      Showing last 50 attempts · sorted by score
-    </p>
-  `;
-}
-
-function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function formatDate(str) {
-  if (!str) return '—';
-  const d = new Date(str);
-  return d.toLocaleDateString('en-PH', { month:'short', day:'numeric', year:'numeric' })
-    + ' ' + d.toLocaleTimeString('en-PH', { hour:'2-digit', minute:'2-digit' });
-}
-</script>
+<script src="app.js"></script>
 </body>
 </html>
