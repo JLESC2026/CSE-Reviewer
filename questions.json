@@ -1,0 +1,271 @@
+{
+  "exam": "Civil Service Exam - Professional Level Reviewer",
+  "categories": [
+    {
+      "id": "verbal",
+      "name": "Verbal Ability & English",
+      "icon": "📝",
+      "questions": [
+        {
+          "id": "v1",
+          "question": "Choose the word most similar in meaning to BENEVOLENT.",
+          "choices": ["Hostile", "Charitable", "Greedy", "Indifferent"],
+          "answer": 1,
+          "explanation": "BENEVOLENT means well-meaning and kindly. CHARITABLE is the closest synonym as it means generous in giving to those in need."
+        },
+        {
+          "id": "v2",
+          "question": "Choose the word most OPPOSITE in meaning to LOQUACIOUS.",
+          "choices": ["Talkative", "Verbose", "Taciturn", "Garrulous"],
+          "answer": 2,
+          "explanation": "LOQUACIOUS means very talkative. Its antonym is TACITURN, which means reserved or saying little."
+        },
+        {
+          "id": "v3",
+          "question": "Select the correctly spelled word.",
+          "choices": ["Accomodate", "Accommodate", "Acommodate", "Acomodate"],
+          "answer": 1,
+          "explanation": "The correct spelling is ACCOMMODATE — with double 'c' and double 'm'."
+        },
+        {
+          "id": "v4",
+          "question": "Fill in the blank: The committee _______ the proposal after a long debate.",
+          "choices": ["ratified", "ratify", "ratifying", "ratifies"],
+          "answer": 0,
+          "explanation": "Past tense 'ratified' is correct since the action (debating and approving) has already occurred."
+        },
+        {
+          "id": "v5",
+          "question": "Which sentence is grammatically correct?",
+          "choices": [
+            "Each of the students have their own locker.",
+            "Each of the students has their own locker.",
+            "Each of the students have his own locker.",
+            "Each of the students are having their own locker."
+          ],
+          "answer": 1,
+          "explanation": "'Each' is a singular indefinite pronoun, so it takes a singular verb 'has'. Modern usage accepts 'their' as a gender-neutral singular pronoun."
+        },
+        {
+          "id": "v6",
+          "question": "Choose the word most similar in meaning to EPHEMERAL.",
+          "choices": ["Eternal", "Transient", "Substantial", "Permanent"],
+          "answer": 1,
+          "explanation": "EPHEMERAL means lasting for a very short time. TRANSIENT is the closest synonym meaning passing quickly."
+        },
+        {
+          "id": "v7",
+          "question": "Identify the error in the sentence: 'Neither the manager nor the employees was informed about the change.'",
+          "choices": [
+            "Neither the manager",
+            "nor the employees",
+            "was informed",
+            "about the change"
+          ],
+          "answer": 2,
+          "explanation": "When using 'neither...nor', the verb agrees with the subject closest to it ('employees' — plural). The correct verb should be 'were informed'."
+        },
+        {
+          "id": "v8",
+          "question": "What does the idiom 'burn the midnight oil' mean?",
+          "choices": [
+            "To waste resources",
+            "To work late into the night",
+            "To start a fire",
+            "To celebrate something"
+          ],
+          "answer": 1,
+          "explanation": "'Burn the midnight oil' is an idiom meaning to work or study late into the night."
+        },
+        {
+          "id": "v9",
+          "question": "Choose the correctly punctuated sentence.",
+          "choices": [
+            "The report however was incomplete.",
+            "The report, however was incomplete.",
+            "The report, however, was incomplete.",
+            "The report however, was incomplete."
+          ],
+          "answer": 2,
+          "explanation": "Conjunctive adverbs like 'however' used in the middle of a sentence must be set off by commas on both sides."
+        },
+        {
+          "id": "v10",
+          "question": "The word 'PEDESTRIAN' when used as an adjective means:",
+          "choices": ["Relating to walking", "Slow and cautious", "Lacking originality; dull", "Relating to children"],
+          "answer": 2,
+          "explanation": "As an adjective, PEDESTRIAN means lacking inspiration or excitement; dull and ordinary."
+        }
+      ]
+    },
+    {
+      "id": "numerical",
+      "name": "Numerical Ability & Math",
+      "icon": "🔢",
+      "questions": [
+        {
+          "id": "n1",
+          "question": "What is 15% of 240?",
+          "choices": ["30", "36", "40", "32"],
+          "answer": 1,
+          "explanation": "15% of 240 = 0.15 × 240 = 36"
+        },
+        {
+          "id": "n2",
+          "question": "A train travels 360 km in 4 hours. What is its speed in km/h?",
+          "choices": ["80", "85", "90", "95"],
+          "answer": 2,
+          "explanation": "Speed = Distance ÷ Time = 360 ÷ 4 = 90 km/h"
+        },
+        {
+          "id": "n3",
+          "question": "If 3x + 7 = 22, what is the value of x?",
+          "choices": ["3", "4", "5", "6"],
+          "answer": 2,
+          "explanation": "3x + 7 = 22 → 3x = 15 → x = 5"
+        },
+        {
+          "id": "n4",
+          "question": "What is the next number in the series: 2, 6, 18, 54, ___?",
+          "choices": ["108", "162", "216", "200"],
+          "answer": 1,
+          "explanation": "Each number is multiplied by 3: 2×3=6, 6×3=18, 18×3=54, 54×3=162"
+        },
+        {
+          "id": "n5",
+          "question": "A rectangle has a length of 12 cm and a width of 8 cm. What is its area?",
+          "choices": ["40 sq cm", "80 sq cm", "96 sq cm", "48 sq cm"],
+          "answer": 2,
+          "explanation": "Area of rectangle = length × width = 12 × 8 = 96 sq cm"
+        },
+        {
+          "id": "n6",
+          "question": "If a shirt costs ₱850 after a 15% discount, what was the original price?",
+          "choices": ["₱975", "₱1,000", "₱1,050", "₱1,100"],
+          "answer": 1,
+          "explanation": "If ₱850 = 85% of original price, then original = 850 ÷ 0.85 = ₱1,000"
+        },
+        {
+          "id": "n7",
+          "question": "What is the average of 45, 62, 78, 55, and 70?",
+          "choices": ["60", "62", "64", "66"],
+          "answer": 2,
+          "explanation": "Average = (45+62+78+55+70) ÷ 5 = 310 ÷ 5 = 62... Wait: 45+62=107, +78=185, +55=240, +70=310. 310÷5 = 62. Answer is 62."
+        },
+        {
+          "id": "n8",
+          "question": "A worker can finish a job in 6 days. Another worker can finish the same job in 4 days. How long will it take them working together?",
+          "choices": ["2.4 days", "3 days", "3.5 days", "2 days"],
+          "answer": 0,
+          "explanation": "Combined rate = 1/6 + 1/4 = 2/12 + 3/12 = 5/12. Time = 12/5 = 2.4 days"
+        },
+        {
+          "id": "n9",
+          "question": "What is the square root of 1,764?",
+          "choices": ["40", "42", "44", "46"],
+          "answer": 1,
+          "explanation": "√1,764 = 42 because 42 × 42 = 1,764"
+        },
+        {
+          "id": "n10",
+          "question": "If the ratio of boys to girls in a class is 3:5 and there are 24 boys, how many girls are there?",
+          "choices": ["35", "38", "40", "45"],
+          "answer": 2,
+          "explanation": "If 3 parts = 24, then 1 part = 8. Girls = 5 parts × 8 = 40"
+        }
+      ]
+    },
+    {
+      "id": "geninfo",
+      "name": "General Information & Filipino",
+      "icon": "🇵🇭",
+      "questions": [
+        {
+          "id": "g1",
+          "question": "Sino ang unang Pangulo ng Pilipinas sa ilalim ng Saligang Batas ng 1987?",
+          "choices": ["Ferdinand Marcos", "Corazon Aquino", "Fidel Ramos", "Joseph Estrada"],
+          "answer": 1,
+          "explanation": "Si Corazon 'Cory' Aquino ang naging unang Pangulo ng Pilipinas matapos maibalik ang demokrasya at maipatupad ang Saligang Batas ng 1987."
+        },
+        {
+          "id": "g2",
+          "question": "Alin ang HINDI kabilang sa mga probisyon ng Saligang Batas ng Pilipinas (1987)?",
+          "choices": [
+            "Bill of Rights",
+            "The right to bear arms",
+            "Separation of Church and State",
+            "Right to education"
+          ],
+          "answer": 1,
+          "explanation": "Ang 'right to bear arms' ay probisyon ng Konstitusyon ng Estados Unidos, hindi ng Pilipinas."
+        },
+        {
+          "id": "g3",
+          "question": "Ang Civil Service Commission ay isang ____________ na katawan.",
+          "choices": [
+            "Ehekutibo",
+            "Hudisyal",
+            "Konstitusyonal",
+            "Lehislatibo"
+          ],
+          "answer": 2,
+          "explanation": "Ang Civil Service Commission (CSC) ay isang konstitusyonal na katawan na nakapaloob sa Artikulo IX ng 1987 Saligang Batas."
+        },
+        {
+          "id": "g4",
+          "question": "What is the national flower of the Philippines?",
+          "choices": ["Rose", "Sampaguita", "Orchid", "Sunflower"],
+          "answer": 1,
+          "explanation": "The Sampaguita (Jasminum sambac) was declared the national flower of the Philippines by Governor-General Frank Murphy in 1934."
+        },
+        {
+          "id": "g5",
+          "question": "Piliin ang wastong gamit ng salitang 'ng' at 'nang' sa pangungusap: 'Tumakbo siya _____ mabilis.'",
+          "choices": ["ng", "nang", "na", "man"],
+          "answer": 1,
+          "explanation": "'Nang' ang ginagamit bilang pang-abay na nagpapalakas ng kahulugan ng pandiwang 'tumakbo'. Ang 'ng' ay pantukoy o pang-angkop."
+        },
+        {
+          "id": "g6",
+          "question": "Which branch of the Philippine government has the power to declare a law unconstitutional?",
+          "choices": ["Executive", "Legislative", "Judicial", "Civil Service Commission"],
+          "answer": 2,
+          "explanation": "The Judicial branch, particularly the Supreme Court, has the power of judicial review — the authority to declare laws or acts unconstitutional."
+        },
+        {
+          "id": "g7",
+          "question": "Ang 'Noli Me Tangere' ay isinulat ni Dr. Jose Rizal sa wikang:",
+          "choices": ["Filipino", "Ingles", "Kastila", "Pranses"],
+          "answer": 2,
+          "explanation": "Ang 'Noli Me Tangere' ay isinulat ni Dr. Jose Rizal sa wikang Kastila (Español) at inilathala noong 1887 sa Berlin, Germany."
+        },
+        {
+          "id": "g8",
+          "question": "How many senators are there in the Philippine Senate?",
+          "choices": ["12", "24", "20", "18"],
+          "answer": 1,
+          "explanation": "The Philippine Senate is composed of 24 senators who serve 6-year terms, with elections held every 3 years for half the seats."
+        },
+        {
+          "id": "g9",
+          "question": "What does 'RA 6713' refer to?",
+          "choices": [
+            "The Anti-Graft and Corrupt Practices Act",
+            "Code of Conduct and Ethical Standards for Public Officials",
+            "The Civil Service Law",
+            "The Freedom of Information Act"
+          ],
+          "answer": 1,
+          "explanation": "Republic Act 6713 is the Code of Conduct and Ethical Standards for Public Officials and Employees, enacted in 1989."
+        },
+        {
+          "id": "g10",
+          "question": "Alin sa mga sumusunod ang tamang kahulugan ng salitang 'makulay'?",
+          "choices": ["Mapanglaw", "Masaya at interesante", "Malungkot", "Mapayapa"],
+          "answer": 1,
+          "explanation": "'Makulay' ay nangangahulugang masaya, interesante, at puno ng buhay. Maaari ring tumukoy sa maraming kulay."
+        }
+      ]
+    }
+  ]
+}
