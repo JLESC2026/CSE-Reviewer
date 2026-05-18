@@ -86,7 +86,7 @@
   /* LAYOUT */
   .container { max-width: 860px; margin: 0 auto; padding: 2rem 1rem; }
 
-  /* ── USERNAME SCREEN ── */
+  /* USERNAME SCREEN */
   #username-screen {
     display: flex;
     align-items: center;
@@ -241,6 +241,21 @@
 
   .q-status { margin-left: auto; font-size: 1.1rem; }
 
+  /* SHUFFLE INDICATOR */
+  .shuffle-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(62,207,142,0.1);
+    border: 1px solid rgba(62,207,142,0.25);
+    color: var(--success);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    margin-bottom: 1.25rem;
+  }
+
   /* NAVIGATION */
   .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; gap: 1rem; flex-wrap: wrap; }
   .btn {
@@ -259,11 +274,16 @@
   .btn:disabled { opacity: 0.35; cursor: default; }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
   .btn.primary:hover { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+  .btn.shuffle { background: rgba(62,207,142,0.12); border-color: rgba(62,207,142,0.35); color: var(--success); }
+  .btn.shuffle:hover { background: rgba(62,207,142,0.2); }
 
   /* MODE TOGGLE */
   .mode-toggle { display: flex; gap: 0.5rem; background: var(--surface2); border-radius: 99px; padding: 4px; border: 1px solid var(--border); margin-bottom: 2rem; width: fit-content; }
   .mode-btn { padding: 0.45rem 1.2rem; border-radius: 99px; border: none; background: transparent; color: var(--muted); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
   .mode-btn.active { background: var(--accent); color: #fff; }
+
+  /* TOP CONTROLS */
+  .top-controls { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 
   /* RESULTS */
   #results-screen { display: none; }
@@ -292,7 +312,7 @@
   .b-score { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; }
   .b-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
 
-  /* ── LEADERBOARD / SCORE LOG ── */
+  /* LEADERBOARD */
   #leaderboard-screen { display: none; }
   .lb-header {
     display: flex;
@@ -335,7 +355,7 @@
   .lb-empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
   .lb-loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
 
-  /* NAV LINKS */
+  /* TOP NAV */
   .topnav {
     display: flex;
     justify-content: center;
@@ -370,7 +390,6 @@
     margin-left: auto;
   }
 
-  /* SUBMIT LOG STATUS */
   .log-status { font-size: 0.8rem; margin-top: 0.75rem; min-height: 1.2em; }
   .log-status.ok { color: var(--success); }
   .log-status.err { color: var(--danger); }
@@ -379,14 +398,12 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="badge">Philippines · Professional Level</div>
   <h1>CSE <span>Reviewer</span></h1>
   <p>Civil Service Exam Practice · 2025 Edition</p>
 </div>
 
-<!-- TOP NAV (hidden until logged in) -->
 <div class="topnav" id="topnav" style="display:none">
   <button class="topnav-btn active" id="nav-quiz" onclick="showSection('quiz')">📝 Quiz</button>
   <button class="topnav-btn" id="nav-lb" onclick="showSection('leaderboard')">🏆 Score Log</button>
@@ -395,7 +412,7 @@
 
 <div class="container">
 
-  <!-- ══ USERNAME SCREEN ══ -->
+  <!-- USERNAME SCREEN -->
   <div id="username-screen">
     <div class="login-card">
       <div class="icon">📋</div>
@@ -410,12 +427,10 @@
     </div>
   </div>
 
-  <!-- ══ LOADING ══ -->
   <div id="loading" style="display:none;text-align:center;padding:4rem 1rem;color:var(--muted)">Loading questions…</div>
 
-  <!-- ══ QUIZ SCREEN ══ -->
+  <!-- QUIZ SCREEN -->
   <div id="quiz-screen" style="display:none">
-    <!-- Score Summary -->
     <div class="summary-bar">
       <div class="summary-item"><span class="val" id="stat-score" style="color:var(--accent)">0%</span><div class="lbl">Score</div></div>
       <div class="sep"></div>
@@ -426,13 +441,18 @@
       <div class="summary-item"><span class="val" id="stat-remaining" style="color:var(--muted)">—</span><div class="lbl">Remaining</div></div>
     </div>
 
-    <!-- Mode Toggle -->
-    <div class="mode-toggle">
-      <button class="mode-btn active" id="mode-practice" onclick="setMode('practice')">📖 Practice</button>
-      <button class="mode-btn" id="mode-exam" onclick="setMode('exam')">🎯 Exam</button>
+    <!-- Mode + Shuffle controls -->
+    <div class="top-controls">
+      <div class="mode-toggle" style="margin-bottom:0">
+        <button class="mode-btn active" id="mode-practice" onclick="setMode('practice')">📖 Practice</button>
+        <button class="mode-btn" id="mode-exam" onclick="setMode('exam')">🎯 Exam</button>
+      </div>
+      <button class="btn shuffle" id="btn-reshuffle" onclick="reshuffleAll()" title="Shuffle questions and choices again">🔀 Reshuffle</button>
     </div>
 
-    <!-- Progress -->
+    <!-- Shuffle status -->
+    <div class="shuffle-badge" id="shuffle-badge">🔀 Questions &amp; choices are randomized this session</div>
+
     <div class="progress-wrap">
       <div class="progress-label">
         <span id="prog-label">Question 1 of 30</span>
@@ -441,24 +461,20 @@
       <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
     </div>
 
-    <!-- Category Tabs -->
     <div class="tabs" id="cat-tabs"></div>
-
-    <!-- Questions -->
     <div id="questions-container"></div>
 
-    <!-- Navigation -->
     <div class="nav">
       <button class="btn" id="btn-prev" onclick="navigate(-1)">← Previous</button>
       <span id="nav-counter" style="color:var(--muted);font-size:0.85rem"></span>
       <button class="btn" id="btn-next" onclick="navigate(1)">Next →</button>
     </div>
     <div style="text-align:center;margin-top:1.5rem;">
-      <button class="btn primary" onclick="finishQuiz()">Submit & See Results</button>
+      <button class="btn primary" onclick="finishQuiz()">Submit &amp; See Results</button>
     </div>
   </div>
 
-  <!-- ══ RESULTS SCREEN ══ -->
+  <!-- RESULTS SCREEN -->
   <div id="results-screen">
     <div class="results-card">
       <p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.5rem">YOUR SCORE</p>
@@ -468,13 +484,13 @@
       <div class="results-breakdown" id="res-breakdown"></div>
       <div class="log-status" id="log-status"></div>
       <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-top:1rem">
-        <button class="btn primary" onclick="restartQuiz()">🔄 Try Again</button>
+        <button class="btn primary" onclick="restartQuiz()">🔄 Try Again (New Shuffle)</button>
         <button class="btn" onclick="showSection('leaderboard')">🏆 View Score Log</button>
       </div>
     </div>
   </div>
 
-  <!-- ══ LEADERBOARD / SCORE LOG SCREEN ══ -->
+  <!-- LEADERBOARD SCREEN -->
   <div id="leaderboard-screen">
     <div class="lb-header">
       <h2>🏆 Score Log</h2>
@@ -483,21 +499,17 @@
     <div id="lb-content"><div class="lb-loading">Loading scores…</div></div>
   </div>
 
-</div><!-- /container -->
+</div>
 
 <script>
-/* ─────────────────────────────────────────────
-   CONFIG — update this URL to your InfinityFree
-   PHP file path after you upload it
-───────────────────────────────────────────── */
-const API_URL = 'api.php'; // same folder as index.html
-
+const API_URL = 'api.php';
 const QUESTIONS_URL = 'questions.json';
 
 let data = null;
-let allQuestions = [];
+let allQuestions = [];      // original, unshuffled master list
+let displayQuestions = [];  // shuffled display order (with shuffled choices baked in)
 let currentIndex = 0;
-let answers = {};
+let answers = {};           // keyed by original question id
 let mode = 'practice';
 let currentCategory = 'all';
 let currentUsername = '';
@@ -507,6 +519,29 @@ const CAT_COLORS = {
   numerical: '#3ecf8e',
   geninfo: '#f5a742'
 };
+
+/* ── FISHER-YATES SHUFFLE ── */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/*
+ * shuffleQuestionChoices(q)
+ * Returns a new question object where `choices` is shuffled and
+ * `answer` index is updated to point to the same correct text.
+ * Stores `shuffledChoices` and `shuffledAnswer` on the object.
+ */
+function shuffleQuestionChoices(q) {
+  const correctText = q.choices[q.answer]; // save the correct answer text
+  const shuffledChoices = shuffle(q.choices);
+  const shuffledAnswer = shuffledChoices.indexOf(correctText);
+  return { ...q, shuffledChoices, shuffledAnswer };
+}
 
 /* ── USERNAME ── */
 function startWithUsername() {
@@ -527,10 +562,10 @@ function startWithUsername() {
   loadQuestions();
 }
 
-/* ── SECTION NAVIGATION ── */
+/* ── SECTION NAV ── */
 function showSection(section) {
-  document.getElementById('quiz-screen').style.display     = section === 'quiz'        ? 'block' : 'none';
-  document.getElementById('results-screen').style.display  = section === 'results'     ? 'block' : 'none';
+  document.getElementById('quiz-screen').style.display        = section === 'quiz'        ? 'block' : 'none';
+  document.getElementById('results-screen').style.display     = section === 'results'     ? 'block' : 'none';
   document.getElementById('leaderboard-screen').style.display = section === 'leaderboard' ? 'block' : 'none';
   document.querySelectorAll('.topnav-btn').forEach(b => b.classList.remove('active'));
   const map = { quiz: 'nav-quiz', leaderboard: 'nav-lb' };
@@ -552,6 +587,7 @@ async function loadQuestions() {
 }
 
 function initQuiz() {
+  // Build flat master list (original order, original choices)
   allQuestions = [];
   data.categories.forEach(cat => {
     cat.questions.forEach(q => {
@@ -562,11 +598,34 @@ function initQuiz() {
       });
     });
   });
+  applyShuffleToAll();
   buildTabs();
   filterAndRender();
   document.getElementById('loading').style.display = 'none';
   document.getElementById('quiz-screen').style.display = 'block';
   document.getElementById('stat-remaining').textContent = allQuestions.length;
+}
+
+/*
+ * applyShuffleToAll()
+ * Shuffles the question order and randomizes each question's choices.
+ * Clears all answers since the layout has changed.
+ */
+function applyShuffleToAll() {
+  answers = {};
+  const shuffledOrder = shuffle(allQuestions);
+  displayQuestions = shuffledOrder.map(q => shuffleQuestionChoices(q));
+}
+
+/* Reshuffle button — called mid-quiz too */
+function reshuffleAll() {
+  const confirmed = Object.keys(answers).length === 0 ||
+    confirm('Reshuffling will clear your current answers. Continue?');
+  if (!confirmed) return;
+  currentIndex = 0;
+  applyShuffleToAll();
+  filterAndRender();
+  updateStats();
 }
 
 function buildTabs() {
@@ -593,8 +652,8 @@ function makeTab(id, label, color) {
 }
 
 function getFilteredQuestions() {
-  if (currentCategory === 'all') return allQuestions;
-  return allQuestions.filter(q => q.catId === currentCategory);
+  if (currentCategory === 'all') return displayQuestions;
+  return displayQuestions.filter(q => q.catId === currentCategory);
 }
 
 function filterAndRender() {
@@ -610,22 +669,29 @@ function renderQuestion(qs) {
     return;
   }
   const q = qs[currentIndex];
-  const answered = answers[q.id];
+
+  // Use shuffled choices + shuffled answer index
+  const choices      = q.shuffledChoices;
+  const correctIdx   = q.shuffledAnswer;
+  const answered     = answers[q.id]; // stored as index into shuffledChoices
+
   const letters = ['A','B','C','D'];
   const pill = `<span class="q-cat-pill" style="background:${q.catColor}22;color:${q.catColor};border:1px solid ${q.catColor}44">${q.catName}</span>`;
-  let choicesHTML = q.choices.map((ch, i) => {
+
+  let choicesHTML = choices.map((ch, i) => {
     let cls = 'choice';
     let status = '';
     if (answered !== undefined) {
-      if (i === q.answer)                        { cls += ' correct'; status = i === answered ? '✓' : ''; }
-      else if (i === answered && answered !== q.answer) { cls += ' wrong';   status = '✗'; }
+      if (i === correctIdx)                          { cls += ' correct'; status = i === answered ? '✓' : ''; }
+      else if (i === answered && answered !== correctIdx) { cls += ' wrong'; status = '✗'; }
     }
-    return `<button class="${cls}" onclick="selectAnswer('${q.id}', ${i}, ${q.answer})" ${answered !== undefined ? 'disabled' : ''}>
+    return `<button class="${cls}" onclick="selectAnswer('${q.id}', ${i}, ${correctIdx})" ${answered !== undefined ? 'disabled' : ''}>
       <span class="letter">${letters[i]}</span>
       <span>${ch}</span>
       ${status ? `<span class="q-status">${status}</span>` : ''}
     </button>`;
   }).join('');
+
   const explainShow = (answered !== undefined && mode === 'practice') ? 'show' : '';
   container.innerHTML = `
     <div class="q-card">
@@ -643,7 +709,7 @@ function renderQuestion(qs) {
   updateProgress(qs);
 }
 
-function selectAnswer(qId, chosen, correct) {
+function selectAnswer(qId, chosen, correctIdx) {
   if (answers[qId] !== undefined) return;
   answers[qId] = chosen;
   const qs = getFilteredQuestions();
@@ -669,9 +735,9 @@ function updateProgress(qs) {
 }
 
 function updateStats() {
-  const total    = allQuestions.length;
-  const answered = allQuestions.filter(q => answers[q.id] !== undefined);
-  const correct  = answered.filter(q => answers[q.id] === q.answer).length;
+  const total    = displayQuestions.length;
+  const answered = displayQuestions.filter(q => answers[q.id] !== undefined);
+  const correct  = answered.filter(q => answers[q.id] === q.shuffledAnswer).length;
   const wrong    = answered.length - correct;
   const pct      = answered.length ? Math.round((correct / answered.length) * 100) : 0;
   document.getElementById('stat-score').textContent     = pct + '%';
@@ -689,8 +755,8 @@ function setMode(m) {
 
 /* ── FINISH & LOG SCORE ── */
 async function finishQuiz() {
-  const total   = allQuestions.length;
-  const correct = allQuestions.filter(q => answers[q.id] === q.answer).length;
+  const total   = displayQuestions.length;
+  const correct = displayQuestions.filter(q => answers[q.id] === q.shuffledAnswer).length;
   const pct     = Math.round((correct / total) * 100);
 
   let rating = '';
@@ -705,9 +771,9 @@ async function finishQuiz() {
 
   const breakdown = document.getElementById('res-breakdown');
   breakdown.innerHTML = data.categories.map(cat => {
-    const catQs      = allQuestions.filter(q => q.catId === cat.id);
-    const catCorrect = catQs.filter(q => answers[q.id] === q.answer).length;
-    const catPct     = Math.round((catCorrect / catQs.length) * 100);
+    const catQs      = displayQuestions.filter(q => q.catId === cat.id);
+    const catCorrect = catQs.filter(q => answers[q.id] === q.shuffledAnswer).length;
+    const catPct     = catQs.length ? Math.round((catCorrect / catQs.length) * 100) : 0;
     return `<div class="breakdown-item">
       <div class="b-score" style="color:${CAT_COLORS[cat.id]}">${catPct}%</div>
       <div class="b-label">${cat.icon} ${cat.name}</div>
@@ -719,18 +785,11 @@ async function finishQuiz() {
   document.getElementById('results-screen').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  /* Save score to database via api.php */
   const logEl = document.getElementById('log-status');
   logEl.className = 'log-status saving';
   logEl.textContent = 'Saving your score…';
   try {
-    const payload = {
-      username:    currentUsername,
-      score_pct:   pct,
-      correct:     correct,
-      total:       total,
-      mode:        mode
-    };
+    const payload = { username: currentUsername, score_pct: pct, correct, total, mode };
     const resp = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -752,9 +811,9 @@ async function finishQuiz() {
 
 /* ── RESTART ── */
 function restartQuiz() {
-  answers = {};
   currentIndex = 0;
   currentCategory = 'all';
+  applyShuffleToAll();  // fresh shuffle every restart
   document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === 0));
   document.getElementById('results-screen').style.display = 'none';
   document.getElementById('quiz-screen').style.display    = 'block';
@@ -783,9 +842,9 @@ function renderLeaderboard(rows) {
       '<div class="lb-empty">No scores yet. Complete a quiz to be the first!</div>';
     return;
   }
-  const rankClass = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+  const rankClass  = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
   const scoreClass = p => p >= 80 ? 'high' : p >= 50 ? 'mid' : 'low';
-  const rows_html = rows.map((r, i) => `
+  const rows_html  = rows.map((r, i) => `
     <tr>
       <td><span class="rank-badge ${rankClass(i)}">${i+1}</span></td>
       <td><strong>${escHtml(r.username)}</strong></td>
@@ -798,14 +857,7 @@ function renderLeaderboard(rows) {
   document.getElementById('lb-content').innerHTML = `
     <table class="lb-table">
       <thead>
-        <tr>
-          <th>#</th>
-          <th>Username</th>
-          <th>Score</th>
-          <th>Correct</th>
-          <th>Mode</th>
-          <th>Date</th>
-        </tr>
+        <tr><th>#</th><th>Username</th><th>Score</th><th>Correct</th><th>Mode</th><th>Date</th></tr>
       </thead>
       <tbody>${rows_html}</tbody>
     </table>
