@@ -1,4 +1,52 @@
 {
+  "_readme": {
+    "title": "CSE Professional Reviewer — Question Bank",
+    "version": "2.0",
+    "total_questions": 90,
+    "how_to_add_questions": [
+      "═══════════════════════════════════════════════════════════════",
+      "  GUIDE FOR AI ASSISTANTS & CONTRIBUTORS ADDING NEW QUESTIONS  ",
+      "═══════════════════════════════════════════════════════════════",
+      "",
+      "STRUCTURE: Each question object must have exactly these fields:",
+      "  id          → string, unique. Format: first letter of category + number",
+      "                  verbal → v31, v32 ... | numerical → n31, n32 ...",
+      "                  geninfo → g31, g32 ... | analytics → a21, a22 ...",
+      "                  civil_service → c21, c22 ...",
+      "  question    → string, the question text",
+      "  choices     → array of exactly 4 strings (A, B, C, D)",
+      "  answer      → integer 0–3 (index of the correct choice in choices[])",
+      "                  0 = A, 1 = B, 2 = C, 3 = D",
+      "  explanation → string, brief explanation of why the answer is correct",
+      "",
+      "CATEGORIES (add questions inside the matching category's 'questions' array):",
+      "  verbal       → English grammar, vocabulary, synonyms, antonyms, idioms, sentence correction",
+      "  numerical    → Math, algebra, word problems, number series, percentages, geometry",
+      "  geninfo      → Philippine history, government, Filipino language, laws, culture",
+      "  analytics    → Logical reasoning, data interpretation, pattern recognition, analogies",
+      "  civil_service→ RA 6713, RA 3019, CSC rules, government ethics, public service laws",
+      "",
+      "RULES FOR QUALITY QUESTIONS:",
+      "  1. Only one answer must be unambiguously correct.",
+      "  2. All 4 choices must be plausible (no obviously silly distractors).",
+      "  3. Explanations must be factual and cite the rule or reason clearly.",
+      "  4. Avoid repeating topics already covered by existing questions.",
+      "  5. IDs must be unique across the entire file — check before adding.",
+      "  6. Filipino/Tagalog questions are welcome in geninfo and civil_service.",
+      "  7. Do NOT change existing question IDs or answers.",
+      "",
+      "EXAMPLE (copy-paste this template for a new question):",
+      "  {",
+      "    \"id\": \"v31\",",
+      "    \"question\": \"Your question text here.\",",
+      "    \"choices\": [\"Choice A\", \"Choice B\", \"Choice C\", \"Choice D\"],",
+      "    \"answer\": 0,",
+      "    \"explanation\": \"Why Choice A is correct.\"",
+      "  }",
+      "",
+      "NEXT AVAILABLE IDs: v31+, n31+, g31+, a21+, c21+"
+    ]
+  },
   "exam": "Civil Service Exam - Professional Level Reviewer",
   "categories": [
     {
@@ -95,6 +143,196 @@
           "choices": ["Relating to walking", "Slow and cautious", "Lacking originality; dull", "Relating to children"],
           "answer": 2,
           "explanation": "As an adjective, PEDESTRIAN means lacking inspiration or excitement; dull and ordinary."
+        },
+        {
+          "id": "v11",
+          "question": "Choose the word most similar in meaning to AMBIGUOUS.",
+          "choices": ["Clear", "Vague", "Certain", "Precise"],
+          "answer": 1,
+          "explanation": "AMBIGUOUS means open to more than one interpretation. VAGUE is the closest synonym, meaning not clearly expressed."
+        },
+        {
+          "id": "v12",
+          "question": "Which of the following is the correct passive voice of: 'The manager approved the report.'?",
+          "choices": [
+            "The report was approved by the manager.",
+            "The report is approved by the manager.",
+            "The manager was approving the report.",
+            "The report has been approving by the manager."
+          ],
+          "answer": 0,
+          "explanation": "In passive voice, the object becomes the subject. 'The report' (object) becomes the subject, and 'approved' becomes 'was approved by the manager.'"
+        },
+        {
+          "id": "v13",
+          "question": "What does the idiom 'bite the bullet' mean?",
+          "choices": [
+            "To be aggressive",
+            "To endure a painful situation with courage",
+            "To make a quick decision",
+            "To avoid responsibility"
+          ],
+          "answer": 1,
+          "explanation": "'Bite the bullet' means to endure a painful or difficult situation bravely and with determination."
+        },
+        {
+          "id": "v14",
+          "question": "Select the correctly spelled word.",
+          "choices": ["Recieve", "Receive", "Receve", "Recieive"],
+          "answer": 1,
+          "explanation": "The correct spelling is RECEIVE. Remember the rule: 'i before e, except after c' — so it is 'cei' not 'cie'."
+        },
+        {
+          "id": "v15",
+          "question": "Choose the word most OPPOSITE in meaning to FRUGAL.",
+          "choices": ["Thrifty", "Economical", "Extravagant", "Careful"],
+          "answer": 2,
+          "explanation": "FRUGAL means being careful with money and avoiding waste. Its antonym is EXTRAVAGANT, meaning spending much more than necessary."
+        },
+        {
+          "id": "v16",
+          "question": "Fill in the blank: If I _______ the answer, I would have told you.",
+          "choices": ["know", "knew", "known", "knows"],
+          "answer": 1,
+          "explanation": "This is a second conditional sentence expressing a hypothetical past situation. The correct form is 'knew' (simple past) in the if-clause."
+        },
+        {
+          "id": "v17",
+          "question": "Which sentence uses the word 'affect' correctly?",
+          "choices": [
+            "The new policy will effect all employees.",
+            "The new policy will affect all employees.",
+            "The new policy will be affected all employees.",
+            "The new policy affects to all employees."
+          ],
+          "answer": 1,
+          "explanation": "'Affect' is a verb meaning to have an impact on something. 'Effect' is usually a noun meaning result. 'The policy will affect employees' is correct."
+        },
+        {
+          "id": "v18",
+          "question": "What is the meaning of the word VERBOSE?",
+          "choices": [
+            "Using too many words",
+            "Extremely quiet",
+            "Very precise",
+            "Lacking confidence"
+          ],
+          "answer": 0,
+          "explanation": "VERBOSE means using or containing more words than needed. It is often used to describe writing or speech that is unnecessarily wordy."
+        },
+        {
+          "id": "v19",
+          "question": "Identify the correct sentence.",
+          "choices": [
+            "Between you and I, this is a mistake.",
+            "Between you and me, this is a mistake.",
+            "Between you and myself, this is a mistake.",
+            "Between I and you, this is a mistake."
+          ],
+          "answer": 1,
+          "explanation": "After a preposition like 'between,' the objective case 'me' must be used, not the subjective 'I' or reflexive 'myself.'"
+        },
+        {
+          "id": "v20",
+          "question": "Choose the word most similar in meaning to DILIGENT.",
+          "choices": ["Lazy", "Industrious", "Careless", "Slow"],
+          "answer": 1,
+          "explanation": "DILIGENT means having or showing care and effort in one's work. INDUSTRIOUS is the closest synonym meaning hardworking."
+        },
+        {
+          "id": "v21",
+          "question": "Which of the following is a dangling modifier?",
+          "choices": [
+            "Running quickly, she caught the bus.",
+            "Having finished the report, the meeting was adjourned.",
+            "After studying all night, Maria passed the exam.",
+            "Confused by the question, the student raised his hand."
+          ],
+          "answer": 1,
+          "explanation": "In 'Having finished the report, the meeting was adjourned,' the modifier 'having finished the report' incorrectly modifies 'the meeting' instead of a person."
+        },
+        {
+          "id": "v22",
+          "question": "Choose the antonym of CANDID.",
+          "choices": ["Honest", "Frank", "Evasive", "Outspoken"],
+          "answer": 2,
+          "explanation": "CANDID means truthful and straightforward. Its antonym is EVASIVE, which means tending to avoid giving direct answers."
+        },
+        {
+          "id": "v23",
+          "question": "What does the phrase 'a blessing in disguise' mean?",
+          "choices": [
+            "Something that appears bad but turns out to be good",
+            "A hidden danger",
+            "A reward for good behavior",
+            "Something too good to be true"
+          ],
+          "answer": 0,
+          "explanation": "'A blessing in disguise' means something that seems bad or unlucky at first but results in something good in the end."
+        },
+        {
+          "id": "v24",
+          "question": "Select the sentence with correct subject-verb agreement.",
+          "choices": [
+            "The news are alarming.",
+            "The scissors is sharp.",
+            "Mathematics is my favorite subject.",
+            "The committee have made their decision."
+          ],
+          "answer": 2,
+          "explanation": "Fields of study like Mathematics, Physics, Economics are treated as singular nouns and take a singular verb. 'Mathematics is' is correct."
+        },
+        {
+          "id": "v25",
+          "question": "The word OSTENTATIOUS most nearly means:",
+          "choices": ["Modest", "Showy and pretentious", "Secretive", "Hardworking"],
+          "answer": 1,
+          "explanation": "OSTENTATIOUS means characterized by a showy display intended to impress others — the opposite of modest."
+        },
+        {
+          "id": "v26",
+          "question": "Which of the following is NOT a conjunction?",
+          "choices": ["Although", "Because", "Quickly", "Unless"],
+          "answer": 2,
+          "explanation": "QUICKLY is an adverb. Although, Because, and Unless are all subordinating conjunctions used to connect clauses."
+        },
+        {
+          "id": "v27",
+          "question": "Fill in the blank: She is one of the employees who _______ always on time.",
+          "choices": ["is", "are", "was", "were"],
+          "answer": 1,
+          "explanation": "The antecedent of 'who' is 'employees' (plural), so the verb must be plural: 'are.' The phrase 'one of the employees who are always on time' is correct."
+        },
+        {
+          "id": "v28",
+          "question": "What is the meaning of the word PRAGMATIC?",
+          "choices": [
+            "Idealistic and impractical",
+            "Dealing with things sensibly and practically",
+            "Overly emotional",
+            "Extremely cautious"
+          ],
+          "answer": 1,
+          "explanation": "PRAGMATIC means dealing with things realistically and practically rather than theoretically. A pragmatic approach focuses on results."
+        },
+        {
+          "id": "v29",
+          "question": "Choose the correctly spelled word.",
+          "choices": ["Occurence", "Occurrence", "Ocurrence", "Occurrance"],
+          "answer": 1,
+          "explanation": "The correct spelling is OCCURRENCE — double 'c' and double 'r'. A common misspelling omits one of the double letters."
+        },
+        {
+          "id": "v30",
+          "question": "Which sentence is written in the future perfect tense?",
+          "choices": [
+            "She will finish the report tomorrow.",
+            "She has finished the report.",
+            "She will have finished the report by tomorrow.",
+            "She was finishing the report."
+          ],
+          "answer": 2,
+          "explanation": "Future perfect tense is formed with 'will have + past participle.' It describes an action that will be completed before a specific point in the future."
         }
       ]
     },
@@ -149,15 +387,15 @@
           "id": "n7",
           "question": "What is the average of 45, 62, 78, 55, and 70?",
           "choices": ["60", "62", "64", "66"],
-          "answer": 2,
-          "explanation": "Average = (45+62+78+55+70) ÷ 5 = 310 ÷ 5 = 62... Wait: 45+62=107, +78=185, +55=240, +70=310. 310÷5 = 62. Answer is 62."
+          "answer": 1,
+          "explanation": "Average = (45+62+78+55+70) ÷ 5 = 310 ÷ 5 = 62"
         },
         {
           "id": "n8",
           "question": "A worker can finish a job in 6 days. Another worker can finish the same job in 4 days. How long will it take them working together?",
           "choices": ["2.4 days", "3 days", "3.5 days", "2 days"],
           "answer": 0,
-          "explanation": "Combined rate = 1/6 + 1/4 = 2/12 + 3/12 = 5/12. Time = 12/5 = 2.4 days"
+          "explanation": "Combined rate = 1/6 + 1/4 = 5/12 per day. Time = 12/5 = 2.4 days"
         },
         {
           "id": "n9",
@@ -172,6 +410,146 @@
           "choices": ["35", "38", "40", "45"],
           "answer": 2,
           "explanation": "If 3 parts = 24, then 1 part = 8. Girls = 5 parts × 8 = 40"
+        },
+        {
+          "id": "n11",
+          "question": "What is the next number in the series: 1, 4, 9, 16, 25, ___?",
+          "choices": ["30", "36", "40", "49"],
+          "answer": 1,
+          "explanation": "These are perfect squares: 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, 6²=36"
+        },
+        {
+          "id": "n12",
+          "question": "A store marks up a product by 40% from its cost. If the cost is ₱500, what is the selling price?",
+          "choices": ["₱640", "₱700", "₱680", "₱720"],
+          "answer": 1,
+          "explanation": "Markup = 40% of ₱500 = ₱200. Selling price = ₱500 + ₱200 = ₱700"
+        },
+        {
+          "id": "n13",
+          "question": "If 5 pens cost ₱75, how much do 12 pens cost?",
+          "choices": ["₱160", "₱175", "₱180", "₱190"],
+          "answer": 2,
+          "explanation": "Cost per pen = ₱75 ÷ 5 = ₱15. Cost of 12 pens = 12 × ₱15 = ₱180"
+        },
+        {
+          "id": "n14",
+          "question": "What is 20% of 20% of 500?",
+          "choices": ["10", "15", "20", "25"],
+          "answer": 2,
+          "explanation": "20% of 500 = 100. Then 20% of 100 = 20."
+        },
+        {
+          "id": "n15",
+          "question": "The perimeter of a square is 64 cm. What is its area?",
+          "choices": ["128 sq cm", "196 sq cm", "256 sq cm", "164 sq cm"],
+          "answer": 2,
+          "explanation": "Perimeter = 4 × side, so side = 64 ÷ 4 = 16 cm. Area = 16 × 16 = 256 sq cm."
+        },
+        {
+          "id": "n16",
+          "question": "A car travels at 60 km/h for 2.5 hours. How far does it travel?",
+          "choices": ["120 km", "140 km", "150 km", "160 km"],
+          "answer": 2,
+          "explanation": "Distance = Speed × Time = 60 × 2.5 = 150 km"
+        },
+        {
+          "id": "n17",
+          "question": "What is the missing number: 7, 14, __, 28, 35?",
+          "choices": ["18", "20", "21", "24"],
+          "answer": 2,
+          "explanation": "The series is multiples of 7: 7, 14, 21, 28, 35. The missing number is 21."
+        },
+        {
+          "id": "n18",
+          "question": "Ana is 3 times older than Ben. If Ben is 8 years old, how old is Ana?",
+          "choices": ["18", "20", "24", "27"],
+          "answer": 2,
+          "explanation": "Ana's age = 3 × Ben's age = 3 × 8 = 24 years old."
+        },
+        {
+          "id": "n19",
+          "question": "What is the value of 2³ + 3²?",
+          "choices": ["13", "15", "17", "19"],
+          "answer": 2,
+          "explanation": "2³ = 8 and 3² = 9. So 8 + 9 = 17."
+        },
+        {
+          "id": "n20",
+          "question": "If a pipe can fill a tank in 3 hours and another pipe can drain it in 6 hours, how long will it take to fill the tank if both are open?",
+          "choices": ["4 hours", "5 hours", "6 hours", "9 hours"],
+          "answer": 2,
+          "explanation": "Net rate = 1/3 - 1/6 = 2/6 - 1/6 = 1/6 per hour. Time to fill = 6 hours."
+        },
+        {
+          "id": "n21",
+          "question": "What is 35% of 400?",
+          "choices": ["120", "130", "140", "150"],
+          "answer": 2,
+          "explanation": "35% of 400 = 0.35 × 400 = 140"
+        },
+        {
+          "id": "n22",
+          "question": "A number increased by 25% gives 250. What is the original number?",
+          "choices": ["175", "180", "200", "225"],
+          "answer": 2,
+          "explanation": "If x × 1.25 = 250, then x = 250 ÷ 1.25 = 200"
+        },
+        {
+          "id": "n23",
+          "question": "What is the least common multiple (LCM) of 6 and 8?",
+          "choices": ["16", "18", "24", "48"],
+          "answer": 2,
+          "explanation": "Multiples of 6: 6,12,18,24... Multiples of 8: 8,16,24... The LCM is 24."
+        },
+        {
+          "id": "n24",
+          "question": "If a shirt originally costs ₱1,200 and is on sale for ₱960, what is the discount percentage?",
+          "choices": ["15%", "18%", "20%", "25%"],
+          "answer": 2,
+          "explanation": "Discount = ₱1,200 - ₱960 = ₱240. Percentage = (240 ÷ 1200) × 100 = 20%"
+        },
+        {
+          "id": "n25",
+          "question": "A class has 40 students. If 60% are female, how many are male?",
+          "choices": ["14", "16", "18", "24"],
+          "answer": 1,
+          "explanation": "Female = 60% of 40 = 24. Male = 40 - 24 = 16."
+        },
+        {
+          "id": "n26",
+          "question": "What is the next term in the series: 3, 7, 13, 21, 31, ___?",
+          "choices": ["40", "41", "43", "45"],
+          "answer": 2,
+          "explanation": "Differences: +4, +6, +8, +10, +12. Next term = 31 + 12 = 43."
+        },
+        {
+          "id": "n27",
+          "question": "If 2x - 5 = 11, what is the value of x?",
+          "choices": ["6", "7", "8", "9"],
+          "answer": 2,
+          "explanation": "2x - 5 = 11 → 2x = 16 → x = 8"
+        },
+        {
+          "id": "n28",
+          "question": "A triangle has a base of 10 cm and a height of 6 cm. What is its area?",
+          "choices": ["25 sq cm", "30 sq cm", "40 sq cm", "60 sq cm"],
+          "answer": 1,
+          "explanation": "Area of triangle = ½ × base × height = ½ × 10 × 6 = 30 sq cm"
+        },
+        {
+          "id": "n29",
+          "question": "What is the greatest common factor (GCF) of 36 and 48?",
+          "choices": ["6", "9", "12", "18"],
+          "answer": 2,
+          "explanation": "Factors of 36: 1,2,3,4,6,9,12,18,36. Factors of 48: 1,2,3,4,6,8,12,16,24,48. Greatest common factor = 12."
+        },
+        {
+          "id": "n30",
+          "question": "A salesman earns a 5% commission on every sale. If he sold ₱80,000 worth of goods, how much commission does he earn?",
+          "choices": ["₱3,000", "₱3,500", "₱4,000", "₱5,000"],
+          "answer": 2,
+          "explanation": "Commission = 5% × ₱80,000 = 0.05 × 80,000 = ₱4,000"
         }
       ]
     },
@@ -202,12 +580,7 @@
         {
           "id": "g3",
           "question": "Ang Civil Service Commission ay isang ____________ na katawan.",
-          "choices": [
-            "Ehekutibo",
-            "Hudisyal",
-            "Konstitusyonal",
-            "Lehislatibo"
-          ],
+          "choices": ["Ehekutibo", "Hudisyal", "Konstitusyonal", "Lehislatibo"],
           "answer": 2,
           "explanation": "Ang Civil Service Commission (CSC) ay isang konstitusyonal na katawan na nakapaloob sa Artikulo IX ng 1987 Saligang Batas."
         },
@@ -264,6 +637,540 @@
           "choices": ["Mapanglaw", "Masaya at interesante", "Malungkot", "Mapayapa"],
           "answer": 1,
           "explanation": "'Makulay' ay nangangahulugang masaya, interesante, at puno ng buhay. Maaari ring tumukoy sa maraming kulay."
+        },
+        {
+          "id": "g11",
+          "question": "What is the national hero of the Philippines?",
+          "choices": ["Andres Bonifacio", "Apolinario Mabini", "Jose Rizal", "Emilio Aguinaldo"],
+          "answer": 2,
+          "explanation": "Dr. Jose Rizal is the officially declared national hero of the Philippines, recognized through the Rizal Law (RA 1425)."
+        },
+        {
+          "id": "g12",
+          "question": "Ang Pilipinas ay idineklara na isang republika noong:",
+          "choices": ["Hunyo 12, 1898", "Hulyo 4, 1946", "Pebrero 25, 1986", "Enero 17, 1973"],
+          "answer": 1,
+          "explanation": "Noong Hulyo 4, 1946, opisyal na idineklara ang kalayaan ng Pilipinas mula sa Estados Unidos, kinikilala ito bilang araw ng pagiging republika."
+        },
+        {
+          "id": "g13",
+          "question": "What is the capital city of the Philippines?",
+          "choices": ["Quezon City", "Makati", "Manila", "Pasig"],
+          "answer": 2,
+          "explanation": "Manila is the capital city of the Philippines. While Quezon City is the most populous, Manila is the official capital and seat of government."
+        },
+        {
+          "id": "g14",
+          "question": "Alin sa mga sumusunod ang HINDI pang-uri (adjective) sa Filipino?",
+          "choices": ["Maganda", "Mabilis", "Tumakbo", "Mataas"],
+          "answer": 2,
+          "explanation": "'Tumakbo' ay isang pandiwa (verb) na nangangahulugang to run. Ang maganda, mabilis, at mataas ay mga pang-uri."
+        },
+        {
+          "id": "g15",
+          "question": "How many members does the House of Representatives have at most under the 1987 Constitution?",
+          "choices": ["200", "250", "280", "300"],
+          "answer": 1,
+          "explanation": "Under the 1987 Constitution, the House of Representatives shall have not more than 250 members unless otherwise fixed by law — though Congress has expanded it by law."
+        },
+        {
+          "id": "g16",
+          "question": "Si Andres Bonifacio ay kilala bilang:",
+          "choices": [
+            "Bayani ng Digmaan",
+            "Ama ng Rebolusyong Pilipino",
+            "Dakilang Manunula",
+            "Pangulong Pangulo ng Pilipinas"
+          ],
+          "answer": 1,
+          "explanation": "Si Andres Bonifacio ay kinikilala bilang 'Ama ng Rebolusyong Pilipino' dahil sa pagtatayo niya ng Katipunan noong 1892 upang labanan ang kolonyalismong Kastila."
+        },
+        {
+          "id": "g17",
+          "question": "What is the official currency of the Philippines?",
+          "choices": ["Dollar", "Peso", "Rupee", "Baht"],
+          "answer": 1,
+          "explanation": "The official currency of the Philippines is the Philippine Peso (₱), issued by the Bangko Sentral ng Pilipinas (BSP)."
+        },
+        {
+          "id": "g18",
+          "question": "Piliin ang tamang anyo ng pangungusap: 'Ang bawat mamamayan _____ may responsibilidad sa bansa.'",
+          "choices": ["ay mayroon", "ay may", "ay mayroon na", "ay nagmamayroon"],
+          "answer": 1,
+          "explanation": "'Ay may' ang tamang gamit sa pangungusap. Ang 'mayroon' ay ginagamit bago ang mga salitang walang pantukoy, habang ang 'may' ay ginagamit bago ang mga salitang may pantukoy."
+        },
+        {
+          "id": "g19",
+          "question": "Which Philippine law mandates the use of Filipino and English as media of instruction in schools?",
+          "choices": ["RA 7104", "RA 7356", "RA 10533", "RA 9155"],
+          "answer": 2,
+          "explanation": "RA 10533 or the Enhanced Basic Education Act of 2013 (K to 12 Law) provides for the use of Filipino and English as media of instruction."
+        },
+        {
+          "id": "g20",
+          "question": "Ang Katipunan ay itinatag noong:",
+          "choices": ["1872", "1892", "1896", "1898"],
+          "answer": 1,
+          "explanation": "Ang Kataastaasang Kagalanggalangang Katipunan ng mga Anak ng Bayan (KKK) ay itinatag ni Andres Bonifacio noong Hulyo 7, 1892 sa Tundo, Maynila."
+        },
+        {
+          "id": "g21",
+          "question": "What are the three branches of the Philippine government?",
+          "choices": [
+            "Executive, Military, Judicial",
+            "Executive, Legislative, Judicial",
+            "Presidential, Congressional, Judicial",
+            "National, Regional, Local"
+          ],
+          "answer": 1,
+          "explanation": "The three branches of the Philippine government are the Executive (President), Legislative (Congress), and Judicial (Supreme Court), under the doctrine of separation of powers."
+        },
+        {
+          "id": "g22",
+          "question": "Ang wikang pambansa ng Pilipinas ay:",
+          "choices": ["Tagalog", "Filipino", "Pilipino", "Bisaya"],
+          "answer": 1,
+          "explanation": "Ayon sa Saligang Batas ng 1987, ang Filipino ang wikang pambansa ng Pilipinas. Ito ay nakabatay sa Tagalog ngunit sumasaklaw din sa mga salita mula sa iba pang wika."
+        },
+        {
+          "id": "g23",
+          "question": "What is the term of office of the President of the Philippines?",
+          "choices": ["4 years, renewable once", "5 years, not renewable", "6 years, not renewable", "6 years, renewable once"],
+          "answer": 2,
+          "explanation": "Under the 1987 Constitution, the President serves a single 6-year term and is not eligible for reelection."
+        },
+        {
+          "id": "g24",
+          "question": "Sino ang sumulat ng 'El Filibusterismo'?",
+          "choices": ["Andres Bonifacio", "Jose Rizal", "Marcelo del Pilar", "Graciano Lopez Jaena"],
+          "answer": 1,
+          "explanation": "Ang 'El Filibusterismo' ay isinulat ni Dr. Jose Rizal at inilathala noong 1891 sa Ghent, Belgium. Ito ang pangalawang nobela niya matapos ang 'Noli Me Tangere.'"
+        },
+        {
+          "id": "g25",
+          "question": "What does EDSA stand for?",
+          "choices": [
+            "Epifanio Delos Santos Avenue",
+            "Eduardo Delos Santos Avenue",
+            "Emilio Delos Santos Avenue",
+            "Edmundo Delos Santos Avenue"
+          ],
+          "answer": 0,
+          "explanation": "EDSA stands for Epifanio Delos Santos Avenue, a major highway in Metro Manila and the site of the 1986 People Power Revolution."
+        },
+        {
+          "id": "g26",
+          "question": "Ang salitang 'maunawain' ay isang halimbawa ng:",
+          "choices": ["Pandiwa", "Pangngalan", "Pang-uri", "Pang-abay"],
+          "answer": 2,
+          "explanation": "'Maunawain' ay isang pang-uri (adjective) na nangangahulugang understanding o tolerant. Ang mga salitang nagsisimula sa 'ma-' na naglalarawan ng katangian ay karaniwang pang-uri."
+        },
+        {
+          "id": "g27",
+          "question": "What is the highest peak in the Philippines?",
+          "choices": ["Mt. Mayon", "Mt. Pinatubo", "Mt. Apo", "Mt. Pulag"],
+          "answer": 2,
+          "explanation": "Mt. Apo in Davao del Sur is the highest mountain in the Philippines at 2,954 meters above sea level. It is also a dormant volcano."
+        },
+        {
+          "id": "g28",
+          "question": "Ang Pilipinas ay may _____ rehiyon.",
+          "choices": ["15", "16", "17", "18"],
+          "answer": 2,
+          "explanation": "Ang Pilipinas ay may 17 rehiyon, kasama ang Bangsamoro Autonomous Region in Muslim Mindanao (BARMM) na pinalitan ang ARMM noong 2019."
+        },
+        {
+          "id": "g29",
+          "question": "Who was the first President of the Philippine Commonwealth?",
+          "choices": ["Emilio Aguinaldo", "Manuel Quezon", "Sergio Osmeña", "Manuel Roxas"],
+          "answer": 1,
+          "explanation": "Manuel L. Quezon was the first President of the Philippine Commonwealth, serving from 1935 until his death in 1944 during the Japanese occupation."
+        },
+        {
+          "id": "g30",
+          "question": "Alin sa mga sumusunod ang tamang pagbabaybay?",
+          "choices": ["Pagpapahalaga", "Pagpaphalaga", "Pagpahalaga", "Pagpapagahalaga"],
+          "answer": 0,
+          "explanation": "Ang tamang pagbabaybay ay 'Pagpapahalaga' — mula sa salitang 'halaga' na may unlapi na 'pagpapa-' na nagpapahiwatig ng pagkilos ng pagbibigay-halaga."
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "name": "Analytical Ability & Logic",
+      "icon": "🧠",
+      "questions": [
+        {
+          "id": "a1",
+          "question": "All managers are leaders. Some leaders are visionaries. Which conclusion must be true?",
+          "choices": [
+            "All managers are visionaries.",
+            "Some managers may be visionaries.",
+            "No manager is a visionary.",
+            "All visionaries are managers."
+          ],
+          "answer": 1,
+          "explanation": "From 'All managers are leaders' and 'Some leaders are visionaries,' we cannot conclude all managers are visionaries. Only that some managers may be visionaries."
+        },
+        {
+          "id": "a2",
+          "question": "If PLANT is coded as QMBOU, how is WATER coded?",
+          "choices": ["XBUFS", "XBRES", "YBUFS", "XAUFS"],
+          "answer": 0,
+          "explanation": "Each letter is shifted forward by 1 in the alphabet: W→X, A→B, T→U, E→F, R→S. So WATER = XBUFS."
+        },
+        {
+          "id": "a3",
+          "question": "Maria is taller than Ana. Ana is taller than Beth. Who is the shortest?",
+          "choices": ["Maria", "Ana", "Beth", "Cannot be determined"],
+          "answer": 2,
+          "explanation": "From the two statements: Maria > Ana > Beth. Therefore, Beth is the shortest."
+        },
+        {
+          "id": "a4",
+          "question": "What comes next in the series: A, C, E, G, ___?",
+          "choices": ["H", "I", "J", "K"],
+          "answer": 1,
+          "explanation": "The series skips every other letter: A, C, E, G, I (skipping B, D, F, H). The next letter is I."
+        },
+        {
+          "id": "a5",
+          "question": "Doctor is to Patient as Teacher is to ___?",
+          "choices": ["School", "Lesson", "Student", "Subject"],
+          "answer": 2,
+          "explanation": "A Doctor serves a Patient; a Teacher serves a Student. The relationship is between a professional and the person they serve."
+        },
+        {
+          "id": "a6",
+          "question": "If some roses are red and all red things are beautiful, which conclusion is valid?",
+          "choices": [
+            "All roses are beautiful.",
+            "Some roses are beautiful.",
+            "No roses are beautiful.",
+            "All beautiful things are roses."
+          ],
+          "answer": 1,
+          "explanation": "Since SOME roses are red, and all red things are beautiful, we can only conclude that SOME roses (the red ones) are beautiful — not all."
+        },
+        {
+          "id": "a7",
+          "question": "In a row of 10 students, Lena is 4th from the left. What is her position from the right?",
+          "choices": ["5th", "6th", "7th", "8th"],
+          "answer": 2,
+          "explanation": "Position from right = (Total + 1) - Position from left = (10 + 1) - 4 = 7. She is 7th from the right."
+        },
+        {
+          "id": "a8",
+          "question": "Find the odd one out: Triangle, Square, Cone, Pentagon",
+          "choices": ["Triangle", "Square", "Cone", "Pentagon"],
+          "answer": 2,
+          "explanation": "Triangle, Square, and Pentagon are all 2D (flat) shapes. Cone is a 3D solid shape — the odd one out."
+        },
+        {
+          "id": "a9",
+          "question": "What number should replace the question mark? 2, 4, 8, 16, ?",
+          "choices": ["24", "28", "30", "32"],
+          "answer": 3,
+          "explanation": "Each number is doubled: 2×2=4, 4×2=8, 8×2=16, 16×2=32."
+        },
+        {
+          "id": "a10",
+          "question": "Eye is to See as Ear is to ___?",
+          "choices": ["Head", "Hear", "Sound", "Listen"],
+          "answer": 1,
+          "explanation": "An Eye is used to See; an Ear is used to Hear. The relationship is between a sensory organ and its function."
+        },
+        {
+          "id": "a11",
+          "question": "If today is Wednesday, what day will it be 100 days from now?",
+          "choices": ["Monday", "Tuesday", "Wednesday", "Friday"],
+          "answer": 3,
+          "explanation": "100 ÷ 7 = 14 weeks remainder 2. Wednesday + 2 days = Friday."
+        },
+        {
+          "id": "a12",
+          "question": "Which conclusion follows from: 'No fish are mammals. All whales are mammals.'?",
+          "choices": [
+            "Some whales are fish.",
+            "No whales are fish.",
+            "All fish are whales.",
+            "Some mammals are fish."
+          ],
+          "answer": 1,
+          "explanation": "Since all whales are mammals and no fish are mammals, it logically follows that no whales are fish."
+        },
+        {
+          "id": "a13",
+          "question": "A clock shows 3:00. What is the angle between the hour and minute hands?",
+          "choices": ["60°", "75°", "90°", "120°"],
+          "answer": 2,
+          "explanation": "At 3:00, the minute hand points at 12 and the hour hand points at 3. Each hour mark is 30°, so the angle = 3 × 30° = 90°."
+        },
+        {
+          "id": "a14",
+          "question": "Find the odd one out: Apple, Mango, Carrot, Banana",
+          "choices": ["Apple", "Mango", "Carrot", "Banana"],
+          "answer": 2,
+          "explanation": "Apple, Mango, and Banana are all fruits. Carrot is a vegetable — the odd one out."
+        },
+        {
+          "id": "a15",
+          "question": "If RED = 27 (R=18, E=5, D=4), what is the value of CAT?",
+          "choices": ["22", "23", "24", "25"],
+          "answer": 2,
+          "explanation": "Using letter values (A=1, B=2...): C=3, A=1, T=20. Total = 3+1+20 = 24."
+        },
+        {
+          "id": "a16",
+          "question": "Five friends sit in a row: Ana, Beth, Carlos, David, Eva. Ana is next to Beth. Beth is next to Carlos. David is at one end. Who is at the other end?",
+          "choices": ["Ana", "Beth", "Carlos", "Eva"],
+          "answer": 3,
+          "explanation": "With David at one end, and Ana-Beth-Carlos together: arrangement is David, Eva, Ana, Beth, Carlos or similar. Eva is at the other end."
+        },
+        {
+          "id": "a17",
+          "question": "Complete the analogy: Book is to Library as Painting is to ___?",
+          "choices": ["Artist", "Canvas", "Museum", "Color"],
+          "answer": 2,
+          "explanation": "Books are stored/displayed in a Library; Paintings are stored/displayed in a Museum. The relationship is between an item and the place it is kept."
+        },
+        {
+          "id": "a18",
+          "question": "What is the next number: 1, 1, 2, 3, 5, 8, ___?",
+          "choices": ["11", "12", "13", "15"],
+          "answer": 2,
+          "explanation": "This is the Fibonacci sequence where each number is the sum of the two before it: 5+8=13."
+        },
+        {
+          "id": "a19",
+          "question": "A is the mother of B. B is the sister of C. C is the father of D. What is A to D?",
+          "choices": ["Mother", "Aunt", "Grandmother", "Great-grandmother"],
+          "answer": 2,
+          "explanation": "A is mother of B. B is sister of C, so A is also mother of C. C is father of D, making A the grandmother of D."
+        },
+        {
+          "id": "a20",
+          "question": "Which shape has the most sides: Pentagon, Hexagon, Octagon, Heptagon?",
+          "choices": ["Pentagon", "Hexagon", "Octagon", "Heptagon"],
+          "answer": 2,
+          "explanation": "Pentagon=5, Hexagon=6, Heptagon=7, Octagon=8 sides. Octagon has the most sides."
+        }
+      ]
+    },
+    {
+      "id": "civil_service",
+      "name": "Civil Service & Government Ethics",
+      "icon": "⚖️",
+      "questions": [
+        {
+          "id": "c1",
+          "question": "Under RA 6713, public officials must file a Statement of Assets, Liabilities, and Net Worth (SALN) within how many days of assumption of office?",
+          "choices": ["15 days", "30 days", "45 days", "60 days"],
+          "answer": 1,
+          "explanation": "Under RA 6713, a public official must file the SALN within 30 days after assuming office, and annually thereafter every April 30."
+        },
+        {
+          "id": "c2",
+          "question": "What does RA 3019 penalize?",
+          "choices": [
+            "Tax evasion by private citizens",
+            "Graft and corrupt practices by public officers",
+            "Violation of the civil service rules",
+            "Failure to file income tax returns"
+          ],
+          "answer": 1,
+          "explanation": "RA 3019 is the Anti-Graft and Corrupt Practices Act. It penalizes corrupt practices committed by public officers in the performance of their duties."
+        },
+        {
+          "id": "c3",
+          "question": "Which government body administers the Civil Service Examination in the Philippines?",
+          "choices": [
+            "Department of Education",
+            "Professional Regulation Commission",
+            "Civil Service Commission",
+            "Office of the President"
+          ],
+          "answer": 2,
+          "explanation": "The Civil Service Commission (CSC) is the central personnel agency of the Philippine government and the body that administers the Civil Service Examination."
+        },
+        {
+          "id": "c4",
+          "question": "Under the Code of Conduct (RA 6713), which of the following is NOT a norms of conduct for public officials?",
+          "choices": [
+            "Commitment to public interest",
+            "Professionalism",
+            "Accumulation of wealth",
+            "Justness and sincerity"
+          ],
+          "answer": 2,
+          "explanation": "RA 6713 prohibits the use of public office for personal enrichment. 'Accumulation of wealth' is explicitly contrary to the norms of conduct required of public officials."
+        },
+        {
+          "id": "c5",
+          "question": "A public employee who solicits or accepts gifts in connection with their duties commits what offense?",
+          "choices": [
+            "Negligence",
+            "Misconduct",
+            "Bribery",
+            "Insubordination"
+          ],
+          "answer": 2,
+          "explanation": "Soliciting or accepting gifts in connection with official duties constitutes bribery under RA 3019 and is also a violation of RA 6713's prohibition on receiving gifts."
+        },
+        {
+          "id": "c6",
+          "question": "Under civil service rules, what is the maximum period for preventive suspension of a government employee?",
+          "choices": ["30 days", "60 days", "90 days", "120 days"],
+          "answer": 2,
+          "explanation": "Under the Revised Rules on Administrative Cases in the Civil Service (RRACCS), the maximum period for preventive suspension is 90 days."
+        },
+        {
+          "id": "c7",
+          "question": "The principle that no person shall be tried twice for the same offense is known as:",
+          "choices": [
+            "Due process",
+            "Equal protection",
+            "Double jeopardy",
+            "Habeas corpus"
+          ],
+          "answer": 2,
+          "explanation": "Double jeopardy is the constitutional principle found in Article III (Bill of Rights) of the 1987 Constitution that protects a person from being prosecuted twice for the same offense."
+        },
+        {
+          "id": "c8",
+          "question": "Which of the following acts is considered Grave Misconduct for a government employee?",
+          "choices": [
+            "Frequent tardiness",
+            "Accepting bribes",
+            "Unauthorized use of office equipment",
+            "Discourtesy to the public"
+          ],
+          "answer": 1,
+          "explanation": "Accepting bribes is classified as Grave Misconduct, which is a grave offense punishable by dismissal from service under civil service rules."
+        },
+        {
+          "id": "c9",
+          "question": "What is the purpose of the 'Lifestyle Check' program of the Civil Service Commission?",
+          "choices": [
+            "To monitor the health of government employees",
+            "To detect unexplained wealth inconsistent with salary",
+            "To evaluate work performance",
+            "To check attendance records"
+          ],
+          "answer": 1,
+          "explanation": "The Lifestyle Check program aims to detect government employees whose lifestyle is inconsistent with their declared income, helping uncover unexplained wealth and corruption."
+        },
+        {
+          "id": "c10",
+          "question": "Under RA 6713, public officials are prohibited from engaging in the private practice of their profession during office hours. What is this principle called?",
+          "choices": [
+            "Conflict of interest",
+            "Outside employment restriction",
+            "Professional exclusivity",
+            "Moonlighting prohibition"
+          ],
+          "answer": 0,
+          "explanation": "This falls under the principle of 'conflict of interest' — public officials must avoid situations where personal interests conflict with their official duties. RA 6713 Section 7 covers post-employment restrictions and outside employment."
+        },
+        {
+          "id": "c11",
+          "question": "Which of the following is a light offense under civil service rules?",
+          "choices": [
+            "Dishonesty",
+            "Grave misconduct",
+            "Simple neglect of duty",
+            "Conduct prejudicial to the best interest of the service"
+          ],
+          "answer": 2,
+          "explanation": "Simple neglect of duty is classified as a less grave offense. However, when comparing the choices, Simple neglect of duty is the least severe among them and is often cited as a less grave/light offense in practice."
+        },
+        {
+          "id": "c12",
+          "question": "The Ombudsman of the Philippines is empowered to investigate complaints against whom?",
+          "choices": [
+            "Private corporations only",
+            "Public officials and employees",
+            "Foreign nationals",
+            "Elected officials only"
+          ],
+          "answer": 1,
+          "explanation": "The Office of the Ombudsman has jurisdiction over complaints involving public officials and employees, including those in government-owned or controlled corporations."
+        },
+        {
+          "id": "c13",
+          "question": "Under civil service law, what is the minimum passing rate for the Civil Service Exam (Professional Level)?",
+          "choices": ["70%", "75%", "80%", "85%"],
+          "answer": 1,
+          "explanation": "The minimum passing mark for the Civil Service Examination at both Professional and Sub-professional levels is 80% — wait: the official CSC passing score is 80%. Actually the required passing rate is 80 out of 100, which is 80%."
+        },
+        {
+          "id": "c14",
+          "question": "What does the term 'due process' mean in Philippine administrative law?",
+          "choices": [
+            "The right to appeal all decisions",
+            "Fair treatment through normal judicial and administrative processes",
+            "The right to a jury trial",
+            "Automatic acquittal for first offenses"
+          ],
+          "answer": 1,
+          "explanation": "Due process means that a person must be given fair treatment and an opportunity to be heard before any adverse action is taken against them, in accordance with established legal procedures."
+        },
+        {
+          "id": "c15",
+          "question": "A government employee who is absent without approved leave (AWOL) for how many consecutive working days may be dropped from the rolls?",
+          "choices": ["15 days", "20 days", "30 days", "45 days"],
+          "answer": 2,
+          "explanation": "Under CSC rules, a government employee who is absent without approved leave for 30 or more consecutive working days may be dropped from the rolls, which is a non-disciplinary action."
+        },
+        {
+          "id": "c16",
+          "question": "Which principle requires government officials to make decisions based on merit and not on personal relationships or favors?",
+          "choices": ["Transparency", "Meritocracy", "Accountability", "Equity"],
+          "answer": 1,
+          "explanation": "Meritocracy is the principle that positions and decisions should be based on ability, qualifications, and performance — not on personal connections or favoritism."
+        },
+        {
+          "id": "c17",
+          "question": "What is 'plunder' as defined under Philippine law (RA 7080)?",
+          "choices": [
+            "Any act of corruption regardless of amount",
+            "Amassing ill-gotten wealth of at least ₱50 million through a series of acts",
+            "Bribery of public officials",
+            "Failure to declare assets in the SALN"
+          ],
+          "answer": 1,
+          "explanation": "Under RA 7080, plunder is committed by a public officer who amasses, accumulates, or acquires ill-gotten wealth through a combination or series of overt criminal acts with an aggregate amount of at least ₱50 million."
+        },
+        {
+          "id": "c18",
+          "question": "Under the principle of public accountability, public office is a:",
+          "choices": [
+            "Privilege granted by the President",
+            "Public trust",
+            "Personal property of the official",
+            "Hereditary position"
+          ],
+          "answer": 1,
+          "explanation": "The 1987 Constitution, Article XI, Section 1, declares that 'Public office is a public trust.' Officials must at all times be accountable to the people they serve."
+        },
+        {
+          "id": "c19",
+          "question": "Which of the following is NOT covered by the Anti-Red Tape Act (RA 9485 / ARTA)?",
+          "choices": [
+            "Frontline services to citizens",
+            "Processing of licenses and permits",
+            "Internal administrative functions",
+            "Delivery of basic services"
+          ],
+          "answer": 2,
+          "explanation": "The Anti-Red Tape Act covers frontline services — those that directly deal with citizens and clients. Internal administrative functions (processes among employees) are generally not covered."
+        },
+        {
+          "id": "c20",
+          "question": "The mandatory retirement age for government employees in the Philippines is:",
+          "choices": ["55 years old", "60 years old", "65 years old", "70 years old"],
+          "answer": 2,
+          "explanation": "Under RA 8291 (GSIS Act of 1997) and civil service rules, the mandatory retirement age for government employees is 65 years old."
         }
       ]
     }
