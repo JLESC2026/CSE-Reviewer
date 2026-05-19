@@ -14,11 +14,35 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
 
-/* ── DATABASE CONFIG ── update these with your InfinityFree phpMyAdmin credentials */
-define('DB_HOST', 'sql303.infinityfree.com');
-define('DB_NAME', 'if0_41949137_db_reviewer');
-define('DB_USER', 'if0_41949137'); 
-define('DB_PASS', '18WSfYvjIRzQA5');
+function loadEnvFile(): array {
+    $path = __DIR__ . '/.env';
+    if (!is_readable($path)) {
+        return [];
+    }
+    $values = parse_ini_file($path, false, INI_SCANNER_RAW);
+    return $values ?: [];
+}
+
+$env = loadEnvFile();
+
+function env(string $name, $default = null) {
+    global $env;
+    if (isset($env[$name]) && $env[$name] !== '') {
+        return $env[$name];
+    }
+    $value = getenv($name);
+    if ($value !== false && $value !== '') {
+        return $value;
+    }
+    return $default;
+}
+
+/* ── DATABASE CONFIG ── use .env or environment variables */
+define('DB_HOST', env('DB_HOST', 'sql303.infinityfree.com'));
+define('DB_NAME', env('DB_NAME', 'if0_41949137_db_reviewer'));
+define('DB_USER', env('DB_USER', 'if0_41949137'));
+define('DB_PASS', env('DB_PASS', ''));
+define('API_SECRET', env('API_SECRET', 'replace-with-a-long-random-secret'));
 
 function getDB() {
     $pdo = new PDO(
@@ -28,6 +52,24 @@ function getDB() {
           PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC ]
     );
     return $pdo;
+}
+
+function getCsrfToken() {
+    return hash_hmac('sha256', date('Y-m-d-H'), API_SECRET);
+}
+
+function validateInput(array $body): array {
+    $username = substr(trim($body['username'] ?? ''), 0, 30);
+    $mode     = in_array($body['mode'] ?? '', ['practice','exam'], true) ? $body['mode'] : 'practice';
+
+    return [
+        'username'  => $username,
+        'score_pct' => max(0, min(100, intval($body['score_pct'] ?? 0))),
+        'correct'   => max(0, intval($body['correct'] ?? 0)),
+        'total'     => max(1, intval($body['total'] ?? 0)),
+        'mode'      => $mode,
+        'token'     => trim($body['token'] ?? ''),
+    ];
 }
 
 function respond($success, $data = null, $error = null) {
@@ -48,8 +90,16 @@ try {
                  ORDER BY score_pct DESC, taken_at DESC
                  LIMIT 50'
             );
-            respond(true, $stmt->fetchAll());
+            respond(true, [
+                'scores'     => $stmt->fetchAll(),
+                'csrf_token' => getCsrfToken()
+            ]);
         }
+
+        if ($action === 'token') {
+            respond(true, ['csrf_token' => getCsrfToken()]);
+        }
+
         respond(false, null, 'Unknown action');
     }
 
@@ -58,11 +108,16 @@ try {
         $body = json_decode(file_get_contents('php://input'), true);
         if (!$body) respond(false, null, 'Invalid JSON body');
 
-        $username  = trim($body['username']  ?? '');
-        $score_pct = intval($body['score_pct'] ?? 0);
-        $correct   = intval($body['correct']   ?? 0);
-        $total     = intval($body['total']     ?? 0);
-        $mode      = in_array($body['mode'] ?? '', ['practice','exam']) ? $body['mode'] : 'practice';
+        $input = validateInput($body);
+        if ($input['token'] !== getCsrfToken()) {
+            respond(false, null, 'Invalid or expired token');
+        }
+
+        $username  = $input['username'];
+        $score_pct = $input['score_pct'];
+        $correct   = $input['correct'];
+        $total     = $input['total'];
+        $mode      = $input['mode'];
 
         if (!$username || strlen($username) > 30) respond(false, null, 'Invalid username');
         if ($total <= 0) respond(false, null, 'Invalid total');

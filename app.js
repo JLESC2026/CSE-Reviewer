@@ -5,19 +5,25 @@
              Bookmarks/Flag, Weak Topic Radar
 ═══════════════════════════════════════════════════════ */
 
-const API_URL       = 'api.php';
-const QUESTIONS_URL = 'questions.json';
+const API_URL            = 'api.php';
+const QUESTIONS_URL      = 'questions.json';
+const LOCAL_STORAGE_KEY  = 'cse_reviewer_progress';
+const SESSION_SEED_KEY   = 'cse_reviewer_seed';
+const SAVE_EXPIRY_MS     = 4 * 60 * 60 * 1000;
+const API_TOKEN_ENDPOINT = API_URL + '?action=token';
 
 /* ── STATE ── */
-let data            = null;
-let topics          = [];
+let data             = null;
+let topics           = [];
 let displayQuestions = [];
-let currentIndex    = 0;
-let answers         = {};
-let bookmarks       = new Set();
-let mode            = 'practice';
-let currentCategory = 'all';
-let currentUsername = '';
+let currentIndex     = 0;
+let answers          = {};
+let bookmarks        = new Set();
+let mode             = 'practice';
+let currentCategory  = 'all';
+let currentUsername  = '';
+let csrfToken        = null;
+let sessionSeed      = null;
 
 /* timer */
 let timerMode      = 'per-question'; // 'per-question' | 'full-exam' | 'none'
@@ -65,6 +71,26 @@ function escHtml(str) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+function seededRandom(seed) {
+  let value = seed >>> 0;
+  return function() {
+    value += 0x6D2B79F5;
+    let t = Math.imul(value ^ value >>> 15, 1 | value);
+    t = (t + Math.imul(t ^ t >>> 7, 61 | t)) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function shuffleWithSeed(arr, seed) {
+  const rng = seededRandom(seed);
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function formatDate(str) {
   if (!str) return '—';
   const d = new Date(str);
@@ -76,6 +102,80 @@ function formatTime(sec) {
   const m = Math.floor(sec / 60).toString().padStart(2, '0');
   const s = (sec % 60).toString().padStart(2, '0');
   return `${m}:${s}`;
+}
+
+async function loadCsrfToken() {
+  try {
+    const resp = await fetch(API_TOKEN_ENDPOINT);
+    const json = await resp.json();
+    if (json.success && json.data && json.data.csrf_token) {
+      csrfToken = json.data.csrf_token;
+    }
+  } catch (e) {
+    console.warn('Could not fetch CSRF token', e);
+    csrfToken = null;
+  }
+}
+
+function loadSavedProgress() {
+  try {
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) return null;
+    const saved = JSON.parse(raw);
+    if (!saved || typeof saved !== 'object') return null;
+    if (Date.now() - (saved.timestamp || 0) > SAVE_EXPIRY_MS) {
+      clearSavedProgress();
+      return null;
+    }
+    return saved;
+  } catch (e) {
+    console.warn('Could not load saved quiz progress', e);
+    return null;
+  }
+}
+
+function restoreSavedProgress() {
+  const saved = loadSavedProgress();
+  if (!saved || saved.username !== currentUsername) return false;
+  if (!Array.isArray(saved.displayQuestions) || !saved.answers) return false;
+
+  displayQuestions  = saved.displayQuestions;
+  answers           = saved.answers;
+  bookmarks         = new Set(saved.bookmarks || []);
+  currentCategory   = saved.currentCategory || 'all';
+  currentIndex      = saved.currentIndex || 0;
+  mode              = saved.mode || mode;
+  timerMode         = saved.timerMode || timerMode;
+  sessionSeed       = saved.sessionSeed || sessionSeed;
+  isRetryMode       = saved.isRetryMode || false;
+  return true;
+}
+
+function saveProgress() {
+  if (!currentUsername || displayQuestions.length === 0) return;
+  try {
+    const payload = {
+      username: currentUsername,
+      timestamp: Date.now(),
+      displayQuestions,
+      answers,
+      bookmarks: Array.from(bookmarks),
+      currentCategory,
+      currentIndex,
+      mode,
+      timerMode,
+      sessionSeed,
+      isRetryMode
+    };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+  } catch (e) {
+    console.warn('Could not save progress', e);
+  }
+}
+
+function clearSavedProgress() {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
+  localStorage.removeItem(SESSION_SEED_KEY);
 }
 
 /* ══════════════════════════════════════════
@@ -140,6 +240,7 @@ async function loadQuestions() {
     const res = await fetch(QUESTIONS_URL);
     data = await res.json();
     topics = data.topics;
+    await loadCsrfToken();
     initQuiz();
   } catch(e) {
     document.getElementById('loading').innerHTML =
@@ -148,14 +249,16 @@ async function loadQuestions() {
 }
 
 function initQuiz(retryList) {
-  isRetryMode    = !!retryList;
-  retryQuestions = retryList || [];
-  answers        = {};
-  bookmarks      = new Set();
-  currentIndex   = 0;
+  isRetryMode     = !!retryList;
+  retryQuestions  = retryList || [];
+  answers         = {};
+  bookmarks       = new Set();
+  currentIndex    = 0;
   currentCategory = 'all';
 
-  if (isRetryMode) {
+  if (!isRetryMode && restoreSavedProgress()) {
+    // Restored progress from localStorage.
+  } else if (isRetryMode) {
     displayQuestions = retryList.map(q => shuffleQuestionChoices(q));
   } else {
     buildDisplayQuestions();
@@ -163,6 +266,7 @@ function initQuiz(retryList) {
 
   buildTabs();
   renderAll();
+  saveProgress();
 
   document.getElementById('loading').style.display     = 'none';
   document.getElementById('quiz-screen').style.display = 'block';
@@ -193,7 +297,9 @@ function buildDisplayQuestions() {
       });
     });
   });
-  displayQuestions = shuffle(flat).map(q => shuffleQuestionChoices(q));
+  sessionSeed = Date.now() >>> 0;
+  localStorage.setItem(SESSION_SEED_KEY, String(sessionSeed));
+  displayQuestions = shuffleWithSeed(flat, sessionSeed).map(q => shuffleQuestionChoices(q));
 }
 
 function renderAll() {
@@ -359,7 +465,7 @@ function renderQuestion(qs) {
       if (i === correctIdx)                               { cls += ' correct'; status = i === answered ? '✓' : ''; }
       else if (i === answered && answered !== correctIdx) { cls += ' wrong';   status = '✗'; }
     }
-    return `<button class="${cls}" onclick="selectAnswer('${escHtml(q.id)}', ${i}, ${correctIdx})" ${answered !== undefined ? 'disabled' : ''}>
+    return `<button class="${cls}" role="radio" aria-checked="${answered === i ? 'true' : 'false'}" onclick="selectAnswer('${escHtml(q.id)}', ${i}, ${correctIdx})" ${answered !== undefined ? 'disabled' : ''}>
       <span class="letter">${LETTERS[i]}</span>
       <span>${escHtml(ch)}</span>
       ${status ? `<span class="q-status">${status}</span>` : ''}
@@ -378,7 +484,7 @@ function renderQuestion(qs) {
         </button>
       </div>
       <div class="q-text">${escHtml(q.question)}</div>
-      <div class="choices">${choicesHTML}</div>
+      <div class="choices" role="radiogroup" aria-label="Question ${currentIndex + 1}">${choicesHTML}</div>
       <div class="explanation ${showExpl ? 'show' : ''}">
         <strong>Explanation:</strong> ${escHtml(q.explanation)}
       </div>
@@ -399,6 +505,7 @@ function selectAnswer(qId, chosen, correctIdx) {
   renderQuestion(getFilteredQuestions());
   updateStats();
   updateWeakRadar();
+  saveProgress();
 }
 
 /* ══════════════════════════════════════════
@@ -417,6 +524,7 @@ function toggleBookmark(qId) {
   }
   updateBookmarkedBanner();
   rebuildBookmarkTab();
+  saveProgress();
 }
 
 function rebuildBookmarkTab() {
@@ -507,6 +615,7 @@ function navigate(dir) {
   currentIndex = Math.max(0, Math.min(qs.length - 1, currentIndex + dir));
   renderQuestion(qs);
   if (timerMode === 'per-question') resetPerQuestionTimer();
+  saveProgress();
 }
 
 function updateProgressBar(qs) {
@@ -522,6 +631,44 @@ function updateNavButtons(qs) {
   document.getElementById('btn-prev').disabled = currentIndex <= 0;
   document.getElementById('btn-next').disabled = currentIndex >= qs.length - 1;
 }
+
+function handleKeyboardShortcuts(e) {
+  if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+  const qs = getFilteredQuestions();
+  if (!qs.length) return;
+  const q = qs[currentIndex];
+  if (!q) return;
+
+  const key = e.key.toLowerCase();
+  if (['a','b','c','d'].includes(key) && answers[q.id] === undefined) {
+    const index = LETTERS.indexOf(key.toUpperCase());
+    if (index >= 0) selectAnswer(q.id, index, q.shuffledAnswer);
+  }
+  if (key === 'arrowright' || key === 'l') navigate(1);
+  if (key === 'arrowleft'  || key === 'h') navigate(-1);
+  if (key === 'f') toggleBookmark(q.id);
+  if ((e.key === 'Enter' && (e.ctrlKey || e.metaKey)) || key === 's') finishQuiz();
+
+  if (!localStorage.getItem('kb_hints_shown')) {
+    showToast('Tip: Use A/B/C/D to answer, ← → to navigate, F to flag');
+    localStorage.setItem('kb_hints_shown', '1');
+  }
+}
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('visible'));
+  setTimeout(() => {
+    toast.classList.remove('visible');
+    setTimeout(() => toast.remove(), 300);
+  }, 3600);
+}
+
+window.addEventListener('keydown', handleKeyboardShortcuts);
+window.addEventListener('beforeunload', saveProgress);
 
 /* ══════════════════════════════════════════
    STATS
@@ -547,6 +694,7 @@ function setMode(m) {
   document.getElementById('mode-practice').classList.toggle('active', m === 'practice');
   document.getElementById('mode-exam').classList.toggle('active', m === 'exam');
   renderQuestion(getFilteredQuestions());
+  saveProgress();
 }
 
 /* ══════════════════════════════════════════
@@ -554,6 +702,7 @@ function setMode(m) {
 ══════════════════════════════════════════ */
 async function finishQuiz() {
   stopTimer();
+  clearSavedProgress();
   const total   = displayQuestions.length;
   const correct = displayQuestions.filter(q => answers[q.id] === q.shuffledAnswer).length;
   const pct     = Math.round((correct / total) * 100);
@@ -601,7 +750,8 @@ async function finishQuiz() {
     logEl.className = 'log-status saving';
     logEl.textContent = 'Saving your score…';
     try {
-      const payload = { username: currentUsername, score_pct: pct, correct, total, mode };
+      if (!csrfToken) await loadCsrfToken();
+      const payload = { username: currentUsername, score_pct: pct, correct, total, mode, token: csrfToken };
       const resp = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -700,6 +850,7 @@ function retryWrongAnswers() {
 ══════════════════════════════════════════ */
 function restartQuiz() {
   stopTimer();
+  clearSavedProgress();
   document.getElementById('results-screen').style.display = 'none';
   document.getElementById('wrong-review').style.display   = 'none';
   document.getElementById('log-status').textContent       = '';
@@ -716,7 +867,11 @@ async function loadLeaderboard() {
     const resp = await fetch(API_URL + '?action=scores');
     const json = await resp.json();
     if (!json.success) throw new Error(json.error);
-    renderLeaderboard(json.data);
+    if (json.data && json.data.csrf_token) {
+      csrfToken = json.data.csrf_token;
+    }
+    const rows = Array.isArray(json.data) ? json.data : (json.data.scores || []);
+    renderLeaderboard(rows);
   } catch(e) {
     document.getElementById('lb-content').innerHTML =
       `<div class="lb-empty">⚠️ Could not load scores.<br><small style="color:var(--muted)">${e.message}</small></div>`;
