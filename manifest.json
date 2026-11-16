@@ -3,7 +3,10 @@
   "short_name": "CSE Reviewer",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#0e1117",
-  "theme_color": "#4f8ef7",
-  "description": "Offline-capable Civil Service Exam reviewer with leaderboard and progress persistence."
+  "background_color": "#0d1117",
+  "theme_color": "#5b94f8",
+  "description": "Offline-capable Civil Service Exam reviewer with leaderboard and progress persistence.",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
 }

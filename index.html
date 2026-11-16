@@ -1,237 +1,264 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="theme-color" content="#0e1117">
+<meta name="theme-color" content="#0d1117" id="meta-theme">
 <title>CSE Professional Reviewer</title>
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script>
+  /* apply saved theme before paint to avoid a flash */
+  (function () {
+    try {
+      var t = localStorage.getItem('cse_theme');
+      if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
 
-<!-- ══ HEADER ══ -->
-<div class="header">
-  <div class="badge">Philippines · Professional Level</div>
-  <h1>CSE <span>Reviewer</span></h1>
-  <p>Civil Service Exam Practice · 170 Items · Official Structure</p>
-</div>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<!-- ══ TOP NAV (hidden until login) ══ -->
-<div class="topnav" id="topnav" style="display:none">
-  <button class="topnav-btn active" id="nav-quiz" onclick="showSection('quiz')">📝 Quiz</button>
-  <button class="topnav-btn" id="nav-lb" onclick="showSection('leaderboard')">🏆 Score Log</button>
-  <span class="user-chip" id="user-chip">👤 —</span>
-</div>
+<!-- ══ APP BAR ══ -->
+<header class="appbar">
+  <div class="appbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">CSE</span>
+      <div class="brand-text">
+        <strong>CSE Reviewer</strong>
+        <span>Professional Level · 170 items</span>
+      </div>
+    </div>
 
-<div class="container">
+    <nav class="topnav" id="topnav" style="display:none" aria-label="Main">
+      <button class="topnav-btn active" id="nav-quiz" onclick="showSection('quiz')">📝 <span>Quiz</span></button>
+      <button class="topnav-btn" id="nav-lb" onclick="showSection('leaderboard')">🏆 <span>Score Log</span></button>
+      <span class="user-chip" id="user-chip">👤 —</span>
+    </nav>
 
-  <!-- ══ USERNAME / START SCREEN ══ -->
-  <div id="username-screen">
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light / dark theme" title="Toggle theme">🌙</button>
+  </div>
+</header>
+
+<main class="container" id="main">
+
+  <!-- ══ LOGIN / START SCREEN ══ -->
+  <section id="username-screen">
+    <div class="hero">
+      <span class="badge">Philippines · Civil Service Exam</span>
+      <h1>Review smarter.<br><span>Pass with confidence.</span></h1>
+      <p>Practice with the official exam structure — verbal, analytical, numerical, general information and Filipino — and track your scores on the leaderboard.</p>
+      <div class="hero-stats" id="hero-stats" aria-label="Exam structure">
+        <div><b>40</b><span>Verbal</span></div>
+        <div><b>30</b><span>Analytical</span></div>
+        <div><b>25</b><span>Numerical</span></div>
+        <div><b>45</b><span>Gen. Info</span></div>
+        <div><b>30</b><span>Filipino</span></div>
+      </div>
+    </div>
+
     <div class="login-card">
-      <div class="icon">📋</div>
-      <h2>Welcome, Reviewer!</h2>
-      <p>Enter your username to start the exam and track your scores on the leaderboard.</p>
+      <h2>Start a session</h2>
 
       <div class="input-wrap">
+        <label for="username-input" class="field-label">Username</label>
         <input
           type="text"
           id="username-input"
-          placeholder="Your username…"
+          placeholder="e.g. Juan D."
           maxlength="30"
           autocomplete="off"
           onkeydown="if(event.key==='Enter') startWithUsername()"
         />
-        <div class="input-error" id="username-error">
-          Please enter a valid username (1–30 characters, letters/numbers/spaces only).
+        <div class="input-error" id="username-error" role="alert">
+          Use 1–30 characters: letters, numbers, spaces, dots, dashes or underscores.
         </div>
       </div>
 
-      <!-- Timer mode picker -->
       <div class="timer-picker">
-        <label>⏱ Timer Mode</label>
+        <span class="field-label">Timer mode</span>
         <div class="timer-options">
           <label class="timer-option selected" data-value="per-question" onclick="selectTimerOption('per-question')">
             <input type="radio" name="timer-mode" value="per-question" checked>
             <div class="timer-option-text">
-              <strong>Per Question</strong>
-              <span>1 minute per question — resets when you navigate</span>
+              <strong>Per question</strong>
+              <span>1 minute each, resets when you move on</span>
             </div>
           </label>
           <label class="timer-option" data-value="full-exam" onclick="selectTimerOption('full-exam')">
             <input type="radio" name="timer-mode" value="full-exam">
             <div class="timer-option-text">
-              <strong>Full Exam Countdown</strong>
-              <span>Total time = 1 min × number of questions</span>
+              <strong>Full exam countdown</strong>
+              <span>1 minute × number of questions</span>
             </div>
           </label>
           <label class="timer-option" data-value="none" onclick="selectTimerOption('none')">
             <input type="radio" name="timer-mode" value="none">
             <div class="timer-option-text">
-              <strong>No Timer</strong>
-              <span>Practice at your own pace</span>
+              <strong>No timer</strong>
+              <span>Study at your own pace</span>
             </div>
           </label>
         </div>
       </div>
 
-      <button class="btn primary" style="width:100%;padding:0.75rem;margin-top:0.5rem" onclick="startWithUsername()">
-        Start Reviewing →
-      </button>
+      <button class="btn primary block" onclick="startWithUsername()">Start reviewing →</button>
+      <p class="hint">Tip: use <kbd>A</kbd>–<kbd>D</kbd> to answer, <kbd>←</kbd> <kbd>→</kbd> to move, <kbd>F</kbd> to flag.</p>
     </div>
-  </div>
+  </section>
 
   <!-- ══ LOADING ══ -->
-  <div id="loading" style="display:none;text-align:center;padding:4rem 1rem;color:var(--muted)">
-    Loading questions…
+  <div id="loading" style="display:none">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Loading questions…</p>
   </div>
 
   <!-- ══ QUIZ SCREEN ══ -->
-  <div id="quiz-screen" style="display:none">
+  <section id="quiz-screen" style="display:none">
 
-    <!-- Live score summary -->
-    <div class="summary-bar">
+    <div class="summary-bar" id="summary-bar">
       <div class="summary-item">
         <span class="val" id="stat-score" style="color:var(--accent)">0%</span>
         <div class="lbl">Score</div>
       </div>
-      <div class="sep"></div>
       <div class="summary-item">
         <span class="val" id="stat-correct" style="color:var(--success)">0</span>
         <div class="lbl">Correct</div>
       </div>
-      <div class="sep"></div>
       <div class="summary-item">
         <span class="val" id="stat-wrong" style="color:var(--danger)">0</span>
         <div class="lbl">Wrong</div>
       </div>
-      <div class="sep"></div>
       <div class="summary-item">
         <span class="val" id="stat-remaining" style="color:var(--muted)">—</span>
         <div class="lbl">Remaining</div>
       </div>
     </div>
 
-    <!-- Timer bar (hidden when no-timer mode) -->
     <div class="timer-bar" id="timer-bar">
-      <span class="timer-icon">⏱</span>
+      <span class="timer-icon" aria-hidden="true">⏱</span>
       <span class="timer-label" id="timer-label">Time per question</span>
-      <div class="timer-track">
-        <div class="timer-fill" id="timer-fill" style="width:100%"></div>
-      </div>
-      <span class="timer-digits" id="timer-digits">01:00</span>
+      <div class="timer-track"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+      <span class="timer-digits" id="timer-digits" aria-live="off">01:00</span>
     </div>
 
-    <!-- Weak topic radar banner -->
-    <div class="weak-radar" id="weak-radar">
-      ⚠️ <span>Weak topics detected — focus on: <strong id="weak-topics-list"></strong></span>
+    <div class="weak-radar" id="weak-radar" role="status">
+      ⚠️ <span>Weak topics — focus on: <strong id="weak-topics-list"></strong></span>
     </div>
 
-    <!-- Bookmarked banner -->
     <div class="bookmarked-banner" id="bookmarked-banner">
-      <span>🔖 You have <strong id="bk-count">0</strong> bookmarked question(s).</span>
-      <button class="btn" style="padding:0.3rem 0.8rem;font-size:0.78rem" onclick="jumpToBookmarks()">
-        Review Flagged →
-      </button>
+      <span>🔖 <strong id="bk-count">0</strong> flagged question(s)</span>
+      <button class="btn small" onclick="jumpToBookmarks()">Review flagged →</button>
     </div>
 
-    <!-- Practice / Exam mode toggle -->
     <div class="top-controls">
-      <div class="mode-toggle">
+      <div class="mode-toggle" role="group" aria-label="Mode">
         <button class="mode-btn active" id="mode-practice" onclick="setMode('practice')">📖 Practice</button>
         <button class="mode-btn" id="mode-exam" onclick="setMode('exam')">🎯 Exam</button>
       </div>
+      <span class="shuffle-badge">🔀 Randomized each session</span>
     </div>
 
-    <!-- Shuffle indicator -->
-    <div class="shuffle-badge">🔀 Questions &amp; choices are randomized each session</div>
-
-    <!-- Progress bar -->
     <div class="progress-wrap">
       <div class="progress-label">
         <span id="prog-label">Question 1 of 170</span>
         <span id="prog-pct">0% answered</span>
       </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
-      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
     </div>
 
-    <!-- Category tabs -->
-    <div class="tabs" id="cat-tabs"></div>
+    <div class="tabs" id="cat-tabs" role="tablist"></div>
 
-    <!-- Question card injected here -->
-    <div id="questions-container"></div>
+    <div id="questions-container" aria-live="polite"></div>
 
-    <!-- Navigation -->
     <div class="nav">
       <button class="btn" id="btn-prev" onclick="navigate(-1)">← Previous</button>
       <span class="nav-counter" id="nav-counter">0 / 0 answered</span>
       <button class="btn" id="btn-next" onclick="navigate(1)">Next →</button>
     </div>
 
-    <!-- Submit -->
-    <div style="text-align:center;margin-top:1.75rem;">
-      <button class="btn primary" style="padding:0.75rem 2.5rem" onclick="finishQuiz()">
-        Submit &amp; See Results
-      </button>
-    </div>
+    <details class="navigator" id="navigator" open>
+      <summary>Question map</summary>
+      <div class="q-map" id="q-map"></div>
+      <div class="map-legend">
+        <span><i class="dot current"></i>Current</span>
+        <span><i class="dot answered"></i>Answered</span>
+        <span id="legend-correct"><i class="dot correct"></i>Correct</span>
+        <span id="legend-wrong"><i class="dot wrong"></i>Wrong</span>
+        <span><i class="dot flagged"></i>Flagged</span>
+      </div>
+    </details>
 
-  </div><!-- /quiz-screen -->
+    <div class="submit-row">
+      <button class="btn primary large" onclick="requestFinish()">Submit &amp; see results</button>
+    </div>
+  </section>
 
   <!-- ══ RESULTS SCREEN ══ -->
-  <div id="results-screen" style="display:none">
+  <section id="results-screen" style="display:none">
     <div class="results-card">
-      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:1px">Your Score</p>
-      <div class="results-score" id="res-score">—</div>
-      <p class="results-sub" id="res-fraction">— / — correct</p>
+      <p class="eyebrow">Your score</p>
+      <div class="score-ring" id="score-ring" style="--pct:0">
+        <div class="score-ring-inner">
+          <div class="results-score" id="res-score">—</div>
+          <div class="results-sub" id="res-fraction">— / — correct</div>
+        </div>
+      </div>
+      <div class="pass-chip" id="pass-chip"></div>
       <div class="rating-msg" id="res-rating"></div>
       <div class="results-breakdown" id="res-breakdown"></div>
       <div class="log-status" id="log-status"></div>
       <div class="result-actions">
-        <button class="btn primary" onclick="restartQuiz()">🔄 New Shuffle</button>
-        <button class="btn danger" id="btn-retry-wrong" onclick="retryWrongAnswers()" style="display:none">
-          🎯 Retry Wrong
-        </button>
-        <button class="btn" onclick="showSection('leaderboard')">🏆 Score Log</button>
+        <button class="btn primary" onclick="restartQuiz()">🔄 New shuffle</button>
+        <button class="btn danger" id="btn-retry-wrong" onclick="retryWrongAnswers()" style="display:none">🎯 Retry wrong</button>
+        <button class="btn" onclick="showSection('leaderboard')">🏆 Score log</button>
       </div>
     </div>
 
-    <!-- Wrong answer review -->
     <div id="wrong-review" style="display:none">
-      <div class="section-divider">
-        <h3>❌ Wrong Answer Review</h3>
-      </div>
+      <div class="section-divider"><h3>❌ Wrong answer review</h3></div>
       <div style="text-align:center;margin-bottom:1rem">
-        <button class="btn" id="btn-toggle-review" onclick="toggleWrongReview()">▼ Show Wrong Answers</button>
+        <button class="btn" id="btn-toggle-review" onclick="toggleWrongReview()">▼ Show wrong answers</button>
       </div>
       <div id="wrong-review-list" style="display:none"></div>
     </div>
-  </div><!-- /results-screen -->
+  </section>
 
   <!-- ══ LEADERBOARD SCREEN ══ -->
-  <div id="leaderboard-screen" style="display:none">
+  <section id="leaderboard-screen" style="display:none">
     <div class="lb-header">
-      <h2>🏆 Score Log</h2>
+      <h2>🏆 Score log</h2>
       <button class="btn" onclick="loadLeaderboard()">↻ Refresh</button>
     </div>
-    <div id="lb-content">
-      <div class="lb-loading">Loading scores…</div>
+    <div id="lb-content"><div class="lb-loading">Loading scores…</div></div>
+  </section>
+
+</main>
+
+<!-- ══ CONFIRM DIALOG ══ -->
+<div class="modal-backdrop" id="modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <h3 id="modal-title">Submit now?</h3>
+    <p id="modal-body"></p>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Keep going</button>
+      <button class="btn primary" onclick="confirmFinish()">Submit</button>
     </div>
   </div>
-
-</div><!-- /container -->
+</div>
 
 <script src="app.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .catch(() => {
-          console.warn('Service worker registration failed');
-        });
+      navigator.serviceWorker.register('./sw.js').catch(() => console.warn('Service worker registration failed'));
     });
   }
 </script>

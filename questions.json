@@ -1,7 +1,7 @@
 {
   "_readme": {
     "title": "CSE Professional Reviewer — Question Bank",
-    "version": "4.0",
+    "version": "5.0",
     "official_exam_structure": {
       "Verbal Ability": 40,
       "Analytical Ability": 30,
@@ -11,56 +11,13 @@
       "total": 170
     },
     "how_to_add_questions": [
-      "═══════════════════════════════════════════════════════════════",
-      "  GUIDE FOR AI ASSISTANTS & CONTRIBUTORS — READ THIS FIRST    ",
-      "═══════════════════════════════════════════════════════════════",
-      "",
-      "╔══════════════════════════════════════════════════════════════╗",
-      "║  HOW TO ADD NEW QUESTIONS TO AN EXISTING TOPIC               ║",
-      "║  → Just append objects to the END of the topic's             ║",
-      "║    'questions' array. Do not touch existing questions.       ║",
-      "╚══════════════════════════════════════════════════════════════╝",
-      "",
-      "╔══════════════════════════════════════════════════════════════╗",
-      "║  HOW TO ADD A BRAND NEW TOPIC                                ║",
-      "║  → Append a new topic object at the END of the 'topics'      ║",
-      "║    array (bottom of the file, before the closing bracket).   ║",
-      "║  → Copy the topic template below.                            ║",
-      "╚══════════════════════════════════════════════════════════════╝",
-      "",
-      "NEW TOPIC TEMPLATE:",
-      "  {",
-      "    \"id\": \"your_topic_id\",",
-      "    \"name\": \"Topic Display Name\",",
-      "    \"icon\": \"📌\",",
-      "    \"required\": 10,",
-      "    \"questions\": [",
-      "      {",
-      "        \"id\": \"yourtopicid_1\",",
-      "        \"question\": \"Question text here.\",",
-      "        \"choices\": [\"Choice A\", \"Choice B\", \"Choice C\", \"Choice D\"],",
-      "        \"answer\": 0,",
-      "        \"explanation\": \"Why Choice A is correct.\"",
-      "      }",
-      "    ]",
-      "  }",
-      "",
-      "QUESTION FIELD RULES:",
-      "  id          → string, unique across ALL topics.",
-      "                Format: topicid_N  (e.g. verbal_41, filipino_31)",
-      "  question    → string",
-      "  choices     → array of exactly 4 strings",
-      "  answer      → integer 0-3 (0=A, 1=B, 2=C, 3=D)",
-      "  explanation → string",
-      "",
-      "KEY BEHAVIOR:",
-      "  Each session randomly picks UP TO 'required' questions per topic.",
-      "  If the bank has fewer than 'required', ALL questions are used.",
-      "  Add as many questions as you want — more = more variety per session.",
-      "",
-      "TOPIC IDs (do not reuse): verbal, analytical, numerical, geninfo, filipino",
-      "NEXT SAFE IDs:",
-      "  verbal_31+, analytical_21+, numerical_31+, geninfo_51+, filipino_31+"
+      "Append question objects to the END of a topic's 'questions' array. Do not renumber existing questions.",
+      "Each question needs: id (unique across ALL topics, format topicid_N, use a number higher than any existing one), question (string), choices (exactly 4 DISTINCT strings), answer (integer 0-3), explanation (string).",
+      "Each session randomly picks up to 'required' questions per topic; the bank can be as large as you like.",
+      "To add a topic, append a new topic object {id, name, icon, required, questions} to the 'topics' array."
+    ],
+    "notes": [
+      "v5.0: merged questions.json + questions_cleaned.json + questions_expanded.json; removed duplicates; fixed questions with identical choices or incorrect answers."
     ]
   },
   "exam": "Civil Service Exam - Professional Level",
@@ -74,28 +31,48 @@
         {
           "id": "verbal_1",
           "question": "Choose the word most similar in meaning to BENEVOLENT.",
-          "choices": ["Hostile", "Charitable", "Greedy", "Indifferent"],
+          "choices": [
+            "Hostile",
+            "Charitable",
+            "Greedy",
+            "Indifferent"
+          ],
           "answer": 1,
           "explanation": "BENEVOLENT means well-meaning and kindly. CHARITABLE is the closest synonym as it means generous in giving to those in need."
         },
         {
           "id": "verbal_2",
           "question": "Choose the word most OPPOSITE in meaning to LOQUACIOUS.",
-          "choices": ["Talkative", "Verbose", "Taciturn", "Garrulous"],
+          "choices": [
+            "Talkative",
+            "Verbose",
+            "Taciturn",
+            "Garrulous"
+          ],
           "answer": 2,
           "explanation": "LOQUACIOUS means very talkative. Its antonym is TACITURN, which means reserved or saying little."
         },
         {
           "id": "verbal_3",
           "question": "Select the correctly spelled word.",
-          "choices": ["Accomodate", "Accommodate", "Acommodate", "Acomodate"],
+          "choices": [
+            "Accomodate",
+            "Accommodate",
+            "Acommodate",
+            "Acomodate"
+          ],
           "answer": 1,
           "explanation": "The correct spelling is ACCOMMODATE — with double 'c' and double 'm'."
         },
         {
           "id": "verbal_4",
           "question": "Fill in the blank: The committee _______ the proposal after a long debate.",
-          "choices": ["ratified", "ratify", "ratifying", "ratifies"],
+          "choices": [
+            "ratified",
+            "ratify",
+            "ratifying",
+            "ratifies"
+          ],
           "answer": 0,
           "explanation": "Past tense 'ratified' is correct since the action has already occurred."
         },
@@ -114,7 +91,12 @@
         {
           "id": "verbal_6",
           "question": "Choose the word most similar in meaning to EPHEMERAL.",
-          "choices": ["Eternal", "Transient", "Substantial", "Permanent"],
+          "choices": [
+            "Eternal",
+            "Transient",
+            "Substantial",
+            "Permanent"
+          ],
           "answer": 1,
           "explanation": "EPHEMERAL means lasting for a very short time. TRANSIENT is the closest synonym meaning passing quickly."
         },
@@ -157,14 +139,24 @@
         {
           "id": "verbal_10",
           "question": "The word 'PEDESTRIAN' when used as an adjective means:",
-          "choices": ["Relating to walking", "Slow and cautious", "Lacking originality; dull", "Relating to children"],
+          "choices": [
+            "Relating to walking",
+            "Slow and cautious",
+            "Lacking originality; dull",
+            "Relating to children"
+          ],
           "answer": 2,
           "explanation": "As an adjective, PEDESTRIAN means lacking inspiration or excitement; dull and ordinary."
         },
         {
           "id": "verbal_11",
           "question": "Choose the word most similar in meaning to AMBIGUOUS.",
-          "choices": ["Clear", "Vague", "Certain", "Precise"],
+          "choices": [
+            "Clear",
+            "Vague",
+            "Certain",
+            "Precise"
+          ],
           "answer": 1,
           "explanation": "AMBIGUOUS means open to more than one interpretation. VAGUE is the closest synonym, meaning not clearly expressed."
         },
@@ -195,23 +187,38 @@
         {
           "id": "verbal_14",
           "question": "Select the correctly spelled word.",
-          "choices": ["Recieve", "Receive", "Receve", "Recieive"],
+          "choices": [
+            "Recieve",
+            "Receive",
+            "Receve",
+            "Recieive"
+          ],
           "answer": 1,
           "explanation": "The correct spelling is RECEIVE. 'i before e, except after c' — so it is 'cei' not 'cie'."
         },
         {
           "id": "verbal_15",
           "question": "Choose the word most OPPOSITE in meaning to FRUGAL.",
-          "choices": ["Thrifty", "Economical", "Extravagant", "Careful"],
+          "choices": [
+            "Thrifty",
+            "Economical",
+            "Extravagant",
+            "Careful"
+          ],
           "answer": 2,
           "explanation": "FRUGAL means being careful with money. Its antonym is EXTRAVAGANT, meaning spending much more than necessary."
         },
         {
           "id": "verbal_16",
-          "question": "Fill in the blank: If I _______ the answer, I would have told you.",
-          "choices": ["know", "knew", "known", "knows"],
+          "question": "Fill in the blank: If I _______ the answer, I would tell you.",
+          "choices": [
+            "know",
+            "knew",
+            "known",
+            "knows"
+          ],
           "answer": 1,
-          "explanation": "This is a second conditional sentence. The correct form is 'knew' (simple past) in the if-clause."
+          "explanation": "This is a second conditional: if + simple past ('knew'), would + base verb."
         },
         {
           "id": "verbal_17",
@@ -252,7 +259,12 @@
         {
           "id": "verbal_20",
           "question": "Choose the word most similar in meaning to DILIGENT.",
-          "choices": ["Lazy", "Industrious", "Careless", "Slow"],
+          "choices": [
+            "Lazy",
+            "Industrious",
+            "Careless",
+            "Slow"
+          ],
           "answer": 1,
           "explanation": "DILIGENT means having care and effort in one's work. INDUSTRIOUS is the closest synonym meaning hardworking."
         },
@@ -271,7 +283,12 @@
         {
           "id": "verbal_22",
           "question": "Choose the antonym of CANDID.",
-          "choices": ["Honest", "Frank", "Evasive", "Outspoken"],
+          "choices": [
+            "Honest",
+            "Frank",
+            "Evasive",
+            "Outspoken"
+          ],
           "answer": 2,
           "explanation": "CANDID means truthful and straightforward. Its antonym is EVASIVE, meaning tending to avoid direct answers."
         },
@@ -302,21 +319,36 @@
         {
           "id": "verbal_25",
           "question": "The word OSTENTATIOUS most nearly means:",
-          "choices": ["Modest", "Showy and pretentious", "Secretive", "Hardworking"],
+          "choices": [
+            "Modest",
+            "Showy and pretentious",
+            "Secretive",
+            "Hardworking"
+          ],
           "answer": 1,
           "explanation": "OSTENTATIOUS means characterized by a showy display intended to impress others."
         },
         {
           "id": "verbal_26",
           "question": "Which of the following is NOT a conjunction?",
-          "choices": ["Although", "Because", "Quickly", "Unless"],
+          "choices": [
+            "Although",
+            "Because",
+            "Quickly",
+            "Unless"
+          ],
           "answer": 2,
           "explanation": "QUICKLY is an adverb. Although, Because, and Unless are all subordinating conjunctions."
         },
         {
           "id": "verbal_27",
           "question": "Fill in the blank: She is one of the employees who _______ always on time.",
-          "choices": ["is", "are", "was", "were"],
+          "choices": [
+            "is",
+            "are",
+            "was",
+            "were"
+          ],
           "answer": 1,
           "explanation": "The antecedent of 'who' is 'employees' (plural), so the verb must be plural: 'are.'"
         },
@@ -335,7 +367,12 @@
         {
           "id": "verbal_29",
           "question": "Choose the correctly spelled word.",
-          "choices": ["Occurence", "Occurrence", "Ocurrence", "Occurrance"],
+          "choices": [
+            "Occurence",
+            "Occurrence",
+            "Ocurrence",
+            "Occurrance"
+          ],
           "answer": 1,
           "explanation": "The correct spelling is OCCURRENCE — double 'c' and double 'r'."
         },
@@ -354,7 +391,12 @@
         {
           "id": "verbal_31",
           "question": "Choose the word most similar in meaning to METICULOUS.",
-          "choices": ["Careless", "Thorough", "Hasty", "Vague"],
+          "choices": [
+            "Careless",
+            "Thorough",
+            "Hasty",
+            "Vague"
+          ],
           "answer": 1,
           "explanation": "METICULOUS means showing great attention to detail. THOROUGH is the closest synonym."
         },
@@ -373,7 +415,12 @@
         {
           "id": "verbal_33",
           "question": "What is the meaning of the prefix 'ANTE-'?",
-          "choices": ["Against", "Before", "After", "Below"],
+          "choices": [
+            "Against",
+            "Before",
+            "After",
+            "Below"
+          ],
           "answer": 1,
           "explanation": "The prefix 'ANTE-' means before, as in 'antecedent' (something that comes before) or 'anteroom' (a room before the main room)."
         },
@@ -403,7 +450,7 @@
         },
         {
           "id": "verbal_36",
-          "question": "Choose the correctly punctuated sentence containing a list.",
+          "question": "Which sentence correctly uses the serial (Oxford) comma, as preferred in formal writing?",
           "choices": [
             "We need to buy: milk eggs, and bread.",
             "We need to buy milk, eggs and bread.",
@@ -411,61 +458,101 @@
             "We need to buy, milk, eggs, and bread."
           ],
           "answer": 2,
-          "explanation": "The Oxford comma (before 'and') is the preferred style in formal writing: 'milk, eggs, and bread.'"
+          "explanation": "The serial comma goes before 'and' in a list: 'milk, eggs, and bread.'"
         },
         {
           "id": "verbal_37",
           "question": "What is the antonym of VERBOSE?",
-          "choices": ["Wordy", "Talkative", "Concise", "Loud"],
+          "choices": [
+            "Wordy",
+            "Talkative",
+            "Concise",
+            "Loud"
+          ],
           "answer": 2,
           "explanation": "VERBOSE means using too many words. Its antonym is CONCISE, meaning giving a lot of information clearly in few words."
         },
         {
           "id": "verbal_38",
           "question": "Which of these is an example of onomatopoeia?",
-          "choices": ["The moon was a silver coin.", "The brook babbled over the rocks.", "Life is a journey.", "The stars danced in the sky."],
+          "choices": [
+            "The moon was a silver coin.",
+            "The brook babbled over the rocks.",
+            "Life is a journey.",
+            "The stars danced in the sky."
+          ],
           "answer": 1,
           "explanation": "'Babbled' is an onomatopoeia — a word that phonetically imitates the sound it describes (the sound of water flowing)."
         },
         {
           "id": "verbal_39",
-          "question": "Choose the correct form: 'The data _______ been analyzed.'",
-          "choices": ["has", "have", "is", "are"],
-          "answer": 1,
-          "explanation": "'Data' is the plural of 'datum.' In formal and academic usage, 'data' takes a plural verb: 'The data have been analyzed.'"
+          "question": "Choose the correct form: 'The datum _______ been verified.'",
+          "choices": [
+            "has",
+            "have",
+            "are",
+            "were"
+          ],
+          "answer": 0,
+          "explanation": "'Datum' is the singular of 'data', so it takes the singular verb 'has'."
         },
         {
           "id": "verbal_40",
           "question": "What literary device is used in: 'The classroom was a zoo.'?",
-          "choices": ["Simile", "Personification", "Metaphor", "Hyperbole"],
+          "choices": [
+            "Simile",
+            "Personification",
+            "Metaphor",
+            "Hyperbole"
+          ],
           "answer": 2,
           "explanation": "This is a METAPHOR — a direct comparison between two unlike things without using 'like' or 'as.' A simile would say 'like a zoo.'"
         },
         {
           "id": "verbal_41",
           "question": "Choose the word most similar in meaning to ACUMEN.",
-          "choices": ["Ignorance", "Sharpness", "Hesitation", "Bitterness"],
+          "choices": [
+            "Ignorance",
+            "Sharpness",
+            "Hesitation",
+            "Bitterness"
+          ],
           "answer": 1,
           "explanation": "ACUMEN means the ability to make good judgments and quick decisions, typically in a particular domain. SHARPNESS is the closest synonym."
         },
         {
           "id": "verbal_42",
           "question": "Choose the word most OPPOSITE in meaning to COPIOUS.",
-          "choices": ["Abundant", "Plentiful", "Scarce", "Identical"],
+          "choices": [
+            "Abundant",
+            "Plentiful",
+            "Scarce",
+            "Identical"
+          ],
           "answer": 2,
           "explanation": "COPIOUS means abundant in supply or quantity. Its antonym is SCARCE, which means insufficient for the demand."
         },
         {
           "id": "verbal_43",
           "question": "Select the correctly spelled word.",
-          "choices": ["Conscious", "Concious", "Consious", "Conshus"],
+          "choices": [
+            "Conscious",
+            "Concious",
+            "Consious",
+            "Conshus"
+          ],
           "answer": 0,
           "explanation": "The correct spelling is CONSCIOUS — meaning aware of and responding to one's surroundings."
         },
         {
           "id": "verbal_44",
           "question": "Fill in the blank: Neither the driver nor the passengers _______ injured in the accident.",
-          "choices": ["was", "were", "is", "has been"],
+          "choices": [
+            "was",
+            "were",
+            "is",
+            "has been"
+          ],
           "answer": 1,
           "explanation": "With 'neither... nor', the verb agrees with the closer subject. 'Passengers' is plural, so the plural verb 'were' is correct."
         },
@@ -494,16 +581,14 @@
           "explanation": "'Beat around the bush' means to discuss a matter without coming to the point."
         },
         {
-          "id": "verbal_47",
-          "question": "Choose the word most similar in meaning to METICULOUS.",
-          "choices": ["Careless", "Fastidious", "Slapdash", "Indifferent"],
-          "answer": 1,
-          "explanation": "METICULOUS means showing great attention to detail; very careful and precise. FASTIDIOUS is a close synonym meaning very attentive to accuracy."
-        },
-        {
           "id": "verbal_48",
           "question": "Identify the error in the sentence: 'The collection of rare books were sold at the auction.'",
-          "choices": ["The collection", "of rare books", "were sold", "at the auction"],
+          "choices": [
+            "The collection",
+            "of rare books",
+            "were sold",
+            "at the auction"
+          ],
           "answer": 2,
           "explanation": "The subject of the sentence is the singular collective noun 'collection', not 'books'. Therefore, the verb should be singular: 'was sold'."
         },
@@ -522,14 +607,24 @@
         {
           "id": "verbal_50",
           "question": "The word 'SURREPTITIOUS' most nearly means:",
-          "choices": ["Open and obvious", "Done by secret or stealthy means", "Aggressive and loud", "Lacking passion"],
+          "choices": [
+            "Open and obvious",
+            "Done by secret or stealthy means",
+            "Aggressive and loud",
+            "Lacking passion"
+          ],
           "answer": 1,
           "explanation": "SURREPTITIOUS means kept secret, especially because it would not be approved of."
         },
         {
           "id": "verbal_51",
           "question": "Fill in the blank: The team had to alter their plans _______ the bad weather.",
-          "choices": ["because", "due to", "consequently", "in order to"],
+          "choices": [
+            "because",
+            "due to",
+            "consequently",
+            "in order to"
+          ],
           "answer": 1,
           "explanation": "'Due to' functions as a preposition meaning 'because of', which correctly introduces the noun phrase 'the bad weather'."
         },
@@ -548,14 +643,24 @@
         {
           "id": "verbal_53",
           "question": "Choose the word most OPPOSITE in meaning to EPHEMERAL.",
-          "choices": ["Fleeting", "Perpetual", "Transient", "Momentary"],
+          "choices": [
+            "Fleeting",
+            "Perpetual",
+            "Transient",
+            "Momentary"
+          ],
           "answer": 1,
           "explanation": "EPHEMERAL means lasting for a very short time. PERPETUAL means never ending or changing, making it the direct antonym."
         },
         {
           "id": "verbal_54",
           "question": "Select the correctly spelled word.",
-          "choices": ["Maintenance", "Maintainance", "Maintenence", "Maintanance"],
+          "choices": [
+            "Maintenance",
+            "Maintainance",
+            "Maintenence",
+            "Maintanance"
+          ],
           "answer": 0,
           "explanation": "The correct spelling is MAINTENANCE. Note the 'ten' in the middle, unlike the verb 'maintain'."
         },
@@ -574,7 +679,12 @@
         {
           "id": "verbal_56",
           "question": "What does the phrase 'at the eleventh hour' mean?",
-          "choices": ["Precisely at midnight", "At the latest possible moment", "Early in the morning", "During a critical emergency"],
+          "choices": [
+            "Precisely at midnight",
+            "At the latest possible moment",
+            "Early in the morning",
+            "During a critical emergency"
+          ],
           "answer": 1,
           "explanation": "'At the eleventh hour' is an idiom that means at the last possible moment or right before it's too late."
         },
@@ -591,18 +701,6 @@
           "explanation": "'Who' is used as the subject pronoun referring to a person ('The man')."
         },
         {
-          "id": "verbal_58",
-          "question": "What is the meaning of the word PRAGMATIC?",
-          "choices": [
-            "Guided by practical experience rather than theory",
-            "Highly emotional and volatile",
-            "Strictly theoretical or academic",
-            "Arrogant and unyielding"
-          ],
-          "answer": 0,
-          "explanation": "PRAGMATIC means dealing with things sensibly and realistically in a way that is based on practical rather than theoretical considerations."
-        },
-        {
           "id": "verbal_59",
           "question": "Identify the dangling modifier in the choices below.",
           "choices": [
@@ -617,9 +715,350 @@
         {
           "id": "verbal_60",
           "question": "Choose the word most similar in meaning to CANDID.",
-          "choices": ["Deceptive", "Frank", "Guarded", "Evasive"],
+          "choices": [
+            "Deceptive",
+            "Frank",
+            "Guarded",
+            "Evasive"
+          ],
           "answer": 1,
           "explanation": "CANDID means truthful and straightforward; frank."
+        },
+        {
+          "id": "verbal_61",
+          "question": "Choose the word closest in meaning to 'ADVERSE'.",
+          "choices": [
+            "Favorable",
+            "Harmful",
+            "Ordinary",
+            "Unrelated"
+          ],
+          "answer": 1,
+          "explanation": "ADVERSE means unfavorable or harmful."
+        },
+        {
+          "id": "verbal_62",
+          "question": "Choose the antonym of 'MITIGATE'.",
+          "choices": [
+            "Alleviate",
+            "Lessen",
+            "Aggravate",
+            "Relieve"
+          ],
+          "answer": 2,
+          "explanation": "MITIGATE means to make less severe; AGGRAVATE means to make worse."
+        },
+        {
+          "id": "verbal_63",
+          "question": "Which sentence correctly shows possession by one teacher?",
+          "choices": [
+            "The teachers lounge is upstairs.",
+            "The teacher's lounge is upstairs.",
+            "The teachers' lounge is upstairs.",
+            "The teachers's lounge is upstairs."
+          ],
+          "answer": 1,
+          "explanation": "Singular possession takes apostrophe + s: 'teacher's lounge' (one teacher). 'Teachers' lounge' would belong to several teachers."
+        },
+        {
+          "id": "verbal_64",
+          "question": "Select the correctly spelled form of the word meaning awareness of right and wrong.",
+          "choices": [
+            "Conscience",
+            "Concience",
+            "Consciense",
+            "Consciece"
+          ],
+          "answer": 0,
+          "explanation": "CONSCIENCE is spelled c-o-n-s-c-i-e-n-c-e."
+        },
+        {
+          "id": "verbal_65",
+          "question": "What does the idiom 'to hit the nail on the head' mean?",
+          "choices": [
+            "To cause an accident",
+            "To describe exactly what is causing a situation",
+            "To work carelessly",
+            "To finish a task too early"
+          ],
+          "answer": 1,
+          "explanation": "The idiom means to identify or state something exactly."
+        },
+        {
+          "id": "verbal_66",
+          "question": "Choose the correct form: “The committee has reached ______ decision.”",
+          "choices": [
+            "its",
+            "their",
+            "it's",
+            "theirs"
+          ],
+          "answer": 0,
+          "explanation": "COMMITTEE is treated as a singular collective noun in this sentence, so the singular possessive pronoun ITS is appropriate."
+        },
+        {
+          "id": "verbal_67",
+          "question": "Select the sentence with parallel structure.",
+          "choices": [
+            "She likes reading, to swim, and cycling.",
+            "She likes to read, swimming, and to cycle.",
+            "She likes reading, swimming, and cycling.",
+            "She likes read, swim, and cycling."
+          ],
+          "answer": 2,
+          "explanation": "The three items use the same -ing grammatical form."
+        },
+        {
+          "id": "verbal_68",
+          "question": "Choose the word closest in meaning to 'IMPARTIAL'.",
+          "choices": [
+            "Biased",
+            "Neutral",
+            "Hostile",
+            "Uncertain"
+          ],
+          "answer": 1,
+          "explanation": "IMPARTIAL means fair and not favoring either side."
+        },
+        {
+          "id": "verbal_69",
+          "question": "Which is the best revision of the sentence: 'Due to the fact that it rained, the game was postponed.'?",
+          "choices": [
+            "In view of the fact it rained, the game was postponed.",
+            "Because it rained, the game was postponed.",
+            "The game was postponed due to raining fact.",
+            "It rained, being the reason for postponement of the game."
+          ],
+          "answer": 1,
+          "explanation": "Because communicates the same idea more clearly and concisely."
+        },
+        {
+          "id": "verbal_71",
+          "question": "Which sentence is in the present perfect tense?",
+          "choices": [
+            "They visited the museum yesterday.",
+            "They have visited the museum several times.",
+            "They are visiting the museum now.",
+            "They will visit the museum tomorrow."
+          ],
+          "answer": 1,
+          "explanation": "Present perfect uses has or have plus the past participle."
+        },
+        {
+          "id": "verbal_72",
+          "question": "Choose the antonym of 'OBSOLETE'.",
+          "choices": [
+            "Outdated",
+            "Antiquated",
+            "Current",
+            "Disused"
+          ],
+          "answer": 2,
+          "explanation": "OBSOLETE means no longer in use; CURRENT is its opposite."
+        },
+        {
+          "id": "verbal_73",
+          "question": "Identify the adverb in the sentence: 'The applicant answered the questions confidently.'",
+          "choices": [
+            "Applicant",
+            "Answered",
+            "Questions",
+            "Confidently"
+          ],
+          "answer": 3,
+          "explanation": "CONFIDENTLY modifies the verb answered and tells how the action was done."
+        },
+        {
+          "id": "verbal_74",
+          "question": "Which sentence correctly uses a semicolon?",
+          "choices": [
+            "The office was closed; because it was a holiday.",
+            "The office was closed; the staff had already gone home.",
+            "The office; was closed and empty.",
+            "The office was; closed for the day."
+          ],
+          "answer": 1,
+          "explanation": "A semicolon can join two closely related independent clauses."
+        },
+        {
+          "id": "verbal_75",
+          "question": "Choose the word closest in meaning to 'CREDIBLE'.",
+          "choices": [
+            "Believable",
+            "Doubtful",
+            "Careless",
+            "Complicated"
+          ],
+          "answer": 0,
+          "explanation": "CREDIBLE means capable of being believed or trusted."
+        },
+        {
+          "id": "verbal_76",
+          "question": "Choose the correct verb: 'Neither of the proposals ______ acceptable.'",
+          "choices": [
+            "are",
+            "were",
+            "is",
+            "have been"
+          ],
+          "answer": 2,
+          "explanation": "Neither is treated as singular in this construction, so IS is appropriate."
+        },
+        {
+          "id": "verbal_77",
+          "question": "Which sentence uses 'who' correctly?",
+          "choices": [
+            "Who did you give the file to?",
+            "Whom is responsible for this task?",
+            "The employee who submitted the report was thanked.",
+            "To who should I address the letter?"
+          ],
+          "answer": 2,
+          "explanation": "WHO is the subject of the clause 'who submitted the report'. 'Whom is responsible' and 'To who' misuse the case."
+        },
+        {
+          "id": "verbal_78",
+          "question": "What does 'read between the lines' mean?",
+          "choices": [
+            "Read very quickly",
+            "Find an implied meaning",
+            "Skip difficult paragraphs",
+            "Read aloud"
+          ],
+          "answer": 1,
+          "explanation": "The expression means to understand something that is suggested but not directly stated."
+        },
+        {
+          "id": "verbal_79",
+          "question": "In the sentence beginning 'After the meeting', which version uses the comma correctly?",
+          "choices": [
+            "After the meeting we, submitted the minutes.",
+            "After the meeting, we submitted the minutes.",
+            "After, the meeting we submitted the minutes.",
+            "After the meeting we submitted, the minutes."
+          ],
+          "answer": 1,
+          "explanation": "An introductory phrase is normally followed by a comma."
+        },
+        {
+          "id": "verbal_80",
+          "question": "Choose the antonym of 'SCARCE'.",
+          "choices": [
+            "Limited",
+            "Rare",
+            "Abundant",
+            "Insufficient"
+          ],
+          "answer": 2,
+          "explanation": "SCARCE means insufficient or hard to find; ABUNDANT means plentiful."
+        },
+        {
+          "id": "verbal_81",
+          "question": "Which sentence expresses a conditional situation contrary to present fact?",
+          "choices": [
+            "If I had time, I would join the seminar.",
+            "If I have time, I will join the seminar.",
+            "If I had had time, I would have joined.",
+            "When I have time, I join."
+          ],
+          "answer": 0,
+          "explanation": "The pattern if + simple past, would + base verb expresses an unreal or unlikely present situation."
+        },
+        {
+          "id": "verbal_82",
+          "question": "Choose the word closest in meaning to 'ELUSIVE'.",
+          "choices": [
+            "Easy to find",
+            "Difficult to catch or understand",
+            "Clearly visible",
+            "Highly predictable"
+          ],
+          "answer": 1,
+          "explanation": "ELUSIVE describes something difficult to find, catch, or define."
+        },
+        {
+          "id": "verbal_83",
+          "question": "Which sentence avoids a double negative?",
+          "choices": [
+            "I don't need no assistance.",
+            "We couldn't find nothing.",
+            "She didn't see anyone at the gate.",
+            "He never said nothing about it."
+          ],
+          "answer": 2,
+          "explanation": "Anyone is correctly used with the negative didn't."
+        },
+        {
+          "id": "verbal_84",
+          "question": "Choose the correct comparative form.",
+          "choices": [
+            "This route is more safer.",
+            "This route is safest than the other.",
+            "This route is safer than the other.",
+            "This route is most safe than the other."
+          ],
+          "answer": 2,
+          "explanation": "SAFER is the comparative form of the one-syllable adjective safe."
+        },
+        {
+          "id": "verbal_86",
+          "question": "Which sentence uses a colon correctly?",
+          "choices": [
+            "Bring: your ID, application form, and receipt.",
+            "Bring the following items: your ID, application form, and receipt.",
+            "Bring the following: items your ID, application form, and receipt.",
+            "Bring the following items your ID: application form, and receipt."
+          ],
+          "answer": 1,
+          "explanation": "A colon can introduce a list after a complete introductory clause."
+        },
+        {
+          "id": "verbal_87",
+          "question": "Choose the correct pronoun: 'Every applicant must bring ______ own identification.'",
+          "choices": [
+            "their",
+            "them",
+            "they",
+            "theirs"
+          ],
+          "answer": 0,
+          "explanation": "Singular THEY is widely accepted as a gender-neutral pronoun referring to every applicant."
+        },
+        {
+          "id": "verbal_88",
+          "question": "Choose the antonym of 'RELUCTANT'.",
+          "choices": [
+            "Hesitant",
+            "Unwilling",
+            "Eager",
+            "Doubtful"
+          ],
+          "answer": 2,
+          "explanation": "RELUCTANT means unwilling or hesitant; EAGER means enthusiastic or willing."
+        },
+        {
+          "id": "verbal_89",
+          "question": "Which sentence is correctly written in reported speech? Direct: Ana said, 'I am busy.'",
+          "choices": [
+            "Ana said that I am busy.",
+            "Ana said that she was busy.",
+            "Ana says that she were busy.",
+            "Ana said she is being busy yesterday."
+          ],
+          "answer": 1,
+          "explanation": "In standard backshifted reported speech, am becomes was and I refers to Ana as she."
+        },
+        {
+          "id": "verbal_90",
+          "question": "Choose the word closest in meaning to 'SCRUTINIZE'.",
+          "choices": [
+            "Ignore",
+            "Examine closely",
+            "Summarize briefly",
+            "Approve immediately"
+          ],
+          "answer": 1,
+          "explanation": "SCRUTINIZE means to inspect or examine carefully."
         }
       ]
     },
@@ -644,28 +1083,48 @@
         {
           "id": "analytical_2",
           "question": "If PLANT is coded as QMBOU, how is WATER coded?",
-          "choices": ["XBUFS", "XBRES", "YBUFS", "XAUFS"],
+          "choices": [
+            "XBUFS",
+            "XBRES",
+            "YBUFS",
+            "XAUFS"
+          ],
           "answer": 0,
           "explanation": "Each letter is shifted forward by 1: W→X, A→B, T→U, E→F, R→S. So WATER = XBUFS."
         },
         {
           "id": "analytical_3",
           "question": "Maria is taller than Ana. Ana is taller than Beth. Who is the shortest?",
-          "choices": ["Maria", "Ana", "Beth", "Cannot be determined"],
+          "choices": [
+            "Maria",
+            "Ana",
+            "Beth",
+            "Cannot be determined"
+          ],
           "answer": 2,
           "explanation": "Maria > Ana > Beth. Therefore, Beth is the shortest."
         },
         {
           "id": "analytical_4",
           "question": "What comes next in the series: A, C, E, G, ___?",
-          "choices": ["H", "I", "J", "K"],
+          "choices": [
+            "H",
+            "I",
+            "J",
+            "K"
+          ],
           "answer": 1,
           "explanation": "The series skips every other letter: A, C, E, G, I. The next letter is I."
         },
         {
           "id": "analytical_5",
           "question": "Doctor is to Patient as Teacher is to ___?",
-          "choices": ["School", "Lesson", "Student", "Subject"],
+          "choices": [
+            "School",
+            "Lesson",
+            "Student",
+            "Subject"
+          ],
           "answer": 2,
           "explanation": "A Doctor serves a Patient; a Teacher serves a Student. The relationship is between a professional and the person they serve."
         },
@@ -684,35 +1143,60 @@
         {
           "id": "analytical_7",
           "question": "In a row of 10 students, Lena is 4th from the left. What is her position from the right?",
-          "choices": ["5th", "6th", "7th", "8th"],
+          "choices": [
+            "5th",
+            "6th",
+            "7th",
+            "8th"
+          ],
           "answer": 2,
           "explanation": "Position from right = (Total + 1) - Position from left = (10 + 1) - 4 = 7."
         },
         {
           "id": "analytical_8",
           "question": "Find the odd one out: Triangle, Square, Cone, Pentagon",
-          "choices": ["Triangle", "Square", "Cone", "Pentagon"],
+          "choices": [
+            "Triangle",
+            "Square",
+            "Cone",
+            "Pentagon"
+          ],
           "answer": 2,
           "explanation": "Triangle, Square, and Pentagon are 2D shapes. Cone is a 3D solid — the odd one out."
         },
         {
           "id": "analytical_9",
           "question": "What number should replace the question mark? 2, 4, 8, 16, ?",
-          "choices": ["24", "28", "30", "32"],
+          "choices": [
+            "24",
+            "28",
+            "30",
+            "32"
+          ],
           "answer": 3,
           "explanation": "Each number is doubled: 2×2=4, 4×2=8, 8×2=16, 16×2=32."
         },
         {
           "id": "analytical_10",
           "question": "Eye is to See as Ear is to ___?",
-          "choices": ["Head", "Hear", "Sound", "Listen"],
+          "choices": [
+            "Head",
+            "Hear",
+            "Sound",
+            "Listen"
+          ],
           "answer": 1,
           "explanation": "An Eye is used to See; an Ear is used to Hear. The relationship is between a sensory organ and its function."
         },
         {
           "id": "analytical_11",
           "question": "If today is Wednesday, what day will it be 100 days from now?",
-          "choices": ["Monday", "Tuesday", "Wednesday", "Friday"],
+          "choices": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Friday"
+          ],
           "answer": 3,
           "explanation": "100 ÷ 7 = 14 weeks remainder 2. Wednesday + 2 days = Friday."
         },
@@ -731,56 +1215,96 @@
         {
           "id": "analytical_13",
           "question": "A clock shows 3:00. What is the angle between the hour and minute hands?",
-          "choices": ["60°", "75°", "90°", "120°"],
+          "choices": [
+            "60°",
+            "75°",
+            "90°",
+            "120°"
+          ],
           "answer": 2,
           "explanation": "At 3:00, each hour mark is 30°, so the angle = 3 × 30° = 90°."
         },
         {
           "id": "analytical_14",
           "question": "Find the odd one out: Apple, Mango, Carrot, Banana",
-          "choices": ["Apple", "Mango", "Carrot", "Banana"],
+          "choices": [
+            "Apple",
+            "Mango",
+            "Carrot",
+            "Banana"
+          ],
           "answer": 2,
           "explanation": "Apple, Mango, and Banana are fruits. Carrot is a vegetable — the odd one out."
         },
         {
           "id": "analytical_15",
           "question": "If RED = 27 (R=18, E=5, D=4), what is the value of CAT?",
-          "choices": ["22", "23", "24", "25"],
+          "choices": [
+            "22",
+            "23",
+            "24",
+            "25"
+          ],
           "answer": 2,
           "explanation": "C=3, A=1, T=20. Total = 3+1+20 = 24."
         },
         {
           "id": "analytical_16",
-          "question": "Five friends sit in a row: Ana, Beth, Carlos, David, Eva. Ana is next to Beth. Beth is next to Carlos. David is at one end. Who is at the other end?",
-          "choices": ["Ana", "Beth", "Carlos", "Eva"],
-          "answer": 3,
-          "explanation": "With David at one end and Ana-Beth-Carlos together: David, Eva, Ana, Beth, Carlos. Eva is at the other end."
+          "question": "Five friends sit in a row from left to right. Ana is at the left end and Eva is at the right end. Beth sits between Ana and Carlos, and David sits next to Eva. Who sits in the middle?",
+          "choices": [
+            "Ana",
+            "Beth",
+            "Carlos",
+            "David"
+          ],
+          "answer": 2,
+          "explanation": "The order is Ana, Beth, Carlos, David, Eva. Carlos is in the middle."
         },
         {
           "id": "analytical_17",
           "question": "Complete the analogy: Book is to Library as Painting is to ___?",
-          "choices": ["Artist", "Canvas", "Museum", "Color"],
+          "choices": [
+            "Artist",
+            "Canvas",
+            "Museum",
+            "Color"
+          ],
           "answer": 2,
           "explanation": "Books are displayed in a Library; Paintings are displayed in a Museum."
         },
         {
           "id": "analytical_18",
           "question": "What is the next number: 1, 1, 2, 3, 5, 8, ___?",
-          "choices": ["11", "12", "13", "15"],
+          "choices": [
+            "11",
+            "12",
+            "13",
+            "15"
+          ],
           "answer": 2,
           "explanation": "This is the Fibonacci sequence: each number is the sum of the two before it. 5+8=13."
         },
         {
           "id": "analytical_19",
           "question": "A is the mother of B. B is the sister of C. C is the father of D. What is A to D?",
-          "choices": ["Mother", "Aunt", "Grandmother", "Great-grandmother"],
+          "choices": [
+            "Mother",
+            "Aunt",
+            "Grandmother",
+            "Great-grandmother"
+          ],
           "answer": 2,
           "explanation": "A is the mother of B and C (siblings). C is the father of D. So A is the grandmother of D."
         },
         {
           "id": "analytical_20",
           "question": "Which shape has the most sides: Pentagon, Hexagon, Octagon, Heptagon?",
-          "choices": ["Pentagon", "Hexagon", "Octagon", "Heptagon"],
+          "choices": [
+            "Pentagon",
+            "Hexagon",
+            "Octagon",
+            "Heptagon"
+          ],
           "answer": 2,
           "explanation": "Pentagon=5, Hexagon=6, Heptagon=7, Octagon=8 sides. Octagon has the most."
         },
@@ -799,35 +1323,60 @@
         {
           "id": "analytical_22",
           "question": "What comes next? ZA, YB, XC, WD, ___",
-          "choices": ["VE", "VF", "UE", "WE"],
+          "choices": [
+            "VE",
+            "VF",
+            "UE",
+            "WE"
+          ],
           "answer": 0,
           "explanation": "First letter goes backward (Z,Y,X,W,V) and second letter goes forward (A,B,C,D,E). Next is VE."
         },
         {
           "id": "analytical_23",
-          "question": "There are 5 houses in a row. The red house is to the left of the green house. The blue house is to the right of the green house. Which house is in the middle?",
-          "choices": ["Red", "Blue", "Green", "Cannot be determined"],
+          "question": "Three houses stand in a row. The red house is to the left of the green house. The blue house is to the right of the green house. Which house is in the middle?",
+          "choices": [
+            "Red",
+            "Blue",
+            "Green",
+            "Cannot be determined"
+          ],
           "answer": 2,
-          "explanation": "Order: Red, Green, Blue (at minimum). Green is between Red and Blue, making it the middle of these three."
+          "explanation": "The order is Red, Green, Blue. Green is in the middle."
         },
         {
           "id": "analytical_24",
           "question": "If CLOCK = 43, where each letter's value equals its position (C=3, L=12, O=15, C=3, K=11), what is the sum for ACE?",
-          "choices": ["9", "10", "12", "14"],
+          "choices": [
+            "9",
+            "10",
+            "12",
+            "14"
+          ],
           "answer": 0,
           "explanation": "A=1, C=3, E=5. Sum = 1+3+5 = 9."
         },
         {
           "id": "analytical_25",
           "question": "A is older than B. C is younger than A but older than B. D is older than A. Who is the youngest?",
-          "choices": ["A", "B", "C", "D"],
+          "choices": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
           "answer": 1,
           "explanation": "Order from oldest: D > A > C > B. B is the youngest."
         },
         {
           "id": "analytical_26",
           "question": "What number is missing? 4, 9, 16, 25, ___, 49",
-          "choices": ["30", "34", "36", "40"],
+          "choices": [
+            "30",
+            "34",
+            "36",
+            "40"
+          ],
           "answer": 2,
           "explanation": "These are perfect squares: 2²=4, 3²=9, 4²=16, 5²=25, 6²=36, 7²=49. The missing number is 36."
         },
@@ -846,23 +1395,38 @@
         {
           "id": "analytical_28",
           "question": "A man points to a woman and says, 'Her mother is the only daughter of my mother.' How is the woman related to the man?",
-          "choices": ["Sister", "Daughter", "Niece", "Mother"],
-          "answer": 1,
-          "explanation": "'The only daughter of my mother' is himself or his sister. If it's his sister, the woman is his niece. But 'only daughter' means it must be his sister — so the woman is his niece. Wait — re-reading: 'only daughter of my mother' = his sister. The woman's mother is his sister, so the woman is his niece. Correct answer: Niece. But if 'only daughter' refers to a female version of himself: Daughter. The classic puzzle answer is Daughter."
+          "choices": [
+            "Sister",
+            "Daughter",
+            "Niece",
+            "Mother"
+          ],
+          "answer": 2,
+          "explanation": "The only daughter of the man's mother is his sister. Since the woman's mother is his sister, the woman is his niece."
         },
         {
           "id": "analytical_29",
           "question": "Choose the figure that completes the pattern: Circle, Square, Triangle, Circle, Square, ___",
-          "choices": ["Circle", "Square", "Triangle", "Pentagon"],
+          "choices": [
+            "Circle",
+            "Square",
+            "Triangle",
+            "Pentagon"
+          ],
           "answer": 2,
           "explanation": "The pattern repeats: Circle, Square, Triangle. The next in sequence after Circle, Square is Triangle."
         },
         {
           "id": "analytical_30",
           "question": "In a code where 1=A, 2=B, 3=C... what does 2-9-7 spell?",
-          "choices": ["BIG", "BIG", "CIG", "AIG"],
+          "choices": [
+            "BIG",
+            "DIG",
+            "CIG",
+            "AIG"
+          ],
           "answer": 0,
-          "explanation": "2=B, 9=I, 7=G. The word is BIG."
+          "explanation": "Using 1=A, 2=B, 3=C, and so on: 2=B, 9=I, 7=G. The code spells BIG."
         },
         {
           "id": "analytical_31",
@@ -879,28 +1443,48 @@
         {
           "id": "analytical_32",
           "question": "If BREAD is coded as CSFBE, how is TOAST coded?",
-          "choices": ["UPBTI", "VPBTV", "UPBTU", "VQBTU"],
+          "choices": [
+            "UPBTI",
+            "VPBTV",
+            "UPBTU",
+            "VQBTU"
+          ],
           "answer": 2,
           "explanation": "Each letter shifts forward by 1 in the alphabet: T→U, O→P, A→B, S→T, T→U. Thus, TOAST becomes UPBTU."
         },
         {
           "id": "analytical_33",
           "question": "David is faster than Kevin. Kevin is slower than Leo but faster than Mark. Who is the slowest?",
-          "choices": ["David", "Kevin", "Leo", "Mark"],
+          "choices": [
+            "David",
+            "Kevin",
+            "Leo",
+            "Mark"
+          ],
           "answer": 3,
           "explanation": "From the text, David > Kevin, Leo > Kevin, and Kevin > Mark. This places Mark definitively at the bottom of the speed order."
         },
         {
           "id": "analytical_34",
           "question": "What completes the series: B2, D4, F6, H8, ___?",
-          "choices": ["I9", "J10", "J12", "K11"],
+          "choices": [
+            "I9",
+            "J10",
+            "J12",
+            "K11"
+          ],
           "answer": 1,
           "explanation": "The letters advance by skipping one (B, D, F, H, J) and the numbers match the alphabet position of the letters (J is the 10th letter)."
         },
         {
           "id": "analytical_35",
           "question": "Glove is to Hand as Shoe is to ___?",
-          "choices": ["Sock", "Foot", "Leg", "Walk"],
+          "choices": [
+            "Sock",
+            "Foot",
+            "Leg",
+            "Walk"
+          ],
           "answer": 1,
           "explanation": "A glove directly covers and fits a hand; a shoe directly covers and fits a foot."
         },
@@ -919,35 +1503,48 @@
         {
           "id": "analytical_37",
           "question": "In a queue of 15 people, Sam is 6th from the front. What is his position from the back?",
-          "choices": ["9th", "10th", "11th", "12th"],
+          "choices": [
+            "9th",
+            "10th",
+            "11th",
+            "12th"
+          ],
           "answer": 1,
           "explanation": "Position from back = (Total count + 1) - Position from front. (15 + 1) - 6 = 10th."
         },
         {
-          "id": "analytical_38",
-          "question": "Find the odd one out: Cubic, Square, Hexagonal, Cylindrical",
-          "choices": ["Cubic", "Square", "Hexagonal", "Cylindrical"],
-          "answer": 1,
-          "explanation": "Cubic, Hexagonal, and Cylindrical relate to geometric features with 3-dimensional volume or cross-sections, while 'Square' represents a basic 2D plane geometry characteristic."
-        },
-        {
           "id": "analytical_39",
           "question": "What number replaces the question mark? 3, 9, 27, 81, ?",
-          "choices": ["124", "243", "162", "324"],
+          "choices": [
+            "124",
+            "243",
+            "162",
+            "324"
+          ],
           "answer": 1,
           "explanation": "Each successive term is multiplied by 3: 81 × 3 = 243."
         },
         {
           "id": "analytical_40",
           "question": "Compass is to Direction as Thermometer is to ___?",
-          "choices": ["Weather", "Heat", "Temperature", "Mercury"],
+          "choices": [
+            "Weather",
+            "Heat",
+            "Temperature",
+            "Mercury"
+          ],
           "answer": 2,
           "explanation": "A compass is an instrument used specifically to measure or indicate direction; a thermometer is an instrument used to measure temperature."
         },
         {
           "id": "analytical_41",
           "question": "If yesterday was Tuesday, what day of the week will it be 50 days from today?",
-          "choices": ["Thursday", "Friday", "Saturday", "Sunday"],
+          "choices": [
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
           "answer": 0,
           "explanation": "If yesterday was Tuesday, today is Wednesday. 50 divided by 7 equals 7 weeks with a remainder of 1 day. Wednesday + 1 day = Thursday."
         },
@@ -966,58 +1563,398 @@
         {
           "id": "analytical_43",
           "question": "At exactly 6:00, what is the angle measurement between the clock hands?",
-          "choices": ["90°", "120°", "180°", "360°"],
+          "choices": [
+            "90°",
+            "120°",
+            "180°",
+            "360°"
+          ],
           "answer": 2,
           "explanation": "At 6:00, the hour hand points directly at 6 and the minute hand points at 12, creating a straight line which measures 180°."
         },
         {
           "id": "analytical_44",
           "question": "Find the odd one out: Whale, Shark, Dolphin, Seal",
-          "choices": ["Whale", "Shark", "Dolphin", "Seal"],
+          "choices": [
+            "Whale",
+            "Shark",
+            "Dolphin",
+            "Seal"
+          ],
           "answer": 1,
           "explanation": "Whales, dolphins, and seals are marine mammals. A shark is a cartilaginous fish."
         },
         {
           "id": "analytical_45",
           "question": "If CODE = 24 using a basic alpha sum (C=3, O=15, D=4, E=5), what is the total value of TASK?",
-          "choices": ["50", "52", "54", "56"],
+          "choices": [
+            "49",
+            "51",
+            "53",
+            "55"
+          ],
           "answer": 1,
-          "explanation": "T=20, A=1, S=19, K=11. Adding them up: 20 + 1 + 19 + 11 = 52."
+          "explanation": "T=20, A=1, S=19, K=11. Adding them: 20 + 1 + 19 + 11 = 51."
         },
         {
           "id": "analytical_46",
-          "question": "Five cars are parked side-by-side. The blue car is directly next to the red car. The white car is at the far right end. The silver car is between the red and white car. What color is the car in the middle position?",
-          "choices": ["Blue", "Red", "Silver", "White"],
-          "answer": 1,
-          "explanation": "Arranging from left to right based on constraints: [Car 1], Blue, Red, Silver, White. The middle (3rd) car is Red."
+          "question": "Five cars are parked side by side. The white car is at the far right. The silver car is immediately left of the white car. The red car is immediately left of the silver car. The blue car is immediately left of the red car. A green car is at the far left. Which car is in the middle position?",
+          "choices": [
+            "Green",
+            "Blue",
+            "Red",
+            "Silver"
+          ],
+          "answer": 2,
+          "explanation": "The order is Green, Blue, Red, Silver, White. Red is third, the middle car."
         },
         {
           "id": "analytical_47",
           "question": "Complete the analogy: Canvas is to Painter as Wood is to ___?",
-          "choices": ["Forest", "Carpenter", "Chisel", "Furniture"],
+          "choices": [
+            "Forest",
+            "Carpenter",
+            "Chisel",
+            "Furniture"
+          ],
           "answer": 1,
           "explanation": "A canvas is the primary raw material transformed by a painter; wood is the primary raw material transformed by a carpenter."
         },
         {
           "id": "analytical_48",
           "question": "What is the next number in this sequence: 2, 5, 11, 23, ___?",
-          "choices": ["35", "46", "47", "49"],
+          "choices": [
+            "35",
+            "46",
+            "47",
+            "49"
+          ],
           "answer": 2,
           "explanation": "The pattern follows the rule (Previous Number × 2) + 1. Therefore: (23 × 2) + 1 = 47."
         },
         {
           "id": "analytical_49",
           "question": "A woman introduces a man as 'the son of the only brother of my mother'. How is the man related to the woman?",
-          "choices": ["Nephew", "Brother", "Cousin", "Uncle"],
+          "choices": [
+            "Nephew",
+            "Brother",
+            "Cousin",
+            "Uncle"
+          ],
           "answer": 2,
           "explanation": "The mother's only brother is the woman's uncle. The son of her uncle is her cousin."
         },
         {
           "id": "analytical_50",
           "question": "Which geometric shape contains the fewest internal diagonals: Rectangle, Pentagon, Triangle, Hexagon?",
-          "choices": ["Rectangle", "Pentagon", "Triangle", "Hexagon"],
+          "choices": [
+            "Rectangle",
+            "Pentagon",
+            "Triangle",
+            "Hexagon"
+          ],
           "answer": 2,
           "explanation": "A triangle contains 0 diagonals. A rectangle has 2, a pentagon has 5, and a hexagon has 9."
+        },
+        {
+          "id": "analytical_51",
+          "question": "What number comes next? 3, 8, 15, 24, 35, __",
+          "choices": [
+            "46",
+            "48",
+            "50",
+            "52"
+          ],
+          "answer": 1,
+          "explanation": "The differences are 5, 7, 9, 11; the next difference is 13, so 35 + 13 = 48."
+        },
+        {
+          "id": "analytical_52",
+          "question": "All clerks are employees. Some employees are accountants. Which conclusion must be true?",
+          "choices": [
+            "All clerks are accountants.",
+            "Some clerks are accountants.",
+            "All clerks are employees.",
+            "No accountants are clerks."
+          ],
+          "answer": 2,
+          "explanation": "The first statement directly establishes that every clerk is an employee."
+        },
+        {
+          "id": "analytical_53",
+          "question": "If MONDAY is coded as NPOEBZ by shifting each letter one step forward, how is FRIDAY coded?",
+          "choices": [
+            "GSJEBZ",
+            "GQJEBZ",
+            "ESHCZX",
+            "GSIEBZ"
+          ],
+          "answer": 0,
+          "explanation": "Each letter moves one place forward: F-G, R-S, I-J, D-E, A-B, Y-Z."
+        },
+        {
+          "id": "analytical_55",
+          "question": "Four people sit in a row. L is left of M; N is right of M; O is left of L. Who is second from the left?",
+          "choices": [
+            "O",
+            "L",
+            "M",
+            "N"
+          ],
+          "answer": 1,
+          "explanation": "The order is O, L, M, N; L is second."
+        },
+        {
+          "id": "analytical_57",
+          "question": "If 5 machines make 5 items in 5 minutes, how long will 100 machines take to make 100 items at the same rate?",
+          "choices": [
+            "5 minutes",
+            "20 minutes",
+            "100 minutes",
+            "500 minutes"
+          ],
+          "answer": 0,
+          "explanation": "Each machine makes one item in five minutes, so 100 machines make 100 items in five minutes."
+        },
+        {
+          "id": "analytical_58",
+          "question": "A is the sister of B. B is the father of C. How is A related to C?",
+          "choices": [
+            "Mother",
+            "Aunt",
+            "Sister",
+            "Grandmother"
+          ],
+          "answer": 1,
+          "explanation": "A is the sister of C's father, so A is C's aunt."
+        },
+        {
+          "id": "analytical_59",
+          "question": "Complete the analogy: Book is to reading as fork is to ____.",
+          "choices": [
+            "Drawing",
+            "Writing",
+            "Eating",
+            "Cutting"
+          ],
+          "answer": 2,
+          "explanation": "A book is used for reading; a fork is used for eating."
+        },
+        {
+          "id": "analytical_60",
+          "question": "If today is Wednesday, what day will it be 45 days from today?",
+          "choices": [
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "answer": 2,
+          "explanation": "45 days is 6 weeks and 3 days; three days after Wednesday is Saturday."
+        },
+        {
+          "id": "analytical_61",
+          "question": "In a group of 40, 25 like tea, 20 like coffee, and 10 like both. How many like neither?",
+          "choices": [
+            "0",
+            "5",
+            "10",
+            "15"
+          ],
+          "answer": 1,
+          "explanation": "At least one = 25 + 20 - 10 = 35. Neither = 40 - 35 = 5."
+        },
+        {
+          "id": "analytical_62",
+          "question": "Which pair has the same relationship as Seed : Plant?",
+          "choices": [
+            "Egg : Bird",
+            "Leaf : Tree",
+            "Soil : Garden",
+            "Water : River"
+          ],
+          "answer": 0,
+          "explanation": "A seed can develop into a plant, just as an egg can develop into a bird."
+        },
+        {
+          "id": "analytical_64",
+          "question": "If the first and last letters of the word GARDEN are exchanged, what is the resulting word?",
+          "choices": [
+            "NARDEG",
+            "NARDGE",
+            "GARDEN",
+            "NARDEN"
+          ],
+          "answer": 0,
+          "explanation": "Exchanging G and N gives NARD E G, or NARDEG."
+        },
+        {
+          "id": "analytical_65",
+          "question": "A is older than B. C is younger than B. D is older than A. Who is oldest?",
+          "choices": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "answer": 3,
+          "explanation": "D is older than A, who is older than B, who is older than C."
+        },
+        {
+          "id": "analytical_67",
+          "question": "If all roses are flowers and no flowers are made of metal, which statement follows?",
+          "choices": [
+            "Some roses are metal.",
+            "No roses are made of metal.",
+            "All metal objects are roses.",
+            "Some flowers are not roses."
+          ],
+          "answer": 1,
+          "explanation": "Since roses are flowers and no flowers are metal, roses cannot be metal."
+        },
+        {
+          "id": "analytical_68",
+          "question": "A person walks 4 km north, then 3 km east. In which direction is the person from the starting point?",
+          "choices": [
+            "Northwest",
+            "Northeast",
+            "Southeast",
+            "Southwest"
+          ],
+          "answer": 1,
+          "explanation": "The person is north and east of the starting point, hence northeast."
+        },
+        {
+          "id": "analytical_69",
+          "question": "Choose the item that does not belong.",
+          "choices": [
+            "January",
+            "March",
+            "May",
+            "June"
+          ],
+          "answer": 3,
+          "explanation": "January, March, and May have 31 days; June has 30."
+        },
+        {
+          "id": "analytical_70",
+          "question": "If 12 workers finish a job in 10 days, how many days would 6 workers need at the same rate?",
+          "choices": [
+            "5",
+            "10",
+            "15",
+            "20"
+          ],
+          "answer": 3,
+          "explanation": "Half as many workers require twice the time: 10 × 2 = 20 days."
+        },
+        {
+          "id": "analytical_71",
+          "question": "In a code, 4 means +, 5 means −, 6 means ×. What is 8 6 2 4 3?",
+          "choices": [
+            "13",
+            "16",
+            "19",
+            "22"
+          ],
+          "answer": 2,
+          "explanation": "Replace the symbols: 8 × 2 + 3 = 19, using multiplication before addition."
+        },
+        {
+          "id": "analytical_72",
+          "question": "Which number is different from the others?",
+          "choices": [
+            "16",
+            "25",
+            "36",
+            "48"
+          ],
+          "answer": 3,
+          "explanation": "16, 25, and 36 are perfect squares; 48 is not."
+        },
+        {
+          "id": "analytical_73",
+          "question": "A class has 18 boys and 12 girls. What fraction of the class are girls?",
+          "choices": [
+            "1/5",
+            "2/5",
+            "3/5",
+            "2/3"
+          ],
+          "answer": 1,
+          "explanation": "There are 30 students; 12/30 simplifies to 2/5."
+        },
+        {
+          "id": "analytical_74",
+          "question": "If PENCIL is arranged alphabetically by its letters, which letter is third?",
+          "choices": [
+            "C",
+            "E",
+            "I",
+            "L"
+          ],
+          "answer": 2,
+          "explanation": "Alphabetical order is C, E, I, L, N, P; the third letter is I."
+        },
+        {
+          "id": "analytical_75",
+          "question": "Five books are stacked. Red is above Blue. Green is below Blue. Yellow is above Red. Which book is highest among these four?",
+          "choices": [
+            "Red",
+            "Blue",
+            "Green",
+            "Yellow"
+          ],
+          "answer": 3,
+          "explanation": "Yellow is above Red, which is above Blue, which is above Green."
+        },
+        {
+          "id": "analytical_77",
+          "question": "If some doctors are writers and all writers are readers, which conclusion follows?",
+          "choices": [
+            "All doctors are readers.",
+            "Some doctors are readers.",
+            "No doctors are readers.",
+            "All readers are doctors."
+          ],
+          "answer": 1,
+          "explanation": "The doctors who are writers must also be readers."
+        },
+        {
+          "id": "analytical_78",
+          "question": "A number is doubled and then increased by 7 to get 31. What is the number?",
+          "choices": [
+            "10",
+            "11",
+            "12",
+            "14"
+          ],
+          "answer": 2,
+          "explanation": "Let x be the number: 2x + 7 = 31, so x = 12."
+        },
+        {
+          "id": "analytical_79",
+          "question": "Which comes next in the sequence of shapes: triangle, square, pentagon, hexagon, __?",
+          "choices": [
+            "Circle",
+            "Heptagon",
+            "Octagon",
+            "Nonagon"
+          ],
+          "answer": 1,
+          "explanation": "The number of sides increases from 3 to 4, 5, and 6; next is 7, a heptagon."
+        },
+        {
+          "id": "analytical_80",
+          "question": "Rina is 7th from the front and 9th from the back of a line. How many people are in the line?",
+          "choices": [
+            "14",
+            "15",
+            "16",
+            "17"
+          ],
+          "answer": 1,
+          "explanation": "Total = 7 + 9 - 1 = 15 because Rina is counted from both ends."
         }
       ]
     },
@@ -1030,353 +1967,951 @@
         {
           "id": "numerical_1",
           "question": "What is 15% of 240?",
-          "choices": ["30", "36", "40", "32"],
+          "choices": [
+            "30",
+            "36",
+            "40",
+            "32"
+          ],
           "answer": 1,
           "explanation": "15% of 240 = 0.15 × 240 = 36"
         },
         {
           "id": "numerical_2",
           "question": "A train travels 360 km in 4 hours. What is its speed in km/h?",
-          "choices": ["80", "85", "90", "95"],
+          "choices": [
+            "80",
+            "85",
+            "90",
+            "95"
+          ],
           "answer": 2,
           "explanation": "Speed = Distance ÷ Time = 360 ÷ 4 = 90 km/h"
         },
         {
           "id": "numerical_3",
           "question": "If 3x + 7 = 22, what is the value of x?",
-          "choices": ["3", "4", "5", "6"],
+          "choices": [
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
           "answer": 2,
           "explanation": "3x + 7 = 22 → 3x = 15 → x = 5"
         },
         {
           "id": "numerical_4",
           "question": "What is the next number in the series: 2, 6, 18, 54, ___?",
-          "choices": ["108", "162", "216", "200"],
+          "choices": [
+            "108",
+            "162",
+            "216",
+            "200"
+          ],
           "answer": 1,
           "explanation": "Each number is multiplied by 3: 54×3=162"
         },
         {
           "id": "numerical_5",
           "question": "A rectangle has a length of 12 cm and a width of 8 cm. What is its area?",
-          "choices": ["40 sq cm", "80 sq cm", "96 sq cm", "48 sq cm"],
+          "choices": [
+            "40 sq cm",
+            "80 sq cm",
+            "96 sq cm",
+            "48 sq cm"
+          ],
           "answer": 2,
           "explanation": "Area = length × width = 12 × 8 = 96 sq cm"
         },
         {
           "id": "numerical_6",
           "question": "If a shirt costs ₱850 after a 15% discount, what was the original price?",
-          "choices": ["₱975", "₱1,000", "₱1,050", "₱1,100"],
+          "choices": [
+            "₱975",
+            "₱1,000",
+            "₱1,050",
+            "₱1,100"
+          ],
           "answer": 1,
           "explanation": "₱850 = 85% of original price. Original = 850 ÷ 0.85 = ₱1,000"
         },
         {
           "id": "numerical_7",
           "question": "What is the average of 45, 62, 78, 55, and 70?",
-          "choices": ["60", "62", "64", "66"],
+          "choices": [
+            "60",
+            "62",
+            "64",
+            "66"
+          ],
           "answer": 1,
           "explanation": "Average = (45+62+78+55+70) ÷ 5 = 310 ÷ 5 = 62"
         },
         {
           "id": "numerical_8",
           "question": "A worker can finish a job in 6 days. Another can finish it in 4 days. How long working together?",
-          "choices": ["2.4 days", "3 days", "3.5 days", "2 days"],
+          "choices": [
+            "2.4 days",
+            "3 days",
+            "3.5 days",
+            "2 days"
+          ],
           "answer": 0,
           "explanation": "Combined rate = 1/6 + 1/4 = 5/12 per day. Time = 12/5 = 2.4 days"
         },
         {
           "id": "numerical_9",
           "question": "What is the square root of 1,764?",
-          "choices": ["40", "42", "44", "46"],
+          "choices": [
+            "40",
+            "42",
+            "44",
+            "46"
+          ],
           "answer": 1,
           "explanation": "√1,764 = 42 because 42 × 42 = 1,764"
         },
         {
           "id": "numerical_10",
           "question": "If the ratio of boys to girls in a class is 3:5 and there are 24 boys, how many girls are there?",
-          "choices": ["35", "38", "40", "45"],
+          "choices": [
+            "35",
+            "38",
+            "40",
+            "45"
+          ],
           "answer": 2,
           "explanation": "3 parts = 24, so 1 part = 8. Girls = 5 × 8 = 40"
         },
         {
           "id": "numerical_11",
           "question": "What is the next number in the series: 1, 4, 9, 16, 25, ___?",
-          "choices": ["30", "36", "40", "49"],
+          "choices": [
+            "30",
+            "36",
+            "40",
+            "49"
+          ],
           "answer": 1,
           "explanation": "These are perfect squares: 6²=36"
         },
         {
           "id": "numerical_12",
           "question": "A store marks up a product by 40% from its cost of ₱500. What is the selling price?",
-          "choices": ["₱640", "₱700", "₱680", "₱720"],
+          "choices": [
+            "₱640",
+            "₱700",
+            "₱680",
+            "₱720"
+          ],
           "answer": 1,
           "explanation": "Markup = 40% of ₱500 = ₱200. Selling price = ₱500 + ₱200 = ₱700"
         },
         {
           "id": "numerical_13",
           "question": "If 5 pens cost ₱75, how much do 12 pens cost?",
-          "choices": ["₱160", "₱175", "₱180", "₱190"],
+          "choices": [
+            "₱160",
+            "₱175",
+            "₱180",
+            "₱190"
+          ],
           "answer": 2,
           "explanation": "Cost per pen = ₱75 ÷ 5 = ₱15. Cost of 12 = 12 × ₱15 = ₱180"
         },
         {
           "id": "numerical_14",
           "question": "What is 20% of 20% of 500?",
-          "choices": ["10", "15", "20", "25"],
+          "choices": [
+            "10",
+            "15",
+            "20",
+            "25"
+          ],
           "answer": 2,
           "explanation": "20% of 500 = 100. Then 20% of 100 = 20."
         },
         {
           "id": "numerical_15",
           "question": "The perimeter of a square is 64 cm. What is its area?",
-          "choices": ["128 sq cm", "196 sq cm", "256 sq cm", "164 sq cm"],
+          "choices": [
+            "128 sq cm",
+            "196 sq cm",
+            "256 sq cm",
+            "164 sq cm"
+          ],
           "answer": 2,
           "explanation": "Side = 64 ÷ 4 = 16 cm. Area = 16 × 16 = 256 sq cm."
         },
         {
           "id": "numerical_16",
           "question": "A car travels at 60 km/h for 2.5 hours. How far does it travel?",
-          "choices": ["120 km", "140 km", "150 km", "160 km"],
+          "choices": [
+            "120 km",
+            "140 km",
+            "150 km",
+            "160 km"
+          ],
           "answer": 2,
           "explanation": "Distance = Speed × Time = 60 × 2.5 = 150 km"
         },
         {
           "id": "numerical_17",
           "question": "What is the missing number: 7, 14, __, 28, 35?",
-          "choices": ["18", "20", "21", "24"],
+          "choices": [
+            "18",
+            "20",
+            "21",
+            "24"
+          ],
           "answer": 2,
           "explanation": "Multiples of 7: 7, 14, 21, 28, 35. Missing = 21."
         },
         {
           "id": "numerical_18",
           "question": "Ana is 3 times older than Ben. If Ben is 8 years old, how old is Ana?",
-          "choices": ["18", "20", "24", "27"],
+          "choices": [
+            "18",
+            "20",
+            "24",
+            "27"
+          ],
           "answer": 2,
           "explanation": "Ana = 3 × 8 = 24 years old."
         },
         {
           "id": "numerical_19",
           "question": "What is the value of 2³ + 3²?",
-          "choices": ["13", "15", "17", "19"],
+          "choices": [
+            "13",
+            "15",
+            "17",
+            "19"
+          ],
           "answer": 2,
           "explanation": "2³ = 8 and 3² = 9. So 8 + 9 = 17."
         },
         {
           "id": "numerical_20",
           "question": "A pipe fills a tank in 3 hours, another drains it in 6 hours. How long to fill with both open?",
-          "choices": ["4 hours", "5 hours", "6 hours", "9 hours"],
+          "choices": [
+            "4 hours",
+            "5 hours",
+            "6 hours",
+            "9 hours"
+          ],
           "answer": 2,
           "explanation": "Net rate = 1/3 - 1/6 = 1/6 per hour. Time = 6 hours."
         },
         {
           "id": "numerical_21",
           "question": "What is 35% of 400?",
-          "choices": ["120", "130", "140", "150"],
+          "choices": [
+            "120",
+            "130",
+            "140",
+            "150"
+          ],
           "answer": 2,
           "explanation": "35% of 400 = 0.35 × 400 = 140"
         },
         {
           "id": "numerical_22",
           "question": "A number increased by 25% gives 250. What is the original number?",
-          "choices": ["175", "180", "200", "225"],
+          "choices": [
+            "175",
+            "180",
+            "200",
+            "225"
+          ],
           "answer": 2,
           "explanation": "x × 1.25 = 250 → x = 200"
         },
         {
           "id": "numerical_23",
           "question": "What is the least common multiple (LCM) of 6 and 8?",
-          "choices": ["16", "18", "24", "48"],
+          "choices": [
+            "16",
+            "18",
+            "24",
+            "48"
+          ],
           "answer": 2,
           "explanation": "LCM of 6 and 8 = 24."
         },
         {
           "id": "numerical_24",
           "question": "If a shirt originally costs ₱1,200 and is on sale for ₱960, what is the discount percentage?",
-          "choices": ["15%", "18%", "20%", "25%"],
+          "choices": [
+            "15%",
+            "18%",
+            "20%",
+            "25%"
+          ],
           "answer": 2,
           "explanation": "Discount = ₱240. Percentage = (240 ÷ 1200) × 100 = 20%"
         },
         {
           "id": "numerical_25",
           "question": "A class has 40 students. If 60% are female, how many are male?",
-          "choices": ["14", "16", "18", "24"],
+          "choices": [
+            "14",
+            "16",
+            "18",
+            "24"
+          ],
           "answer": 1,
           "explanation": "Female = 24. Male = 40 - 24 = 16."
         },
         {
           "id": "numerical_26",
           "question": "What is the next term: 3, 7, 13, 21, 31, ___?",
-          "choices": ["40", "41", "43", "45"],
+          "choices": [
+            "40",
+            "41",
+            "43",
+            "45"
+          ],
           "answer": 2,
           "explanation": "Differences: +4,+6,+8,+10,+12. Next = 31+12 = 43."
         },
         {
           "id": "numerical_27",
           "question": "If 2x - 5 = 11, what is x?",
-          "choices": ["6", "7", "8", "9"],
+          "choices": [
+            "6",
+            "7",
+            "8",
+            "9"
+          ],
           "answer": 2,
           "explanation": "2x = 16 → x = 8"
         },
         {
           "id": "numerical_28",
           "question": "A triangle has a base of 10 cm and height of 6 cm. What is its area?",
-          "choices": ["25 sq cm", "30 sq cm", "40 sq cm", "60 sq cm"],
+          "choices": [
+            "25 sq cm",
+            "30 sq cm",
+            "40 sq cm",
+            "60 sq cm"
+          ],
           "answer": 1,
           "explanation": "Area = ½ × 10 × 6 = 30 sq cm"
         },
         {
           "id": "numerical_29",
           "question": "What is the greatest common factor (GCF) of 36 and 48?",
-          "choices": ["6", "9", "12", "18"],
+          "choices": [
+            "6",
+            "9",
+            "12",
+            "18"
+          ],
           "answer": 2,
           "explanation": "GCF of 36 and 48 = 12."
         },
         {
           "id": "numerical_30",
           "question": "A salesman earns 5% commission. If he sold ₱80,000 worth, how much commission?",
-          "choices": ["₱3,000", "₱3,500", "₱4,000", "₱5,000"],
+          "choices": [
+            "₱3,000",
+            "₱3,500",
+            "₱4,000",
+            "₱5,000"
+          ],
           "answer": 2,
           "explanation": "Commission = 5% × ₱80,000 = ₱4,000"
         },
-          {
-    "id": "numerical_31",
-    "question": "What is 22% of 450?",
-    "choices": ["90", "99", "102", "108"],
-    "answer": 1,
-    "explanation": "22% of 450 = 0.22 × 450 = 99."
-  },
-  {
-    "id": "numerical_32",
-    "question": "A runner covers 15 kilometers in 1.5 hours. What is their average speed in km/h?",
-    "choices": ["8 km/h", "9 km/h", "10 km/h", "12 km/h"],
-    "answer": 2,
-    "explanation": "Speed = Distance ÷ Time = 15 ÷ 1.5 = 10 km/h."
-  },
-  {
-    "id": "numerical_33",
-    "question": "Solve for x if 5x - 12 = 18.",
-    "choices": ["4", "5", "6", "7"],
-    "answer": 2,
-    "explanation": "5x - 12 = 18 → 5x = 30 → x = 6."
-  },
-  {
-    "id": "numerical_34",
-    "question": "Identify the next number in the series: 3, 12, 48, 192, ___?",
-    "choices": ["384", "576", "768", "800"],
-    "answer": 2,
-    "explanation": "Each number is multiplied by 4: 192 × 4 = 768."
-  },
-  {
-    "id": "numerical_35",
-    "question": "A square property has a side length of 15 meters. What is its total area?",
-    "choices": ["60 sq m", "125 sq m", "225 sq m", "250 sq m"],
-    "answer": 2,
-    "explanation": "Area of a square = side² = 15 × 15 = 225 sq m."
-  },
-  {
-    "id": "numerical_36",
-    "question": "An item sells for ₱1,200 after a 20% discount. What was the item's original retail price?",
-    "choices": ["₱1,400", "₱1,500", "₱1,600", "₱1,800"],
-    "answer": 1,
-    "explanation": "₱1,200 represents 80% of the original cost. Original Price = 1,200 ÷ 0.80 = ₱1,500."
-  },
-  {
-    "id": "numerical_37",
-    "question": "What is the statistical mean (average) of 12, 18, 25, 31, and 34?",
-    "choices": ["22", "24", "26", "28"],
-    "answer": 1,
-    "explanation": "Sum = 12 + 18 + 25 + 31 + 34 = 120. Average = 120 ÷ 5 = 24."
-  },
-  {
-    "id": "numerical_38",
-    "question": "Machine A can finish a data batch processing job in 8 hours, while Machine B can complete it in 8 hours. Working concurrently, how long will they take?",
-    "choices": ["3 hours", "4 hours", "5 hours", "6 hours"],
-    "answer": 1,
-    "explanation": "Combined rate = 1/8 + 1/8 = 2/8 = 1/4 batch per hour. Total time required = 4 hours."
-  },
-  {
-    "id": "numerical_39",
-    "question": "What is the square root value of 2,916?",
-    "choices": ["52", "54", "56", "58"],
-    "answer": 1,
-    "explanation": "54 × 54 = 2,916, making 54 its square root."
-  },
-  {
-    "id": "numerical_40",
-    "question": "The ratio of concrete to sand in a mix is 2:7. If there are 14 bags of concrete, how many bags of sand are needed?",
-    "choices": ["42", "49", "56", "63"],
-    "answer": 1,
-    "explanation": "2 parts = 14 bags, meaning 1 part = 7 bags. Sand requirement = 7 parts × 7 = 49 bags."
-  },
-  {
-    "id": "numerical_41",
-    "question": "Find the missing term in the sequence: 4, 12, 20, ___, 36.",
-    "choices": ["24", "26", "28", "30"],
-    "answer": 2,
-    "explanation": "The series increases by a fixed addition of 8 each step. 20 + 8 = 28."
-  },
-  {
-    "id": "numerical_42",
-    "question": "A wholesale warehouse marks up an item by 30% over its production cost of ₱350. What is its final selling price?",
-    "choices": ["₱420", "₱445", "₱455", "₱465"],
-    "answer": 2,
-    "explanation": "Markup value = 30% of ₱350 = ₱105. Selling Price = 350 + 105 = ₱455."
-  },
-  {
-    "id": "numerical_43",
-    "question": "If 8 pieces of corporate token items cost ₱600, what is the cost for 15 pieces?",
-    "choices": ["₱1,050", "₱1,125", "₱1,200", "₱1,250"],
-    "answer": 1,
-    "explanation": "Unit price = 600 ÷ 8 = ₱75. Cost for 15 items = 15 × 75 = ₱1,125."
-  },
-  {
-    "id": "numerical_44",
-    "question": "Evaluate: 25% of 40% of 800.",
-    "choices": ["40", "60", "80", "100"],
-    "answer": 2,
-    "explanation": "40% of 800 = 320. Next, 25% (one quarter) of 320 = 80."
-  },
-  {
-    "id": "numerical_45",
-    "question": "A square field has a total perimeter boundary of 120 meters. Calculate its internal area.",
-    "choices": ["600 sq m", "800 sq m", "900 sq m", "1,200 sq m"],
-    "answer": 2,
-    "explanation": "Side measurement = 120 ÷ 4 = 30 meters. Total Area = 30 × 30 = 900 sq m."
-  },
-  {
-    "id": "numerical_46",
-    "question": "A delivery vehicle drives at 70 km/h for 3.5 hours. What total distance does it cover?",
-    "choices": ["210 km", "245 km", "255 km", "280 km"],
-    "answer": 1,
-    "explanation": "Distance = Speed × Time duration = 70 × 3.5 = 245 kilometers."
-  },
-  {
-    "id": "numerical_47",
-    "question": "Evaluate the arithmetic operation expression: 4³ - 5².",
-    "choices": ["31", "39", "41", "44"],
-    "answer": 1,
-    "explanation": "4³ = 64 and 5² = 25. Evaluating 64 - 25 yields 39."
-  },
-  {
-    "id": "numerical_48",
-    "question": "An open input pipe fills a water container in 4 hours, whereas an escape valve empties it in 12 hours. If both run, how long to fill the container?",
-    "choices": ["5 hours", "6 hours", "7 hours", "8 hours"],
-    "answer": 1,
-    "explanation": "Net rate per hour = 1/4 - 1/12 = 3/12 - 1/12 = 2/12 = 1/6. Total time required = 6 hours."
-  },
-  {
-    "id": "numerical_49",
-    "question": "Find the Least Common Multiple (LCM) value for the numbers 9 and 12.",
-    "choices": ["24", "36", "48", "72"],
-    "answer": 1,
-    "explanation": "Multiples of 9: 9, 18, 27, 36. Multiples of 12: 12, 24, 36. The smallest shared multiple is 36."
-  },
-  {
-    "id": "numerical_50",
-    "question": "A production department employs 60 staff members. If 35% are assigned to field shifts, how many work inside the office?",
-    "choices": ["36", "39", "41", "44"],
-    "answer": 1,
-    "explanation": "Office percentage = 100% - 35% = 65%. Office staff count = 0.65 × 60 = 39 workers."
-  }
+        {
+          "id": "numerical_31",
+          "question": "What is 22% of 450?",
+          "choices": [
+            "90",
+            "99",
+            "102",
+            "108"
+          ],
+          "answer": 1,
+          "explanation": "22% of 450 = 0.22 × 450 = 99."
+        },
+        {
+          "id": "numerical_32",
+          "question": "A runner covers 15 kilometers in 1.5 hours. What is their average speed in km/h?",
+          "choices": [
+            "8 km/h",
+            "9 km/h",
+            "10 km/h",
+            "12 km/h"
+          ],
+          "answer": 2,
+          "explanation": "Speed = Distance ÷ Time = 15 ÷ 1.5 = 10 km/h."
+        },
+        {
+          "id": "numerical_33",
+          "question": "Solve for x if 5x - 12 = 18.",
+          "choices": [
+            "4",
+            "5",
+            "6",
+            "7"
+          ],
+          "answer": 2,
+          "explanation": "5x - 12 = 18 → 5x = 30 → x = 6."
+        },
+        {
+          "id": "numerical_34",
+          "question": "Identify the next number in the series: 3, 12, 48, 192, ___?",
+          "choices": [
+            "384",
+            "576",
+            "768",
+            "800"
+          ],
+          "answer": 2,
+          "explanation": "Each number is multiplied by 4: 192 × 4 = 768."
+        },
+        {
+          "id": "numerical_35",
+          "question": "A square property has a side length of 15 meters. What is its total area?",
+          "choices": [
+            "60 sq m",
+            "125 sq m",
+            "225 sq m",
+            "250 sq m"
+          ],
+          "answer": 2,
+          "explanation": "Area of a square = side² = 15 × 15 = 225 sq m."
+        },
+        {
+          "id": "numerical_36",
+          "question": "An item sells for ₱1,200 after a 20% discount. What was the item's original retail price?",
+          "choices": [
+            "₱1,400",
+            "₱1,500",
+            "₱1,600",
+            "₱1,800"
+          ],
+          "answer": 1,
+          "explanation": "₱1,200 represents 80% of the original cost. Original Price = 1,200 ÷ 0.80 = ₱1,500."
+        },
+        {
+          "id": "numerical_37",
+          "question": "What is the statistical mean (average) of 12, 18, 25, 31, and 34?",
+          "choices": [
+            "22",
+            "24",
+            "26",
+            "28"
+          ],
+          "answer": 1,
+          "explanation": "Sum = 12 + 18 + 25 + 31 + 34 = 120. Average = 120 ÷ 5 = 24."
+        },
+        {
+          "id": "numerical_38",
+          "question": "Machine A can finish a data batch processing job in 8 hours, while Machine B can complete it in 8 hours. Working concurrently, how long will they take?",
+          "choices": [
+            "3 hours",
+            "4 hours",
+            "5 hours",
+            "6 hours"
+          ],
+          "answer": 1,
+          "explanation": "Combined rate = 1/8 + 1/8 = 2/8 = 1/4 batch per hour. Total time required = 4 hours."
+        },
+        {
+          "id": "numerical_39",
+          "question": "What is the square root value of 2,916?",
+          "choices": [
+            "52",
+            "54",
+            "56",
+            "58"
+          ],
+          "answer": 1,
+          "explanation": "54 × 54 = 2,916, making 54 its square root."
+        },
+        {
+          "id": "numerical_40",
+          "question": "The ratio of concrete to sand in a mix is 2:7. If there are 14 bags of concrete, how many bags of sand are needed?",
+          "choices": [
+            "42",
+            "49",
+            "56",
+            "63"
+          ],
+          "answer": 1,
+          "explanation": "2 parts = 14 bags, meaning 1 part = 7 bags. Sand requirement = 7 parts × 7 = 49 bags."
+        },
+        {
+          "id": "numerical_41",
+          "question": "Find the missing term in the sequence: 4, 12, 20, ___, 36.",
+          "choices": [
+            "24",
+            "26",
+            "28",
+            "30"
+          ],
+          "answer": 2,
+          "explanation": "The series increases by a fixed addition of 8 each step. 20 + 8 = 28."
+        },
+        {
+          "id": "numerical_42",
+          "question": "A wholesale warehouse marks up an item by 30% over its production cost of ₱350. What is its final selling price?",
+          "choices": [
+            "₱420",
+            "₱445",
+            "₱455",
+            "₱465"
+          ],
+          "answer": 2,
+          "explanation": "Markup value = 30% of ₱350 = ₱105. Selling Price = 350 + 105 = ₱455."
+        },
+        {
+          "id": "numerical_43",
+          "question": "If 8 pieces of corporate token items cost ₱600, what is the cost for 15 pieces?",
+          "choices": [
+            "₱1,050",
+            "₱1,125",
+            "₱1,200",
+            "₱1,250"
+          ],
+          "answer": 1,
+          "explanation": "Unit price = 600 ÷ 8 = ₱75. Cost for 15 items = 15 × 75 = ₱1,125."
+        },
+        {
+          "id": "numerical_44",
+          "question": "Evaluate: 25% of 40% of 800.",
+          "choices": [
+            "40",
+            "60",
+            "80",
+            "100"
+          ],
+          "answer": 2,
+          "explanation": "40% of 800 = 320. Next, 25% (one quarter) of 320 = 80."
+        },
+        {
+          "id": "numerical_45",
+          "question": "A square field has a total perimeter boundary of 120 meters. Calculate its internal area.",
+          "choices": [
+            "600 sq m",
+            "800 sq m",
+            "900 sq m",
+            "1,200 sq m"
+          ],
+          "answer": 2,
+          "explanation": "Side measurement = 120 ÷ 4 = 30 meters. Total Area = 30 × 30 = 900 sq m."
+        },
+        {
+          "id": "numerical_46",
+          "question": "A delivery vehicle drives at 70 km/h for 3.5 hours. What total distance does it cover?",
+          "choices": [
+            "210 km",
+            "245 km",
+            "255 km",
+            "280 km"
+          ],
+          "answer": 1,
+          "explanation": "Distance = Speed × Time duration = 70 × 3.5 = 245 kilometers."
+        },
+        {
+          "id": "numerical_47",
+          "question": "Evaluate the arithmetic operation expression: 4³ - 5².",
+          "choices": [
+            "31",
+            "39",
+            "41",
+            "44"
+          ],
+          "answer": 1,
+          "explanation": "4³ = 64 and 5² = 25. Evaluating 64 - 25 yields 39."
+        },
+        {
+          "id": "numerical_48",
+          "question": "An open input pipe fills a water container in 4 hours, whereas an escape valve empties it in 12 hours. If both run, how long to fill the container?",
+          "choices": [
+            "5 hours",
+            "6 hours",
+            "7 hours",
+            "8 hours"
+          ],
+          "answer": 1,
+          "explanation": "Net rate per hour = 1/4 - 1/12 = 3/12 - 1/12 = 2/12 = 1/6. Total time required = 6 hours."
+        },
+        {
+          "id": "numerical_49",
+          "question": "Find the Least Common Multiple (LCM) value for the numbers 9 and 12.",
+          "choices": [
+            "24",
+            "36",
+            "48",
+            "72"
+          ],
+          "answer": 1,
+          "explanation": "Multiples of 9: 9, 18, 27, 36. Multiples of 12: 12, 24, 36. The smallest shared multiple is 36."
+        },
+        {
+          "id": "numerical_50",
+          "question": "A production department employs 60 staff members. If 35% are assigned to field shifts, how many work inside the office?",
+          "choices": [
+            "36",
+            "39",
+            "41",
+            "44"
+          ],
+          "answer": 1,
+          "explanation": "Office percentage = 100% - 35% = 65%. Office staff count = 0.65 × 60 = 39 workers."
+        },
+        {
+          "id": "numerical_51",
+          "question": "What is 18% of 450?",
+          "choices": [
+            "72",
+            "81",
+            "90",
+            "96"
+          ],
+          "answer": 1,
+          "explanation": "0.18 × 450 = 81."
+        },
+        {
+          "id": "numerical_52",
+          "question": "Simplify: 3/4 + 2/3.",
+          "choices": [
+            "5/7",
+            "6/7",
+            "17/12",
+            "13/12"
+          ],
+          "answer": 2,
+          "explanation": "Using denominator 12: 9/12 + 8/12 = 17/12."
+        },
+        {
+          "id": "numerical_53",
+          "question": "A bag costs ₱1,250 after a 20% discount. What was its original price?",
+          "choices": [
+            "₱1,450",
+            "₱1,500",
+            "₱1,562.50",
+            "₱1,600"
+          ],
+          "answer": 2,
+          "explanation": "₱1,250 is 80% of the original; 1,250 ÷ 0.8 = ₱1,562.50."
+        },
+        {
+          "id": "numerical_54",
+          "question": "Find the average of 12, 15, 18, 21, and 24.",
+          "choices": [
+            "16",
+            "17",
+            "18",
+            "19"
+          ],
+          "answer": 2,
+          "explanation": "Their sum is 90; 90 ÷ 5 = 18."
+        },
+        {
+          "id": "numerical_55",
+          "question": "A vehicle travels 150 km in 3 hours. What is its average speed?",
+          "choices": [
+            "40 km/h",
+            "45 km/h",
+            "50 km/h",
+            "60 km/h"
+          ],
+          "answer": 2,
+          "explanation": "Average speed = distance ÷ time = 150 ÷ 3 = 50 km/h."
+        },
+        {
+          "id": "numerical_56",
+          "question": "Solve for x: 5x − 7 = 28.",
+          "choices": [
+            "5",
+            "6",
+            "7",
+            "8"
+          ],
+          "answer": 2,
+          "explanation": "Add 7 to both sides: 5x = 35; divide by 5 to get x = 7."
+        },
+        {
+          "id": "numerical_57",
+          "question": "What is the simple interest on ₱8,000 at 5% per year for 3 years?",
+          "choices": [
+            "₱800",
+            "₱1,000",
+            "₱1,200",
+            "₱1,500"
+          ],
+          "answer": 2,
+          "explanation": "I = PRT = 8,000 × 0.05 × 3 = ₱1,200."
+        },
+        {
+          "id": "numerical_58",
+          "question": "A rectangle has a length of 14 cm and a width of 9 cm. What is its perimeter?",
+          "choices": [
+            "23 cm",
+            "46 cm",
+            "63 cm",
+            "126 cm"
+          ],
+          "answer": 1,
+          "explanation": "Perimeter = 2(14 + 9) = 46 cm."
+        },
+        {
+          "id": "numerical_59",
+          "question": "What is the least common multiple of 8 and 12?",
+          "choices": [
+            "16",
+            "20",
+            "24",
+            "36"
+          ],
+          "answer": 2,
+          "explanation": "The smallest number divisible by both 8 and 12 is 24."
+        },
+        {
+          "id": "numerical_60",
+          "question": "A ratio of 3:5 has a total of 64. What is the larger share?",
+          "choices": [
+            "24",
+            "32",
+            "40",
+            "48"
+          ],
+          "answer": 2,
+          "explanation": "There are 8 total parts; each is 64 ÷ 8 = 8. Larger share = 5 × 8 = 40."
+        },
+        {
+          "id": "numerical_61",
+          "question": "Convert 2.75 hours to minutes.",
+          "choices": [
+            "145",
+            "155",
+            "165",
+            "175"
+          ],
+          "answer": 2,
+          "explanation": "2.75 × 60 = 165 minutes."
+        },
+        {
+          "id": "numerical_62",
+          "question": "What is the square root of 900?",
+          "choices": [
+            "30",
+            "31",
+            "32",
+            "33"
+          ],
+          "answer": 0,
+          "explanation": "30 × 30 = 900, so the square root is 30."
+        },
+        {
+          "id": "numerical_63",
+          "question": "A tank is 3/5 full. If its capacity is 250 liters, how much water is in it?",
+          "choices": [
+            "100 L",
+            "125 L",
+            "150 L",
+            "175 L"
+          ],
+          "answer": 2,
+          "explanation": "(3/5) × 250 = 150 liters."
+        },
+        {
+          "id": "numerical_64",
+          "question": "If 7 notebooks cost ₱196, how much do 5 notebooks cost at the same price per notebook?",
+          "choices": [
+            "₱120",
+            "₱130",
+            "₱140",
+            "₱150"
+          ],
+          "answer": 2,
+          "explanation": "Each notebook costs 196 ÷ 7 = ₱28; 5 cost ₱140."
+        },
+        {
+          "id": "numerical_65",
+          "question": "Evaluate: 4² + 3 × 5.",
+          "choices": [
+            "23",
+            "31",
+            "35",
+            "49"
+          ],
+          "answer": 1,
+          "explanation": "Apply order of operations: 16 + 15 = 31."
+        },
+        {
+          "id": "numerical_66",
+          "question": "A number decreased by 15% becomes 170. What was the original number?",
+          "choices": [
+            "190",
+            "195",
+            "200",
+            "210"
+          ],
+          "answer": 2,
+          "explanation": "170 is 85% of the original; 170 ÷ 0.85 = 200."
+        },
+        {
+          "id": "numerical_67",
+          "question": "Find the area of a triangle with base 12 cm and height 7 cm.",
+          "choices": [
+            "19 cm²",
+            "42 cm²",
+            "84 cm²",
+            "96 cm²"
+          ],
+          "answer": 1,
+          "explanation": "Area = 1/2 × base × height = 1/2 × 12 × 7 = 42 cm²."
+        },
+        {
+          "id": "numerical_68",
+          "question": "What is the median of 4, 9, 2, 11, 7, 5, and 13?",
+          "choices": [
+            "5",
+            "7",
+            "8",
+            "9"
+          ],
+          "answer": 1,
+          "explanation": "Ordered values are 2, 4, 5, 7, 9, 11, 13; the middle value is 7."
+        },
+        {
+          "id": "numerical_69",
+          "question": "A worker earns ₱640 for 8 hours. At the same hourly rate, how much will the worker earn for 6 hours?",
+          "choices": [
+            "₱420",
+            "₱460",
+            "₱480",
+            "₱520"
+          ],
+          "answer": 2,
+          "explanation": "Hourly rate = 640 ÷ 8 = ₱80; 6 hours = ₱480."
+        },
+        {
+          "id": "numerical_70",
+          "question": "Express 0.375 as a fraction in simplest form.",
+          "choices": [
+            "1/4",
+            "3/8",
+            "5/8",
+            "7/8"
+          ],
+          "answer": 1,
+          "explanation": "0.375 = 375/1000, which simplifies to 3/8."
+        },
+        {
+          "id": "numerical_71",
+          "question": "A store marks up an item costing ₱400 by 25%. What is the selling price?",
+          "choices": [
+            "₱450",
+            "₱475",
+            "₱500",
+            "₱525"
+          ],
+          "answer": 2,
+          "explanation": "25% of ₱400 is ₱100; selling price is ₱500."
+        },
+        {
+          "id": "numerical_72",
+          "question": "If x/6 = 7/3, what is x?",
+          "choices": [
+            "12",
+            "14",
+            "16",
+            "18"
+          ],
+          "answer": 1,
+          "explanation": "Multiply both sides by 6: x = 6 × 7/3 = 14."
+        },
+        {
+          "id": "numerical_73",
+          "question": "A circle has a radius of 7 cm. Using π = 22/7, what is its circumference?",
+          "choices": [
+            "22 cm",
+            "44 cm",
+            "49 cm",
+            "154 cm"
+          ],
+          "answer": 1,
+          "explanation": "Circumference = 2πr = 2 × 22/7 × 7 = 44 cm."
+        },
+        {
+          "id": "numerical_74",
+          "question": "A class has 36 students. If 1/4 are absent, how many are present?",
+          "choices": [
+            "9",
+            "18",
+            "27",
+            "30"
+          ],
+          "answer": 2,
+          "explanation": "One-fourth of 36 is 9 absent; 36 − 9 = 27 present."
+        },
+        {
+          "id": "numerical_75",
+          "question": "What is 2.4 × 0.5?",
+          "choices": [
+            "0.12",
+            "1.2",
+            "2.9",
+            "4.8"
+          ],
+          "answer": 1,
+          "explanation": "Multiplying by 0.5 is taking half; half of 2.4 is 1.2."
+        },
+        {
+          "id": "numerical_76",
+          "question": "A bus has 48 seats. If 7/8 are occupied, how many seats are occupied?",
+          "choices": [
+            "36",
+            "40",
+            "42",
+            "44"
+          ],
+          "answer": 2,
+          "explanation": "(7/8) × 48 = 42."
+        },
+        {
+          "id": "numerical_78",
+          "question": "A ₱2,400 appliance is paid in 6 equal monthly installments with no interest. How much is each installment?",
+          "choices": [
+            "₱300",
+            "₱350",
+            "₱400",
+            "₱450"
+          ],
+          "answer": 2,
+          "explanation": "2,400 ÷ 6 = ₱400 per month."
+        },
+        {
+          "id": "numerical_79",
+          "question": "If 3 pens and 2 pencils cost ₱46, and each pen costs ₱10, how much do the 2 pencils cost?",
+          "choices": [
+            "₱12",
+            "₱14",
+            "₱16",
+            "₱18"
+          ],
+          "answer": 2,
+          "explanation": "Three pens cost ₱30; ₱46 − ₱30 = ₱16 for two pencils."
+        },
+        {
+          "id": "numerical_80",
+          "question": "A number is 40% of 250. What is the number?",
+          "choices": [
+            "80",
+            "90",
+            "100",
+            "110"
+          ],
+          "answer": 2,
+          "explanation": "0.40 × 250 = 100."
+        }
       ]
     },
     {
@@ -1400,56 +2935,96 @@
         {
           "id": "geninfo_2",
           "question": "Which branch of the Philippine government has the power to declare a law unconstitutional?",
-          "choices": ["Executive", "Legislative", "Judicial", "Civil Service Commission"],
+          "choices": [
+            "Executive",
+            "Legislative",
+            "Judicial",
+            "Civil Service Commission"
+          ],
           "answer": 2,
           "explanation": "The Judicial branch, particularly the Supreme Court, has the power of judicial review."
         },
         {
           "id": "geninfo_3",
           "question": "The Civil Service Commission is a ____________ body.",
-          "choices": ["Executive", "Judicial", "Constitutional", "Legislative"],
+          "choices": [
+            "Executive",
+            "Judicial",
+            "Constitutional",
+            "Legislative"
+          ],
           "answer": 2,
           "explanation": "The Civil Service Commission (CSC) is a constitutional body under Article IX of the 1987 Constitution."
         },
         {
           "id": "geninfo_4",
           "question": "What is the national flower of the Philippines?",
-          "choices": ["Rose", "Sampaguita", "Orchid", "Sunflower"],
+          "choices": [
+            "Rose",
+            "Sampaguita",
+            "Orchid",
+            "Sunflower"
+          ],
           "answer": 1,
           "explanation": "The Sampaguita (Jasminum sambac) was declared the national flower in 1934."
         },
         {
           "id": "geninfo_5",
           "question": "Which Philippine law mandates the Code of Conduct and Ethical Standards for Public Officials?",
-          "choices": ["RA 3019", "RA 6713", "RA 7080", "RA 9485"],
+          "choices": [
+            "RA 3019",
+            "RA 6713",
+            "RA 7080",
+            "RA 9485"
+          ],
           "answer": 1,
           "explanation": "RA 6713 is the Code of Conduct and Ethical Standards for Public Officials and Employees, enacted in 1989."
         },
         {
           "id": "geninfo_6",
           "question": "How many senators are there in the Philippine Senate?",
-          "choices": ["12", "24", "20", "18"],
+          "choices": [
+            "12",
+            "24",
+            "20",
+            "18"
+          ],
           "answer": 1,
           "explanation": "The Philippine Senate is composed of 24 senators who serve 6-year terms."
         },
         {
           "id": "geninfo_7",
           "question": "What is the national hero of the Philippines?",
-          "choices": ["Andres Bonifacio", "Apolinario Mabini", "Jose Rizal", "Emilio Aguinaldo"],
+          "choices": [
+            "Andres Bonifacio",
+            "Apolinario Mabini",
+            "Jose Rizal",
+            "Emilio Aguinaldo"
+          ],
           "answer": 2,
           "explanation": "Dr. Jose Rizal is the officially declared national hero, recognized through the Rizal Law (RA 1425)."
         },
         {
           "id": "geninfo_8",
           "question": "What is the capital city of the Philippines?",
-          "choices": ["Quezon City", "Makati", "Manila", "Pasig"],
+          "choices": [
+            "Quezon City",
+            "Makati",
+            "Manila",
+            "Pasig"
+          ],
           "answer": 2,
           "explanation": "Manila is the official capital city and seat of government of the Philippines."
         },
         {
           "id": "geninfo_9",
           "question": "What is the term of office of the President of the Philippines?",
-          "choices": ["4 years, renewable once", "5 years, not renewable", "6 years, not renewable", "6 years, renewable once"],
+          "choices": [
+            "4 years, renewable once",
+            "5 years, not renewable",
+            "6 years, not renewable",
+            "6 years, renewable once"
+          ],
           "answer": 2,
           "explanation": "Under the 1987 Constitution, the President serves a single 6-year term and is not eligible for reelection."
         },
@@ -1468,7 +3043,12 @@
         {
           "id": "geninfo_11",
           "question": "Under RA 6713, public officials must file the SALN within how many days of assumption of office?",
-          "choices": ["15 days", "30 days", "45 days", "60 days"],
+          "choices": [
+            "15 days",
+            "30 days",
+            "45 days",
+            "60 days"
+          ],
           "answer": 1,
           "explanation": "Under RA 6713, the SALN must be filed within 30 days after assuming office."
         },
@@ -1487,21 +3067,36 @@
         {
           "id": "geninfo_13",
           "question": "The principle that no person shall be tried twice for the same offense is known as:",
-          "choices": ["Due process", "Equal protection", "Double jeopardy", "Habeas corpus"],
+          "choices": [
+            "Due process",
+            "Equal protection",
+            "Double jeopardy",
+            "Habeas corpus"
+          ],
           "answer": 2,
           "explanation": "Double jeopardy is the constitutional principle in Article III of the 1987 Constitution."
         },
         {
           "id": "geninfo_14",
           "question": "Under civil service rules, what is the maximum period for preventive suspension?",
-          "choices": ["30 days", "60 days", "90 days", "120 days"],
+          "choices": [
+            "30 days",
+            "60 days",
+            "90 days",
+            "120 days"
+          ],
           "answer": 2,
           "explanation": "Under the Revised Rules on Administrative Cases in the Civil Service (RRACCS), maximum preventive suspension is 90 days."
         },
         {
           "id": "geninfo_15",
           "question": "What is the minimum passing score for the Civil Service Exam (Professional Level)?",
-          "choices": ["70", "75", "80", "85"],
+          "choices": [
+            "70",
+            "75",
+            "80",
+            "85"
+          ],
           "answer": 2,
           "explanation": "The minimum passing score for the Civil Service Examination (Professional Level) is 80 out of 100."
         },
@@ -1532,21 +3127,36 @@
         {
           "id": "geninfo_18",
           "question": "The mandatory retirement age for government employees in the Philippines is:",
-          "choices": ["55 years old", "60 years old", "65 years old", "70 years old"],
+          "choices": [
+            "55 years old",
+            "60 years old",
+            "65 years old",
+            "70 years old"
+          ],
           "answer": 2,
           "explanation": "Under RA 8291 and civil service rules, the mandatory retirement age is 65 years old."
         },
         {
           "id": "geninfo_19",
           "question": "What is the highest peak in the Philippines?",
-          "choices": ["Mt. Mayon", "Mt. Pinatubo", "Mt. Apo", "Mt. Pulag"],
+          "choices": [
+            "Mt. Mayon",
+            "Mt. Pinatubo",
+            "Mt. Apo",
+            "Mt. Pulag"
+          ],
           "answer": 2,
           "explanation": "Mt. Apo in Davao del Sur is the highest mountain in the Philippines at 2,954 meters."
         },
         {
           "id": "geninfo_20",
           "question": "Who was the first President of the Philippine Commonwealth?",
-          "choices": ["Emilio Aguinaldo", "Manuel Quezon", "Sergio Osmeña", "Manuel Roxas"],
+          "choices": [
+            "Emilio Aguinaldo",
+            "Manuel Quezon",
+            "Sergio Osmeña",
+            "Manuel Roxas"
+          ],
           "answer": 1,
           "explanation": "Manuel L. Quezon was the first President of the Philippine Commonwealth, serving from 1935."
         },
@@ -1565,14 +3175,24 @@
         {
           "id": "geninfo_22",
           "question": "Which Philippine law is known as the Anti-Red Tape Act?",
-          "choices": ["RA 6713", "RA 9485", "RA 7080", "RA 3019"],
+          "choices": [
+            "RA 6713",
+            "RA 9485",
+            "RA 7080",
+            "RA 3019"
+          ],
           "answer": 1,
           "explanation": "RA 9485 is the Anti-Red Tape Act (ARTA), which aims to improve government frontline service delivery."
         },
         {
           "id": "geninfo_23",
           "question": "A government employee absent without approved leave (AWOL) for how many days may be dropped from the rolls?",
-          "choices": ["15 days", "20 days", "30 days", "45 days"],
+          "choices": [
+            "15 days",
+            "20 days",
+            "30 days",
+            "45 days"
+          ],
           "answer": 2,
           "explanation": "Under CSC rules, a government employee AWOL for 30 or more consecutive working days may be dropped from the rolls."
         },
@@ -1627,28 +3247,48 @@
         {
           "id": "geninfo_28",
           "question": "The right to a speedy, impartial, and public trial is guaranteed under which article of the 1987 Constitution?",
-          "choices": ["Article II", "Article III", "Article VI", "Article XI"],
+          "choices": [
+            "Article II",
+            "Article III",
+            "Article VI",
+            "Article XI"
+          ],
           "answer": 1,
           "explanation": "Article III (Bill of Rights) of the 1987 Constitution guarantees the right to a speedy, impartial, and public trial."
         },
         {
           "id": "geninfo_29",
           "question": "What principle requires government decisions to be based on ability and qualifications, not personal connections?",
-          "choices": ["Transparency", "Meritocracy", "Accountability", "Equity"],
+          "choices": [
+            "Transparency",
+            "Meritocracy",
+            "Accountability",
+            "Equity"
+          ],
           "answer": 1,
           "explanation": "Meritocracy is the principle that positions should be based on ability and performance, not on favoritism."
         },
         {
           "id": "geninfo_30",
           "question": "How many members does the House of Representatives have at most under the 1987 Constitution?",
-          "choices": ["200", "250", "280", "300"],
+          "choices": [
+            "200",
+            "250",
+            "280",
+            "300"
+          ],
           "answer": 1,
           "explanation": "Under the 1987 Constitution, the House of Representatives shall have not more than 250 members unless otherwise fixed by law."
         },
         {
           "id": "geninfo_31",
           "question": "Which environmental law in the Philippines is known as the Clean Air Act?",
-          "choices": ["RA 8749", "RA 9003", "RA 9275", "RA 7586"],
+          "choices": [
+            "RA 8749",
+            "RA 9003",
+            "RA 9275",
+            "RA 7586"
+          ],
           "answer": 0,
           "explanation": "RA 8749 is the Philippine Clean Air Act of 1999, which aims to achieve and maintain clean air for all Filipinos."
         },
@@ -1691,7 +3331,12 @@
         {
           "id": "geninfo_35",
           "question": "What is the official currency of the Philippines?",
-          "choices": ["Dollar", "Peso", "Rupee", "Baht"],
+          "choices": [
+            "Dollar",
+            "Peso",
+            "Rupee",
+            "Baht"
+          ],
           "answer": 1,
           "explanation": "The official currency is the Philippine Peso (₱), issued by the Bangko Sentral ng Pilipinas (BSP)."
         },
@@ -1722,28 +3367,48 @@
         {
           "id": "geninfo_38",
           "question": "The Philippines was declared a republic on:",
-          "choices": ["June 12, 1898", "July 4, 1946", "February 25, 1986", "January 17, 1973"],
+          "choices": [
+            "June 12, 1898",
+            "July 4, 1946",
+            "February 25, 1986",
+            "January 17, 1973"
+          ],
           "answer": 1,
           "explanation": "On July 4, 1946, the Philippines gained independence from the United States, becoming a fully independent republic."
         },
         {
           "id": "geninfo_39",
           "question": "The 'Noli Me Tangere' was written by Dr. Jose Rizal in which language?",
-          "choices": ["Filipino", "English", "Spanish", "French"],
+          "choices": [
+            "Filipino",
+            "English",
+            "Spanish",
+            "French"
+          ],
           "answer": 2,
           "explanation": "'Noli Me Tangere' was written in Spanish (Español) and published in 1887 in Berlin, Germany."
         },
         {
           "id": "geninfo_40",
           "question": "The Katipunan was founded in:",
-          "choices": ["1872", "1892", "1896", "1898"],
+          "choices": [
+            "1872",
+            "1892",
+            "1896",
+            "1898"
+          ],
           "answer": 1,
           "explanation": "The Katipunan was founded by Andres Bonifacio on July 7, 1892 in Tondo, Manila."
         },
         {
           "id": "geninfo_41",
           "question": "The Philippines has how many regions?",
-          "choices": ["15", "16", "17", "18"],
+          "choices": [
+            "15",
+            "16",
+            "17",
+            "18"
+          ],
           "answer": 2,
           "explanation": "The Philippines has 17 regions, including the Bangsamoro Autonomous Region in Muslim Mindanao (BARMM)."
         },
@@ -1761,10 +3426,15 @@
         },
         {
           "id": "geninfo_43",
-          "question": "Who was the first President of the Philippines under the 1987 Constitution?",
-          "choices": ["Ferdinand Marcos", "Corazon Aquino", "Fidel Ramos", "Joseph Estrada"],
+          "question": "Who was the President of the Philippines when the 1987 Constitution was ratified?",
+          "choices": [
+            "Ferdinand Marcos",
+            "Corazon Aquino",
+            "Fidel Ramos",
+            "Joseph Estrada"
+          ],
           "answer": 1,
-          "explanation": "Corazon 'Cory' Aquino was the first President under the 1987 Constitution, after the restoration of democracy."
+          "explanation": "Corazon 'Cory' Aquino was President when the 1987 Constitution was ratified, after the restoration of democracy."
         },
         {
           "id": "geninfo_44",
@@ -1781,14 +3451,24 @@
         {
           "id": "geninfo_45",
           "question": "The 'El Filibusterismo' was written by:",
-          "choices": ["Andres Bonifacio", "Jose Rizal", "Marcelo del Pilar", "Graciano Lopez Jaena"],
+          "choices": [
+            "Andres Bonifacio",
+            "Jose Rizal",
+            "Marcelo del Pilar",
+            "Graciano Lopez Jaena"
+          ],
           "answer": 1,
           "explanation": "'El Filibusterismo' was written by Jose Rizal and published in 1891 in Ghent, Belgium."
         },
         {
           "id": "geninfo_46",
           "question": "Which constitutional article covers the Legislative Department?",
-          "choices": ["Article V", "Article VI", "Article VII", "Article VIII"],
+          "choices": [
+            "Article V",
+            "Article VI",
+            "Article VII",
+            "Article VIII"
+          ],
           "answer": 1,
           "explanation": "Article VI of the 1987 Constitution covers the Legislative Department (Congress)."
         },
@@ -1807,7 +3487,12 @@
         {
           "id": "geninfo_48",
           "question": "Which law established the K to 12 Basic Education Program?",
-          "choices": ["RA 7104", "RA 7356", "RA 10533", "RA 9155"],
+          "choices": [
+            "RA 7104",
+            "RA 7356",
+            "RA 10533",
+            "RA 9155"
+          ],
           "answer": 2,
           "explanation": "RA 10533 or the Enhanced Basic Education Act of 2013 established the K to 12 Program."
         },
@@ -1835,151 +3520,534 @@
           "answer": 2,
           "explanation": "The Commission on Elections (COMELEC) is constitutionally mandated to administer and enforce election laws and regulations."
         },
-          {
-    "id": "geninfo_51",
-    "question": "According to the 1987 Philippine Constitution, what is the minimum age requirement to run for a seat in the Senate?",
-    "choices": ["25 years old", "30 years old", "35 years old", "40 years old"],
-    "answer": 2,
-    "explanation": "Article VI, Section 3 of the 1987 Constitution mandates that a candidate for the Senate must be at least 35 years of age on the day of the election."
-  },
-  {
-    "id": "geninfo_52",
-    "question": "Which of the following bodies has the sole power to try and decide all cases of impeachment under Philippine law?",
-    "choices": ["The Supreme Court", "The House of Representatives", "The Senate", "The Sandiganbayan"],
-    "answer": 2,
-    "explanation": "Under Article XI of the 1987 Constitution, the House of Representatives has the exclusive power to initiate impeachment, but the Senate has the sole power to try and decide all impeachment cases."
-  },
-  {
-    "id": "geninfo_53",
-    "question": "What is the maximum number of consecutive terms an elected member of the House of Representatives can serve?",
-    "choices": ["Single 6-year term", "Two consecutive 3-year terms", "Three consecutive 3-year terms", "Four consecutive 3-year terms"],
-    "answer": 2,
-    "explanation": "Members of the House of Representatives are elected to a 3-year term and are limited to serving a maximum of three consecutive terms."
-  },
-  {
-    "id": "geninfo_54",
-    "question": "Under RA 6713, within what period must a government official or employee respond to letters, telegrams, or other communication sent by the public?",
-    "choices": ["Within 5 working days", "Within 10 working days", "Within 15 working days", "Within 30 working days"],
-    "answer": 2,
-    "explanation": "RA 6713 mandates that all public officials and employees must respond to letters or communications from the public within 15 working days from receipt thereof."
-  },
-  {
-    "id": "geninfo_55",
-    "question": "Which specialized constitutional court has jurisdiction over criminal and civil cases involving graft and corrupt practices committed by public officers?",
-    "choices": ["Court of Appeals", "Sandiganbayan", "Supreme Court", "Regional Trial Court"],
-    "answer": 1,
-    "explanation": "The Sandiganbayan is the anti-graft court of the Philippines, constitutionally mandated to handle cases involving corruption and misconduct by public officials."
-  },
-  {
-    "id": "geninfo_56",
-    "question": "What type of vote is required in Congress to override a presidential veto of a bill?",
-    "choices": ["Simple majority of both houses voting separately", "Two-thirds vote of all the members of each house voting separately", "Three-fourths vote of both houses in a joint session", "Unanimous vote of the main authors"],
-    "answer": 1,
-    "explanation": "According to Article VI, Section 27 of the Constitution, if the President vetoes a bill, Congress can override it by a two-thirds vote of all members of each house voting separately."
-  },
-  {
-    "id": "geninfo_57",
-    "question": "The power of the state to take private property for public use upon payment of just compensation is known as:",
-    "choices": ["Police Power", "Power of Taxation", "Power of Eminent Domain", "Escheat Power"],
-    "answer": 2,
-    "explanation": "Eminent domain is the constitutional power of the government to acquire private property for public utility, provided the owner is paid just compensation."
-  },
-  {
-    "id": "geninfo_58",
-    "question": "Who is the ex-officio Commander-in-Chief of all armed forces of the Philippines?",
-    "choices": ["The Secretary of National Defense", "The Chief of Staff of the AFP", "The President of the Philippines", "The National Security Adviser"],
-    "answer": 2,
-    "explanation": "Article VII, Section 18 states that the President shall be the Commander-in-Chief of all armed forces of the Philippines."
-  },
-  {
-    "id": "geninfo_59",
-    "question": "Which of the following is an essential requirement for a bill to officially become a law in the Philippines?",
-    "choices": [
-      "It must be signed by the Chief Justice.",
-      "It must undergo three readings on separate days in both houses.",
-      "It must be approved by a national referendum.",
-      "It must be reviewed by the Civil Service Commission."
-    ],
-    "answer": 1,
-    "explanation": "Except when the President certifies a bill as urgent to meet a public calamity or emergency, no bill can become law unless it passes three readings on separate days in both houses."
-  },
-  {
-    "id": "geninfo_60",
-    "question": "What environmental law mandates the establishment of an environmental impact statement system to assess projects that affect nature?",
-    "choices": ["PD 1586", "RA 8749", "RA 9003", "RA 9275"],
-    "answer": 0,
-    "explanation": "Presidential Decree No. 1586 established the Environmental Impact Statement (EIS) System to ensure environmental protection amid economic and infrastructure development."
-  },
-  {
-    "id": "geninfo_61",
-    "question": "Under the 1987 Constitution, when is the regular state of martial law limited to expire unless extended by Congress?",
-    "choices": ["Within 30 days", "Within 45 days", "Within 60 days", "Within 90 days"],
-    "answer": 2,
-    "explanation": "The Constitution limits the proclamation of martial law or suspension of the writ of habeas corpus to a maximum period of 60 days, requiring congressional review for any extension."
-  },
-  {
-    "id": "geninfo_62",
-    "question": "Which basic right ensures that no person is held to answer for a criminal offense without a formal step-by-step lawful legal proceeding?",
-    "choices": ["Right to Equal Protection", "Right to Due Process of Law", "Right against Self-Incrimination", "Right to Bail"],
-    "answer": 1,
-    "explanation": "Article III, Section 1 states that no person shall be deprived of life, liberty, or property without due process of law."
-  },
-  {
-    "id": "geninfo_63",
-    "question": "Which government body has the authority to audit, examine, and settle all accounts pertaining to the revenue and expenditures of government agencies?",
-    "choices": ["Department of Budget and Management", "Bureau of Internal Revenue", "Commission on Audit", "Bureau of the Treasury"],
-    "answer": 2,
-    "explanation": "The Commission on Audit (COA) is the independent constitutional commission tasked with auditing all government financial records and property usage."
-  },
-  {
-    "id": "geninfo_64",
-    "question": "What core ethical value under RA 6713 requires public servants to remain loyal to the Republic and maintain lifestyle standards consistent with their positions?",
-    "choices": ["Nationalism and Patriotism", "Commitment to Democracy", "Simple Living", "Political Neutrality"],
-    "answer": 2,
-    "explanation": "'Simple Living' is an explicit norm under RA 6713 requiring public officials to lead modest lives and avoid showy displays of wealth."
-  },
-  {
-    "id": "geninfo_65",
-    "question": "Who was the primary leader and founder of the Katipunan (KKK) movement during the Spanish colonial rule?",
-    "choices": ["Jose Rizal", "Emilio Aguinaldo", "Andres Bonifacio", "Apolinario Mabini"],
-    "answer": 2,
-    "explanation": "Andres Bonifacio founded the Katipunan on July 7, 1892, to orchestrate the armed revolt against Spanish rule."
-  },
-  {
-    "id": "geninfo_66",
-    "question": "What landmark Philippine law provides a comprehensive policy to promote the rights and welfare of women and eliminate discrimination against them?",
-    "choices": ["RA 9262", "RA 9710", "RA 7610", "RA 8353"],
-    "answer": 1,
-    "explanation": "RA 9710 is the Magna Carta of Women, which provides a comprehensive framework for protecting and promoting women's rights in the Philippines."
-  },
-  {
-    "id": "geninfo_67",
-    "question": "The systematic optimization or streamlining of government procedures to eliminate excessive bureaucratic delays is managed by which law?",
-    "choices": ["RA 3019", "RA 6713", "RA 11032", "RA 7080"],
-    "answer": 2,
-    "explanation": "RA 11032 is the Ease of Doing Business and Efficient Government Service Delivery Act, which amended the older Anti-Red Tape Act (RA 9485)."
-  },
-  {
-    "id": "geninfo_68",
-    "question": "Which basic freedom protects a citizen from being forced to testify against themselves in a criminal investigation or court trial?",
-    "choices": ["Right to Free Speech", "Right against Self-Incrimination", "Right to Counsel", "Right to Habeas Corpus"],
-    "answer": 1,
-    "explanation": "The right against self-incrimination is guaranteed by the Constitution under the Bill of Rights, stating that no person shall be compelled to be a witness against himself."
-  },
-  {
-    "id": "geninfo_69",
-    "question": "How long is the official term of office for standard elected local government officials like Governors and Mayors in a single term cycle?",
-    "choices": ["2 years", "3 years", "4 years", "6 years"],
-    "answer": 1,
-    "explanation": "Under the Local Government Code and the Constitution, local officials serve for a term of 3 years and can be re-elected for up to three consecutive terms."
-  },
-  {
-    "id": "geninfo_70",
-    "question": "What is the primary language used by Dr. Jose Rizal to write his famous political essay 'The Philippines a Century Hence'?",
-    "choices": ["Tagalog", "Spanish", "English", "German"],
-    "answer": 1,
-    "explanation": "Rizal wrote his critical historical and socio-political essays, including 'Filipinas dentro de un siglo' (The Philippines a Century Hence), in Spanish."
-  }
+        {
+          "id": "geninfo_51",
+          "question": "According to the 1987 Philippine Constitution, what is the minimum age requirement to run for a seat in the Senate?",
+          "choices": [
+            "25 years old",
+            "30 years old",
+            "35 years old",
+            "40 years old"
+          ],
+          "answer": 2,
+          "explanation": "Article VI, Section 3 of the 1987 Constitution mandates that a candidate for the Senate must be at least 35 years of age on the day of the election."
+        },
+        {
+          "id": "geninfo_52",
+          "question": "Which of the following bodies has the sole power to try and decide all cases of impeachment under Philippine law?",
+          "choices": [
+            "The Supreme Court",
+            "The House of Representatives",
+            "The Senate",
+            "The Sandiganbayan"
+          ],
+          "answer": 2,
+          "explanation": "Under Article XI of the 1987 Constitution, the House of Representatives has the exclusive power to initiate impeachment, but the Senate has the sole power to try and decide all impeachment cases."
+        },
+        {
+          "id": "geninfo_53",
+          "question": "What is the maximum number of consecutive terms an elected member of the House of Representatives can serve?",
+          "choices": [
+            "Single 6-year term",
+            "Two consecutive 3-year terms",
+            "Three consecutive 3-year terms",
+            "Four consecutive 3-year terms"
+          ],
+          "answer": 2,
+          "explanation": "Members of the House of Representatives are elected to a 3-year term and are limited to serving a maximum of three consecutive terms."
+        },
+        {
+          "id": "geninfo_54",
+          "question": "Under RA 6713, within what period must a government official or employee respond to letters, telegrams, or other communication sent by the public?",
+          "choices": [
+            "Within 5 working days",
+            "Within 10 working days",
+            "Within 15 working days",
+            "Within 30 working days"
+          ],
+          "answer": 2,
+          "explanation": "RA 6713 mandates that all public officials and employees must respond to letters or communications from the public within 15 working days from receipt thereof."
+        },
+        {
+          "id": "geninfo_55",
+          "question": "Which specialized constitutional court has jurisdiction over criminal and civil cases involving graft and corrupt practices committed by public officers?",
+          "choices": [
+            "Court of Appeals",
+            "Sandiganbayan",
+            "Supreme Court",
+            "Regional Trial Court"
+          ],
+          "answer": 1,
+          "explanation": "The Sandiganbayan is the anti-graft court of the Philippines, constitutionally mandated to handle cases involving corruption and misconduct by public officials."
+        },
+        {
+          "id": "geninfo_56",
+          "question": "What type of vote is required in Congress to override a presidential veto of a bill?",
+          "choices": [
+            "Simple majority of both houses voting separately",
+            "Two-thirds vote of all the members of each house voting separately",
+            "Three-fourths vote of both houses in a joint session",
+            "Unanimous vote of the main authors"
+          ],
+          "answer": 1,
+          "explanation": "According to Article VI, Section 27 of the Constitution, if the President vetoes a bill, Congress can override it by a two-thirds vote of all members of each house voting separately."
+        },
+        {
+          "id": "geninfo_57",
+          "question": "The power of the state to take private property for public use upon payment of just compensation is known as:",
+          "choices": [
+            "Police Power",
+            "Power of Taxation",
+            "Power of Eminent Domain",
+            "Escheat Power"
+          ],
+          "answer": 2,
+          "explanation": "Eminent domain is the constitutional power of the government to acquire private property for public utility, provided the owner is paid just compensation."
+        },
+        {
+          "id": "geninfo_58",
+          "question": "Who is the ex-officio Commander-in-Chief of all armed forces of the Philippines?",
+          "choices": [
+            "The Secretary of National Defense",
+            "The Chief of Staff of the AFP",
+            "The President of the Philippines",
+            "The National Security Adviser"
+          ],
+          "answer": 2,
+          "explanation": "Article VII, Section 18 states that the President shall be the Commander-in-Chief of all armed forces of the Philippines."
+        },
+        {
+          "id": "geninfo_59",
+          "question": "Which of the following is an essential requirement for a bill to officially become a law in the Philippines?",
+          "choices": [
+            "It must be signed by the Chief Justice.",
+            "It must undergo three readings on separate days in both houses.",
+            "It must be approved by a national referendum.",
+            "It must be reviewed by the Civil Service Commission."
+          ],
+          "answer": 1,
+          "explanation": "Except when the President certifies a bill as urgent to meet a public calamity or emergency, no bill can become law unless it passes three readings on separate days in both houses."
+        },
+        {
+          "id": "geninfo_60",
+          "question": "What environmental law mandates the establishment of an environmental impact statement system to assess projects that affect nature?",
+          "choices": [
+            "PD 1586",
+            "RA 8749",
+            "RA 9003",
+            "RA 9275"
+          ],
+          "answer": 0,
+          "explanation": "Presidential Decree No. 1586 established the Environmental Impact Statement (EIS) System to ensure environmental protection amid economic and infrastructure development."
+        },
+        {
+          "id": "geninfo_61",
+          "question": "Under the 1987 Constitution, how long may martial law or the suspension of the privilege of the writ of habeas corpus last, unless extended by Congress?",
+          "choices": [
+            "Within 30 days",
+            "Within 45 days",
+            "Within 60 days",
+            "Within 90 days"
+          ],
+          "answer": 2,
+          "explanation": "The Constitution limits the proclamation of martial law or suspension of the writ of habeas corpus to a maximum period of 60 days, requiring congressional review for any extension."
+        },
+        {
+          "id": "geninfo_62",
+          "question": "Which basic right ensures that no person is held to answer for a criminal offense without a formal step-by-step lawful legal proceeding?",
+          "choices": [
+            "Right to Equal Protection",
+            "Right to Due Process of Law",
+            "Right against Self-Incrimination",
+            "Right to Bail"
+          ],
+          "answer": 1,
+          "explanation": "Article III, Section 1 states that no person shall be deprived of life, liberty, or property without due process of law."
+        },
+        {
+          "id": "geninfo_63",
+          "question": "Which government body has the authority to audit, examine, and settle all accounts pertaining to the revenue and expenditures of government agencies?",
+          "choices": [
+            "Department of Budget and Management",
+            "Bureau of Internal Revenue",
+            "Commission on Audit",
+            "Bureau of the Treasury"
+          ],
+          "answer": 2,
+          "explanation": "The Commission on Audit (COA) is the independent constitutional commission tasked with auditing all government financial records and property usage."
+        },
+        {
+          "id": "geninfo_64",
+          "question": "Which norm of conduct under RA 6713 requires public officials to lead modest lives and avoid ostentation?",
+          "choices": [
+            "Nationalism and Patriotism",
+            "Commitment to Democracy",
+            "Simple Living",
+            "Political Neutrality"
+          ],
+          "answer": 2,
+          "explanation": "'Simple Living' is an explicit norm under RA 6713 requiring public officials to lead modest lives and avoid showy displays of wealth."
+        },
+        {
+          "id": "geninfo_66",
+          "question": "What landmark Philippine law provides a comprehensive policy to promote the rights and welfare of women and eliminate discrimination against them?",
+          "choices": [
+            "RA 9262",
+            "RA 9710",
+            "RA 7610",
+            "RA 8353"
+          ],
+          "answer": 1,
+          "explanation": "RA 9710 is the Magna Carta of Women, which provides a comprehensive framework for protecting and promoting women's rights in the Philippines."
+        },
+        {
+          "id": "geninfo_67",
+          "question": "The systematic optimization or streamlining of government procedures to eliminate excessive bureaucratic delays is managed by which law?",
+          "choices": [
+            "RA 3019",
+            "RA 6713",
+            "RA 11032",
+            "RA 7080"
+          ],
+          "answer": 2,
+          "explanation": "RA 11032 is the Ease of Doing Business and Efficient Government Service Delivery Act, which amended the older Anti-Red Tape Act (RA 9485)."
+        },
+        {
+          "id": "geninfo_68",
+          "question": "Which basic freedom protects a citizen from being forced to testify against themselves in a criminal investigation or court trial?",
+          "choices": [
+            "Right to Free Speech",
+            "Right against Self-Incrimination",
+            "Right to Counsel",
+            "Right to Habeas Corpus"
+          ],
+          "answer": 1,
+          "explanation": "The right against self-incrimination is guaranteed by the Constitution under the Bill of Rights, stating that no person shall be compelled to be a witness against himself."
+        },
+        {
+          "id": "geninfo_69",
+          "question": "How long is the official term of office for standard elected local government officials like Governors and Mayors in a single term cycle?",
+          "choices": [
+            "2 years",
+            "3 years",
+            "4 years",
+            "6 years"
+          ],
+          "answer": 1,
+          "explanation": "Under the Local Government Code and the Constitution, local officials serve for a term of 3 years and can be re-elected for up to three consecutive terms."
+        },
+        {
+          "id": "geninfo_70",
+          "question": "What is the primary language used by Dr. Jose Rizal to write his famous political essay 'The Philippines a Century Hence'?",
+          "choices": [
+            "Tagalog",
+            "Spanish",
+            "English",
+            "German"
+          ],
+          "answer": 1,
+          "explanation": "Rizal wrote his critical historical and socio-political essays, including 'Filipinas dentro de un siglo' (The Philippines a Century Hence), in Spanish."
+        },
+        {
+          "id": "geninfo_71",
+          "question": "Which branch of the Philippine government interprets laws?",
+          "choices": [
+            "Executive",
+            "Legislative",
+            "Judicial",
+            "Local government"
+          ],
+          "answer": 2,
+          "explanation": "The Judiciary interprets laws and resolves justiciable controversies."
+        },
+        {
+          "id": "geninfo_72",
+          "question": "What is the minimum voting age for Filipino citizens under the Philippine Constitution?",
+          "choices": [
+            "16",
+            "18",
+            "21",
+            "25"
+          ],
+          "answer": 1,
+          "explanation": "Filipino citizens who are at least 18 years old may vote, subject to legal qualifications."
+        },
+        {
+          "id": "geninfo_75",
+          "question": "Which Philippine law is known as the Data Privacy Act of 2012?",
+          "choices": [
+            "Republic Act No. 10173",
+            "Republic Act No. 9165",
+            "Republic Act No. 9003",
+            "Republic Act No. 7160"
+          ],
+          "answer": 0,
+          "explanation": "Republic Act No. 10173 is the Data Privacy Act of 2012."
+        },
+        {
+          "id": "geninfo_77",
+          "question": "What is the primary purpose of the Philippine national budget?",
+          "choices": [
+            "To record private household expenses",
+            "To plan government revenue and spending",
+            "To set prices of all goods",
+            "To regulate private school curricula"
+          ],
+          "answer": 1,
+          "explanation": "The national budget allocates public resources and authorizes government expenditures for a fiscal year."
+        },
+        {
+          "id": "geninfo_78",
+          "question": "Which international organization is responsible for coordinating global public health work?",
+          "choices": [
+            "WHO",
+            "WTO",
+            "ILO",
+            "UNESCO"
+          ],
+          "answer": 0,
+          "explanation": "The World Health Organization directs and coordinates international health work within the UN system."
+        },
+        {
+          "id": "geninfo_79",
+          "question": "What does ASEAN stand for?",
+          "choices": [
+            "Association of Southeast Asian Nations",
+            "Alliance of South East Asian Nations",
+            "Asian Economic and Security Alliance Network",
+            "Association of Southern East Asian Neighbors"
+          ],
+          "answer": 0,
+          "explanation": "ASEAN is the Association of Southeast Asian Nations."
+        },
+        {
+          "id": "geninfo_80",
+          "question": "Which Philippine law established the Local Government Code of 1991?",
+          "choices": [
+            "RA 7160",
+            "RA 6713",
+            "RA 7877",
+            "RA 11032"
+          ],
+          "answer": 0,
+          "explanation": "Republic Act No. 7160 is the Local Government Code of 1991."
+        },
+        {
+          "id": "geninfo_81",
+          "question": "Which document is the supreme law of the Philippines?",
+          "choices": [
+            "Civil Code",
+            "1987 Constitution",
+            "Administrative Code",
+            "Revised Penal Code"
+          ],
+          "answer": 1,
+          "explanation": "The 1987 Constitution is the fundamental and supreme law of the Republic."
+        },
+        {
+          "id": "geninfo_83",
+          "question": "Which Philippine agency is primarily responsible for weather forecasts and tropical cyclone warnings?",
+          "choices": [
+            "PHIVOLCS",
+            "PAGASA",
+            "DENR",
+            "DOST-FNRI"
+          ],
+          "answer": 1,
+          "explanation": "PAGASA provides weather forecasts, climate information, and tropical cyclone advisories."
+        },
+        {
+          "id": "geninfo_84",
+          "question": "Which agency monitors earthquakes and volcanic activity in the Philippines?",
+          "choices": [
+            "PAGASA",
+            "PHIVOLCS",
+            "NDRRMC",
+            "MMDA"
+          ],
+          "answer": 1,
+          "explanation": "PHIVOLCS monitors volcanic and seismic activity and provides related warnings and information."
+        },
+        {
+          "id": "geninfo_85",
+          "question": "What does the acronym GDP mean?",
+          "choices": [
+            "General Development Plan",
+            "Gross Domestic Product",
+            "Government Debt Percentage",
+            "Global Distribution Program"
+          ],
+          "answer": 1,
+          "explanation": "GDP measures the market value of final goods and services produced within a country during a period."
+        },
+        {
+          "id": "geninfo_86",
+          "question": "Which is an example of renewable energy?",
+          "choices": [
+            "Coal",
+            "Diesel",
+            "Solar power",
+            "Natural gas"
+          ],
+          "answer": 2,
+          "explanation": "Solar energy is renewable because it is replenished naturally by sunlight."
+        },
+        {
+          "id": "geninfo_87",
+          "question": "What is the main function of the ozone layer?",
+          "choices": [
+            "Produce oxygen for plants",
+            "Absorb much of the Sun's harmful ultraviolet radiation",
+            "Cause ocean tides",
+            "Prevent all greenhouse gases"
+          ],
+          "answer": 1,
+          "explanation": "Stratospheric ozone absorbs much of the Sun's harmful ultraviolet radiation."
+        },
+        {
+          "id": "geninfo_88",
+          "question": "Which gas do plants absorb from the atmosphere during photosynthesis?",
+          "choices": [
+            "Oxygen",
+            "Nitrogen",
+            "Carbon dioxide",
+            "Hydrogen"
+          ],
+          "answer": 2,
+          "explanation": "Plants use carbon dioxide and water, with light energy, to produce sugars and release oxygen."
+        },
+        {
+          "id": "geninfo_89",
+          "question": "Which international agreement focuses on limiting global warming through climate action?",
+          "choices": [
+            "Paris Agreement",
+            "Treaty of Versailles",
+            "Geneva Convention",
+            "Ramsar Convention"
+          ],
+          "answer": 0,
+          "explanation": "The Paris Agreement is a global treaty addressing climate change and efforts to limit temperature rise."
+        },
+        {
+          "id": "geninfo_90",
+          "question": "What is the official currency of Japan?",
+          "choices": [
+            "Won",
+            "Yuan",
+            "Yen",
+            "Ringgit"
+          ],
+          "answer": 2,
+          "explanation": "Japan's official currency is the yen."
+        },
+        {
+          "id": "geninfo_91",
+          "question": "Which Philippine institution is the central monetary authority?",
+          "choices": [
+            "Department of Finance",
+            "Bangko Sentral ng Pilipinas",
+            "Land Bank of the Philippines",
+            "Securities and Exchange Commission"
+          ],
+          "answer": 1,
+          "explanation": "The Bangko Sentral ng Pilipinas is the country's central bank and monetary authority."
+        },
+        {
+          "id": "geninfo_92",
+          "question": "What is the main purpose of the Freedom of Information (FOI) policy in the Philippine executive branch?",
+          "choices": [
+            "Allow access to government information, subject to exceptions",
+            "Remove all government records from public view",
+            "Replace the Constitution",
+            "Give private companies control of public records"
+          ],
+          "answer": 0,
+          "explanation": "The FOI policy promotes transparency by allowing access to official records, subject to lawful exceptions."
+        },
+        {
+          "id": "geninfo_93",
+          "question": "Which right protects a person against unreasonable searches and seizures under the Philippine Constitution?",
+          "choices": [
+            "Right to travel",
+            "Right against unreasonable searches and seizures",
+            "Right to education",
+            "Right to vote"
+          ],
+          "answer": 1,
+          "explanation": "Article III, Section 2 protects people against unreasonable searches and seizures."
+        },
+        {
+          "id": "geninfo_95",
+          "question": "Which UN agency focuses on education, science, and culture?",
+          "choices": [
+            "UNICEF",
+            "UNESCO",
+            "UNHCR",
+            "FAO"
+          ],
+          "answer": 1,
+          "explanation": "UNESCO stands for the United Nations Educational, Scientific and Cultural Organization."
+        },
+        {
+          "id": "geninfo_96",
+          "question": "What does the Philippine acronym NDRRMC refer to?",
+          "choices": [
+            "National Disaster Risk Reduction and Management Council",
+            "National Development and Regional Roads Management Commission",
+            "National Department for Rescue and Relief Management Council",
+            "National Disaster Response and Recovery Medical Center"
+          ],
+          "answer": 0,
+          "explanation": "NDRRMC coordinates disaster risk reduction and management efforts in the Philippines."
+        },
+        {
+          "id": "geninfo_97",
+          "question": "Which of the following is a basic principle of the rule of law?",
+          "choices": [
+            "Government officials are above the law",
+            "Laws apply equally and are publicly known",
+            "Only private citizens must obey laws",
+            "Court decisions are optional"
+          ],
+          "answer": 1,
+          "explanation": "The rule of law requires that everyone, including public officials, is accountable under the law."
+        },
+        {
+          "id": "geninfo_98",
+          "question": "Which Philippine law is commonly called the Ecological Solid Waste Management Act of 2000?",
+          "choices": [
+            "RA 9003",
+            "RA 8749",
+            "RA 9275",
+            "RA 6969"
+          ],
+          "answer": 0,
+          "explanation": "Republic Act No. 9003 establishes the country's ecological solid waste management framework."
+        },
+        {
+          "id": "geninfo_99",
+          "question": "What is the main purpose of a firewall in computer security?",
+          "choices": [
+            "Increase monitor brightness",
+            "Filter network traffic according to security rules",
+            "Compress all files",
+            "Replace antivirus updates"
+          ],
+          "answer": 1,
+          "explanation": "A firewall monitors and controls incoming and outgoing network traffic based on defined rules."
+        },
+        {
+          "id": "geninfo_100",
+          "question": "Which practice best helps protect an online account?",
+          "choices": [
+            "Reuse one password everywhere",
+            "Share passwords with coworkers",
+            "Use a unique strong password and multifactor authentication",
+            "Disable security notifications"
+          ],
+          "answer": 2,
+          "explanation": "Unique strong passwords and multifactor authentication reduce the risk of account compromise."
+        }
       ]
     },
     {
@@ -1991,96 +4059,108 @@
         {
           "id": "filipino_1",
           "question": "Piliin ang wastong gamit ng 'ng' at 'nang': 'Tumakbo siya _____ mabilis.'",
-          "choices": ["ng", "nang", "na", "man"],
+          "choices": [
+            "ng",
+            "nang",
+            "na",
+            "man"
+          ],
           "answer": 1,
           "explanation": "'Nang' ang ginagamit bilang pang-abay na nagpapalakas ng kahulugan ng pandiwang 'tumakbo'. Ang 'ng' ay pantukoy o pang-angkop."
         },
         {
-          "id": "filipino_2",
-          "question": "Sino ang unang Pangulo ng Pilipinas sa ilalim ng Saligang Batas ng 1987?",
-          "choices": ["Ferdinand Marcos", "Corazon Aquino", "Fidel Ramos", "Joseph Estrada"],
-          "answer": 1,
-          "explanation": "Si Corazon 'Cory' Aquino ang naging unang Pangulo matapos maibalik ang demokrasya at maipatupad ang Saligang Batas ng 1987."
-        },
-        {
           "id": "filipino_3",
           "question": "Alin ang tamang kahulugan ng salitang 'makulay'?",
-          "choices": ["Mapanglaw", "Masaya at interesante", "Malungkot", "Mapayapa"],
+          "choices": [
+            "Mapanglaw",
+            "Masaya at interesante",
+            "Malungkot",
+            "Mapayapa"
+          ],
           "answer": 1,
           "explanation": "'Makulay' ay nangangahulugang masaya, interesante, at puno ng buhay."
         },
         {
           "id": "filipino_4",
           "question": "Ang wikang pambansa ng Pilipinas ay:",
-          "choices": ["Tagalog", "Filipino", "Pilipino", "Bisaya"],
+          "choices": [
+            "Tagalog",
+            "Filipino",
+            "Pilipino",
+            "Bisaya"
+          ],
           "answer": 1,
           "explanation": "Ayon sa Saligang Batas ng 1987, ang Filipino ang wikang pambansa ng Pilipinas."
         },
         {
           "id": "filipino_5",
           "question": "Alin sa mga sumusunod ang HINDI pang-uri (adjective) sa Filipino?",
-          "choices": ["Maganda", "Mabilis", "Tumakbo", "Mataas"],
+          "choices": [
+            "Maganda",
+            "Mabilis",
+            "Tumakbo",
+            "Mataas"
+          ],
           "answer": 2,
           "explanation": "'Tumakbo' ay isang pandiwa (verb). Ang maganda, mabilis, at mataas ay mga pang-uri."
         },
         {
-          "id": "filipino_6",
-          "question": "Si Andres Bonifacio ay kilala bilang:",
-          "choices": [
-            "Bayani ng Digmaan",
-            "Ama ng Rebolusyong Pilipino",
-            "Dakilang Manunula",
-            "Pangulong Pangulo ng Pilipinas"
-          ],
-          "answer": 1,
-          "explanation": "Si Andres Bonifacio ay kinikilala bilang 'Ama ng Rebolusyong Pilipino' dahil sa pagtatayo niya ng Katipunan noong 1892."
-        },
-        {
-          "id": "filipino_7",
-          "question": "Ang 'Noli Me Tangere' ay isinulat ni Dr. Jose Rizal sa wikang:",
-          "choices": ["Filipino", "Ingles", "Kastila", "Pranses"],
-          "answer": 2,
-          "explanation": "Ang 'Noli Me Tangere' ay isinulat sa wikang Kastila at inilathala noong 1887 sa Berlin, Germany."
-        },
-        {
-          "id": "filipino_8",
-          "question": "Ang Katipunan ay itinatag noong:",
-          "choices": ["1872", "1892", "1896", "1898"],
-          "answer": 1,
-          "explanation": "Ang Katipunan ay itinatag ni Andres Bonifacio noong Hulyo 7, 1892 sa Tundo, Maynila."
-        },
-        {
           "id": "filipino_9",
           "question": "Ang salitang 'maunawain' ay isang halimbawa ng:",
-          "choices": ["Pandiwa", "Pangngalan", "Pang-uri", "Pang-abay"],
+          "choices": [
+            "Pandiwa",
+            "Pangngalan",
+            "Pang-uri",
+            "Pang-abay"
+          ],
           "answer": 2,
           "explanation": "'Maunawain' ay isang pang-uri (adjective) na nangangahulugang understanding o matiisin."
         },
         {
           "id": "filipino_10",
           "question": "Piliin ang tamang anyo: 'Ang bawat mamamayan _____ may responsibilidad sa bansa.'",
-          "choices": ["ay mayroon", "ay may", "ay mayroon na", "ay nagmamayroon"],
+          "choices": [
+            "ay mayroon",
+            "ay may",
+            "ay mayroon na",
+            "ay nagmamayroon"
+          ],
           "answer": 1,
           "explanation": "'Ay may' ang tamang gamit bago ang mga salitang may pantukoy tulad ng 'responsibilidad sa bansa'."
         },
         {
           "id": "filipino_11",
           "question": "Ang tamang pagbabaybay ay:",
-          "choices": ["Pagpapahalaga", "Pagpaphalaga", "Pagpahalaga", "Pagpapagahalaga"],
+          "choices": [
+            "Pagpapahalaga",
+            "Pagpaphalaga",
+            "Pagpahalaga",
+            "Pagpapagahalaga"
+          ],
           "answer": 0,
           "explanation": "Ang tamang pagbabaybay ay 'Pagpapahalaga' — mula sa salitang 'halaga' na may unlapi na 'pagpapa-'."
         },
         {
           "id": "filipino_12",
           "question": "Alin sa mga sumusunod ang pangngalan (noun)?",
-          "choices": ["Tumakbo", "Maganda", "Kalayaan", "Mabilis"],
+          "choices": [
+            "Tumakbo",
+            "Maganda",
+            "Kalayaan",
+            "Mabilis"
+          ],
           "answer": 2,
           "explanation": "'Kalayaan' ay isang pangngalan na nangangahulugang freedom. Ang iba ay pandiwa at pang-uri."
         },
         {
           "id": "filipino_13",
           "question": "Ano ang kahulugan ng salitang 'mapanlinlang'?",
-          "choices": ["Mapagkawanggawa", "Mapanggaya", "Mapandaya", "Mapagbigay"],
+          "choices": [
+            "Mapagkawanggawa",
+            "Mapanggaya",
+            "Mapandaya",
+            "Mapagbigay"
+          ],
           "answer": 2,
           "explanation": "'Mapanlinlang' ay nangangahulugang mapandaya o deceptive — isang taong nanlilinlang ng iba."
         },
@@ -2099,28 +4179,48 @@
         {
           "id": "filipino_15",
           "question": "Ang salitang 'magbasa' ay nasa anong uri ng pandiwa?",
-          "choices": ["Pandiwang palipat", "Pandiwang di-palipat", "Pandiwang katawanin", "Pandiwang balintiyak"],
+          "choices": [
+            "Pandiwang palipat",
+            "Pandiwang di-palipat",
+            "Pandiwang katawanin",
+            "Pandiwang balintiyak"
+          ],
           "answer": 0,
           "explanation": "'Magbasa' ay pandiwang palipat (transitive verb) dahil ito ay may tinatanggap na kilos (ang bagay na binabasa)."
         },
         {
           "id": "filipino_16",
           "question": "Ano ang tawag sa pagbabago ng anyo ng pandiwa batay sa aspeto ng panahon?",
-          "choices": ["Pagsasalita", "Panahon ng pandiwa", "Pokus ng pandiwa", "Aspeto ng pandiwa"],
+          "choices": [
+            "Pagsasalita",
+            "Panahon ng pandiwa",
+            "Pokus ng pandiwa",
+            "Aspeto ng pandiwa"
+          ],
           "answer": 3,
           "explanation": "Ang aspeto ng pandiwa ang nagpapakita kung ang kilos ay naganap na (naganap), nagaganap pa (nagaganap), o magaganap pa (magaganap)."
         },
         {
           "id": "filipino_17",
           "question": "Piliin ang wastong salita: 'Ang bata ay _____ sa kanyang guro.'",
-          "choices": ["nagalang", "nagagalang", "gumalang", "gumagalang"],
+          "choices": [
+            "nagalang",
+            "nagagalang",
+            "gumalang",
+            "gumagalang"
+          ],
           "answer": 2,
           "explanation": "'Gumalang' ang tamang anyo sa naganap na aspeto (nakaraan): ang bata ay gumalang sa kanyang guro."
         },
         {
           "id": "filipino_18",
           "question": "Ang 'Florante at Laura' ay isinulat ni:",
-          "choices": ["Jose Rizal", "Francisco Balagtas", "Andres Bonifacio", "Apolinario Mabini"],
+          "choices": [
+            "Jose Rizal",
+            "Francisco Balagtas",
+            "Andres Bonifacio",
+            "Apolinario Mabini"
+          ],
           "answer": 1,
           "explanation": "Ang 'Florante at Laura' ay awit (metrical romance) na isinulat ni Francisco Balagtas (Francisco Baltazar)."
         },
@@ -2139,28 +4239,48 @@
         {
           "id": "filipino_20",
           "question": "Ano ang kahulugan ng idyomang 'nasa hustong gulang'?",
-          "choices": ["Matanda na", "Sapat na ang edad at kahinugan", "Bata pa", "Maysakit"],
+          "choices": [
+            "Matanda na",
+            "Sapat na ang edad at kahinugan",
+            "Bata pa",
+            "Maysakit"
+          ],
           "answer": 1,
           "explanation": "'Nasa hustong gulang' ay nangangahulugang ang isang tao ay sapat na ang edad at kahinugan o kapanahunan."
         },
         {
           "id": "filipino_21",
           "question": "Alin ang tamang gamit ng panlaping 'maka-'?",
-          "choices": ["Makabayan", "Makaagham", "Makabata", "Lahat ng nabanggit"],
+          "choices": [
+            "Makabayan",
+            "Makaagham",
+            "Makabata",
+            "Lahat ng nabanggit"
+          ],
           "answer": 3,
           "explanation": "Ang panlaping 'maka-' ay ginagamit upang ipahiwatig ng pagkakatulad o suporta: makabayan (pro-country), makaagham (pro-science), makabata (pro-youth)."
         },
         {
           "id": "filipino_22",
           "question": "Ang salitang 'takipsilim' ay nangangahulugang:",
-          "choices": ["Madaling araw", "Tanghali", "Dapit-hapon o gabi na", "Hatinggabi"],
+          "choices": [
+            "Madaling araw",
+            "Tanghali",
+            "Dapit-hapon o gabi na",
+            "Hatinggabi"
+          ],
           "answer": 2,
           "explanation": "'Takipsilim' ay ang oras ng paglubog ng araw — dapit-hapon o kapag nagdidilim na."
         },
         {
           "id": "filipino_23",
           "question": "Ano ang tawag sa mga salitang magkasingkahulugan?",
-          "choices": ["Antonym", "Homonym", "Synonym", "Acronym"],
+          "choices": [
+            "Antonym",
+            "Homonym",
+            "Synonym",
+            "Acronym"
+          ],
           "answer": 2,
           "explanation": "Ang mga salitang magkasingkahulugan ay tinatawag na synonyms o kasingkahulugan sa Filipino."
         },
@@ -2191,183 +4311,627 @@
         {
           "id": "filipino_26",
           "question": "Ano ang tawag sa bahagi ng salita na inilalagay sa simula ng salita?",
-          "choices": ["Hulapi", "Unlapi", "Gitlapi", "Kabilaan"],
+          "choices": [
+            "Hulapi",
+            "Unlapi",
+            "Gitlapi",
+            "Kabilaan"
+          ],
           "answer": 1,
           "explanation": "Ang unlapi (prefix) ay inilalagay sa simula ng salita, tulad ng 'mag-', 'um-', 'maka-'."
         },
         {
           "id": "filipino_27",
           "question": "Ang salitang 'nagmamahal' ay nasa anong aspeto?",
-          "choices": ["Naganap", "Nagaganap", "Magaganap", "Katatapos"],
+          "choices": [
+            "Naganap",
+            "Nagaganap",
+            "Magaganap",
+            "Katatapos"
+          ],
           "answer": 1,
           "explanation": "'Nagmamahal' ay nasa nagaganap na aspeto (present tense) — ang kilos ay nagaganap sa kasalukuyan."
         },
         {
           "id": "filipino_28",
           "question": "Alin ang tamang baybay?",
-          "choices": ["Pananagutan", "Pananagottan", "Pananagotan", "Pananaguttan"],
+          "choices": [
+            "Pananagutan",
+            "Pananagottan",
+            "Pananagotan",
+            "Pananaguttan"
+          ],
           "answer": 0,
-          "explanation": "Ang tamang baybay ay 'Pananagutan' — mula sa salitang 'tanggap' at 'sagot', nangangahulugang accountability o responsibility."
+          "explanation": "Ang tamang baybay ay 'Pananagutan' — nangangahulugang accountability o responsibility."
         },
         {
           "id": "filipino_29",
           "question": "Ang 'Panahon ng Kastila' sa kasaysayan ng Pilipinas ay tumagal ng humigit-kumulang:",
-          "choices": ["200 taon", "300 taon", "400 taon", "100 taon"],
+          "choices": [
+            "200 taon",
+            "300 taon",
+            "400 taon",
+            "100 taon"
+          ],
           "answer": 1,
           "explanation": "Ang Pilipinas ay nasa ilalim ng pananakop ng Espanya mula 1565 hanggang 1898, humigit-kumulang 333 taon."
         },
         {
           "id": "filipino_30",
           "question": "Ano ang kahulugan ng salitang 'mapagkumbaba'?",
-          "choices": ["Palalo", "Hambog", "Mapagmataas", "Mahinhin at hindi nagmamataas"],
+          "choices": [
+            "Palalo",
+            "Hambog",
+            "Mapagmataas",
+            "Mahinhin at hindi nagmamataas"
+          ],
           "answer": 3,
           "explanation": "'Mapagkumbaba' ay nangangahulugang humble — isang taong hindi nagmamataas at kinikilala ang kanyang kakulangan."
         },
-         {
-    "id": "filipino_31",
-    "question": "Piliin ang wastong salita para sa pangungusap: '_______ kami ng masarap na hapunan kagabi.'",
-    "choices": ["Nagluluto", "Magluluto", "Nagluto", "Kakainin"],
-    "answer": 2,
-    "explanation": "Dahil sa panandang pampanahon na 'kagabi' (naganap na), ang tamang anyo ng pandiwa ay 'nagluto' (aspektong perpektibo)."
-  },
-  {
-    "id": "filipino_32",
-    "question": "Ano ang kahulugan ng matalinghagang salita na 'balat-sibuyas'?",
-    "choices": ["Madaling umiyak o maramdamin", "Maputi ang balat", "May mababang loob", "Palasigaw"],
-    "answer": 0,
-    "explanation": "Ang idyomang 'balat-sibuyas' ay naglalarawan sa isang taong sobrang sensitibo, madaling masaktan ang damdamin, o madaling maiyak."
-  },
-  {
-    "id": "filipino_33",
-    "question": "Alin sa mga sumusunod ang tamang tambalan ng mga salita upang mabuo ang kahulugang 'breaking news' o balitang bago?",
-    "choices": ["Balitang-kutsero", "Balitang-mainit", "Balitang-bago", "Agaw-buhay"],
-    "answer": 1,
-    "explanation": "Ang 'balitang-mainit' ay ginagamit upang tukuyin ang mga sariwa, bago, at kasalukuyang nagaganap na mahahalagang ulat o balita."
-  },
-  {
-    "id": "filipino_34",
-    "question": "Piliin ang pangungusap na may tamang gamit ng 'din' o 'rin':",
-    "choices": [
-      "Sasama rin ako sa inyo mamaya.",
-      "Sasama din ako sa inyo mamaya.",
-      "Mabilis rin siyang tumakbo.",
-      "Mabigat rin ang dalang bag."
-    ],
-    "answer": 0,
-    "explanation": "Ginagamit ang 'rin' kapag ang sinusundang salita ay nagtatapos sa patinig (a, e, i, o, u) o malapatinig (w, y). Ang 'Sasama' ay nagtatapos sa 'a', kaya 'rin' ang wasto."
-  },
-  {
-    "id": "filipino_35",
-    "question": "Ano ang tamang baybay ng salitang hiram mula sa Ingles na 'computer' batay sa kasalukuyang ortograpiyang Filipino?",
-    "choices": ["Kompyuter", "Kompyuter", "Computador", "Kumpyuter"],
-    "answer": 0,
-    "explanation": "Ang tamang standard na baybay sa Filipino ng salitang 'computer' ay 'kompyuter', kung saan ang 'c' ay naging 'k' at ang 'u' ay naging 'yu'."
-  },
-  {
-    "id": "filipino_36",
-    "question": "Alin sa mga sumusunod ang isang halimbawa ng pang-abay na pamanahon?",
-    "choices": ["Sa paaralan", "Nang mabilis", "Kaninang umaga", "Higit na maganda"],
-    "answer": 2,
-    "explanation": "Ang pang-abay na pamanahon ay nagsasaad kung kailan naganap, nagaganap, o magaganap ang kilos ng pandiwa. Ang 'kaninang umaga' ay tumutukoy sa oras/panahon."
-  },
-  {
-    "id": "filipino_37",
-    "question": "Sino ang tinaguriang 'Utak ng Katipunan' sa kasaysayan ng Pilipinas?",
-    "choices": ["Apolinario Mabini", "Emilio Jacinto", "Andres Bonifacio", "Emilio Aguinaldo"],
-    "answer": 1,
-    "explanation": "Si Emilio Jacinto ang kilala bilang 'Utak ng Katipunan' dahil sa kanyang mga isinulat na alituntunin at gabay para sa samahan, tulad ng Kartilya ng Katipunan."
-  },
-  {
-    "id": "filipino_38",
-    "question": "Ano ang kahulugan ng salitang may salungguhit: 'Ang kanyang mga pahayag ay tila nagbabadya ng magandang kinabukasan.'",
-    "choices": ["Nagtatago", "Nagpapahiwatig", "Nasisira", "Nagtatapos"],
-    "answer": 1,
-    "explanation": "Ang salitang 'nagbabadya' ay nangangahulugang nagpapakita ng senyales, nagbabala, o nagpapahiwatig ng isang bagay na mangyayari."
-  },
-  {
-    "id": "filipino_39",
-    "question": "Anong uri ng tayutay ang ginamit sa linya na: 'Sumasayaw ang mga dahon sa hipan ng mahinang hangin.'?",
-    "choices": ["Pagtutulad (Simile)", "Pagwawangis (Metaphor)", "Pagsasatao (Personification)", "Pagmamalabis (Hyperbole)"],
-    "answer": 2,
-    "explanation": "Ito ay personipikasyon o pagsasatao dahil binibigyan ng katangian ng tao (pagsasayaw) ang mga bagay na walang buhay (dahon)."
-  },
-  {
-    "id": "filipino_40",
-    "question": "Piliin ang tamang anyo ng panghalip: 'Iabot mo sa _______ ang mga dokumentong nasa mesa.'",
-    "choices": ["akin", "ko", "kita", "bawat"],
-    "answer": 0,
-    "explanation": "Ang 'akin' ay isang panghalip na paari/paukol na gumagana bilang layon ng preposisyon o direksyon ng kilos sa pangungusap."
-  },
-  {
-    "id": "filipino_41",
-    "question": "Alin sa mga sumusunod ang pandiwang nasa aspektong kontemplatibo (magaganap pa lamang)?",
-    "choices": ["Kumakanta", "Kakanta", "Kumanta", "Nagkakantahan"],
-    "answer": 1,
-    "explanation": "Ang aspektong kontemplatibo ay nagpapakita na ang kilos ay hindi pa nasisimulan o gagawin pa lamang sa hinaharap. Ang 'kakanta' ay halimbawa nito."
-  },
-  {
-    "id": "filipino_42",
-    "question": "Piliin ang wastong gamit ng 'pinto' at 'pintuan': 'Isinara niya ang _______ upang hindi makapasok ang lamok.'",
-    "choices": ["pinto", "pintuan", "kapintuan", "papinto"],
-    "answer": 0,
-    "explanation": "Ang 'pinto' (door) ay ang mismong kahoy o bagay na binubuksan at isinasara, samantalang ang 'pintuan' (doorway) ay ang espasyo kung saan inilalagay ang pinto."
-  },
-  {
-    "id": "filipino_43",
-    "question": "Ano ang tawag sa pinakamaliit na yunit ng tunog na nagpapabago ng kahulugan ng isang salita?",
-    "choices": ["Morpema", "Ponema", "Sintaks", "Semantika"],
-    "answer": 1,
-    "explanation": "Ang 'ponema' (phoneme) ay ang makabuluhang yunit ng tunog sa isang wika. Ang morpema naman ay ang pinakamaliit na yunit ng salita na may kahulugan."
-  },
-  {
-    "id": "filipino_44",
-    "question": "Ano ang kahulugan ng sawikain na 'nagbibilang ng poste'?",
-    "choices": ["Nagtatrabaho sa kuryente", "Walang trabaho o walang ginagawa", "Masipag maglakad", "Naghahanap ng bahay"],
-    "answer": 1,
-    "explanation": "Ang sawikaing 'nagbibilang ng poste' ay isang tanyag na idyoma na nangangahulugang walang permanenteng trabaho o nag-aaksaya ng oras."
-  },
-  {
-    "id": "filipino_45",
-    "question": "Alin ang tamang pang-ugnay na dapat gamitin: 'Gusto niyang bumili ng bagong sapatos _______ wala na siyang sapat na pera.'",
-    "choices": ["subalit", "dahil", "kaya", "upang"],
-    "answer": 0,
-    "explanation": "Ang 'subalit' ay isang pangatnig na panalungat, na ginagamit kapag ang ikalawang kaisipan ay sumasalungat sa una."
-  },
-  {
-    "id": "filipino_46",
-    "question": "Ano ang kasalukuyang opisyal na alpabeto ng wikang Filipino na binubuo ng 28 titik?",
-    "choices": ["Abakada", "Makabagong Alpabetong Filipino", "Alpabetong Romano", "Baybayin"],
-    "answer": 1,
-    "explanation": "Ang Makabagong Alpabetong Filipino na pinagtibay noong 1987 ay binubuo ng 28 na titik (kasama ang Ñ at Ng)."
-  },
-  {
-    "id": "filipino_47",
-    "question": "Alin sa mga sumusunod ang tamang kahulugan ng salitang 'salat'?",
-    "choices": ["Sobra-sobra", "Kulang o may kakapusan", "Malinis", "Mabilis"],
-    "answer": 1,
-    "explanation": "Ang ibig sabihin ng 'salat' ay kulang, kapos, o may kakulangan sa mga pangangailangan sa buhay."
-  },
-  {
-    "id": "filipino_48",
-    "question": "Piliin ang wastong gamit ng 'subukin' at 'subukan': 'Gusto kong _______ ang husay niya sa pagbasa.'",
-    "choices": ["subukin", "subukan", "sumubok", "subukang"],
-    "answer": 0,
-    "explanation": "Ginagamit ang 'subukin' (to test/try) kapag nais suriin ang bisa, lakas, o husay ng isang tao o bagay. Ang 'subukan' (to spy/monitor) ay lihim na pagmamasid sa kilos ng iba."
-  },
-  {
-    "id": "filipino_49",
-    "question": "Ano ang tinutukoy ng 'aspektong imperpektibo' ng pandiwa?",
-    "choices": ["Kilos na tapos na", "Kilos na ginagawa pa lamang o kasalukuyang nangyayari", "Kilos na gaganapin pa lang", "Kilos na katatapos lang"],
-    "answer": 1,
-    "explanation": "Ang aspektong imperpektibo ay tumutukoy sa pandiwang nagaganap (present tense), kung saan ang aksyon ay nasimulan na ngunit hindi pa natatapos."
-  },
-  {
-    "id": "filipino_50",
-    "question": "Ano ang kahulugan ng malalim na salitang Filipino na 'alimpuyo'?",
-    "choices": ["Malakas na ulan", "Simbuyo, liyab, o puyo ng hangin/damdamin", "Payapang gabi", "Mabangong hangin"],
-    "answer": 1,
-    "explanation": "Ang 'alimpuyo' ay tumutukoy sa pag-ikot ng hangin (whirlwind) o matinding udyok at silakbo ng damdamin o liyab."
-  }
+        {
+          "id": "filipino_31",
+          "question": "Piliin ang wastong salita para sa pangungusap: '_______ kami ng masarap na hapunan kagabi.'",
+          "choices": [
+            "Nagluluto",
+            "Magluluto",
+            "Nagluto",
+            "Kakainin"
+          ],
+          "answer": 2,
+          "explanation": "Dahil sa panandang pampanahon na 'kagabi' (naganap na), ang tamang anyo ng pandiwa ay 'nagluto' (aspektong perpektibo)."
+        },
+        {
+          "id": "filipino_32",
+          "question": "Ano ang kahulugan ng matalinghagang salita na 'balat-sibuyas'?",
+          "choices": [
+            "Madaling umiyak o maramdamin",
+            "Maputi ang balat",
+            "May mababang loob",
+            "Palasigaw"
+          ],
+          "answer": 0,
+          "explanation": "Ang idyomang 'balat-sibuyas' ay naglalarawan sa isang taong sobrang sensitibo, madaling masaktan ang damdamin, o madaling maiyak."
+        },
+        {
+          "id": "filipino_34",
+          "question": "Piliin ang pangungusap na may tamang gamit ng 'din' o 'rin':",
+          "choices": [
+            "Sasama rin ako sa inyo mamaya.",
+            "Sasama din ako sa inyo mamaya.",
+            "Mabilis rin siyang tumakbo.",
+            "Mabigat rin ang dalang bag."
+          ],
+          "answer": 0,
+          "explanation": "Ginagamit ang 'rin' kapag ang sinusundang salita ay nagtatapos sa patinig (a, e, i, o, u) o malapatinig (w, y). Ang 'Sasama' ay nagtatapos sa 'a', kaya 'rin' ang wasto."
+        },
+        {
+          "id": "filipino_35",
+          "question": "Ano ang tamang baybay ng salitang hiram mula sa Ingles na 'computer' batay sa kasalukuyang ortograpiyang Filipino?",
+          "choices": [
+            "Kompyuter",
+            "Kompiyuter",
+            "Computador",
+            "Kumpyuter"
+          ],
+          "answer": 0,
+          "explanation": "Ang karaniwang baybay sa Filipino ng 'computer' ay 'kompyuter', kung saan ang 'c' ay naging 'k' at ang 'u' ay naging 'yu'."
+        },
+        {
+          "id": "filipino_36",
+          "question": "Alin sa mga sumusunod ang isang halimbawa ng pang-abay na pamanahon?",
+          "choices": [
+            "Sa paaralan",
+            "Nang mabilis",
+            "Kaninang umaga",
+            "Higit na maganda"
+          ],
+          "answer": 2,
+          "explanation": "Ang pang-abay na pamanahon ay nagsasaad kung kailan naganap, nagaganap, o magaganap ang kilos ng pandiwa. Ang 'kaninang umaga' ay tumutukoy sa oras/panahon."
+        },
+        {
+          "id": "filipino_37",
+          "question": "Sino ang tinaguriang 'Utak ng Katipunan' sa kasaysayan ng Pilipinas?",
+          "choices": [
+            "Apolinario Mabini",
+            "Emilio Jacinto",
+            "Andres Bonifacio",
+            "Emilio Aguinaldo"
+          ],
+          "answer": 1,
+          "explanation": "Si Emilio Jacinto ang kilala bilang 'Utak ng Katipunan' dahil sa kanyang mga isinulat na alituntunin at gabay para sa samahan, tulad ng Kartilya ng Katipunan."
+        },
+        {
+          "id": "filipino_38",
+          "question": "Ano ang kahulugan ng salitang 'nagbabadya' sa pangungusap: 'Ang kanyang mga pahayag ay tila nagbabadya ng magandang kinabukasan.'",
+          "choices": [
+            "Nagtatago",
+            "Nagpapahiwatig",
+            "Nasisira",
+            "Nagtatapos"
+          ],
+          "answer": 1,
+          "explanation": "Ang salitang 'nagbabadya' ay nangangahulugang nagpapakita ng senyales, nagbabala, o nagpapahiwatig ng isang bagay na mangyayari."
+        },
+        {
+          "id": "filipino_39",
+          "question": "Anong uri ng tayutay ang ginamit sa linya na: 'Sumasayaw ang mga dahon sa hipan ng mahinang hangin.'?",
+          "choices": [
+            "Pagtutulad (Simile)",
+            "Pagwawangis (Metaphor)",
+            "Pagsasatao (Personification)",
+            "Pagmamalabis (Hyperbole)"
+          ],
+          "answer": 2,
+          "explanation": "Ito ay personipikasyon o pagsasatao dahil binibigyan ng katangian ng tao (pagsasayaw) ang mga bagay na walang buhay (dahon)."
+        },
+        {
+          "id": "filipino_40",
+          "question": "Piliin ang tamang anyo ng panghalip: 'Iabot mo sa _______ ang mga dokumentong nasa mesa.'",
+          "choices": [
+            "akin",
+            "ko",
+            "kita",
+            "bawat"
+          ],
+          "answer": 0,
+          "explanation": "Ang 'akin' ay isang panghalip na paari/paukol na gumagana bilang layon ng preposisyon o direksyon ng kilos sa pangungusap."
+        },
+        {
+          "id": "filipino_41",
+          "question": "Alin sa mga sumusunod ang pandiwang nasa aspektong kontemplatibo (magaganap pa lamang)?",
+          "choices": [
+            "Kumakanta",
+            "Kakanta",
+            "Kumanta",
+            "Nagkakantahan"
+          ],
+          "answer": 1,
+          "explanation": "Ang aspektong kontemplatibo ay nagpapakita na ang kilos ay hindi pa nasisimulan o gagawin pa lamang sa hinaharap. Ang 'kakanta' ay halimbawa nito."
+        },
+        {
+          "id": "filipino_42",
+          "question": "Piliin ang wastong gamit ng 'pinto' at 'pintuan': 'Isinara niya ang _______ upang hindi makapasok ang lamok.'",
+          "choices": [
+            "pinto",
+            "pintuan",
+            "kapintuan",
+            "papinto"
+          ],
+          "answer": 0,
+          "explanation": "Ang 'pinto' (door) ay ang mismong kahoy o bagay na binubuksan at isinasara, samantalang ang 'pintuan' (doorway) ay ang espasyo kung saan inilalagay ang pinto."
+        },
+        {
+          "id": "filipino_43",
+          "question": "Ano ang tawag sa pinakamaliit na yunit ng tunog na nagpapabago ng kahulugan ng isang salita?",
+          "choices": [
+            "Morpema",
+            "Ponema",
+            "Sintaks",
+            "Semantika"
+          ],
+          "answer": 1,
+          "explanation": "Ang 'ponema' (phoneme) ay ang makabuluhang yunit ng tunog sa isang wika. Ang morpema naman ay ang pinakamaliit na yunit ng salita na may kahulugan."
+        },
+        {
+          "id": "filipino_44",
+          "question": "Ano ang kahulugan ng sawikain na 'nagbibilang ng poste'?",
+          "choices": [
+            "Nagtatrabaho sa kuryente",
+            "Walang trabaho o walang ginagawa",
+            "Masipag maglakad",
+            "Naghahanap ng bahay"
+          ],
+          "answer": 1,
+          "explanation": "Ang sawikaing 'nagbibilang ng poste' ay isang tanyag na idyoma na nangangahulugang walang permanenteng trabaho o nag-aaksaya ng oras."
+        },
+        {
+          "id": "filipino_45",
+          "question": "Alin ang tamang pang-ugnay na dapat gamitin: 'Gusto niyang bumili ng bagong sapatos _______ wala na siyang sapat na pera.'",
+          "choices": [
+            "subalit",
+            "dahil",
+            "kaya",
+            "upang"
+          ],
+          "answer": 0,
+          "explanation": "Ang 'subalit' ay isang pangatnig na panalungat, na ginagamit kapag ang ikalawang kaisipan ay sumasalungat sa una."
+        },
+        {
+          "id": "filipino_46",
+          "question": "Ano ang kasalukuyang opisyal na alpabeto ng wikang Filipino na binubuo ng 28 titik?",
+          "choices": [
+            "Abakada",
+            "Makabagong Alpabetong Filipino",
+            "Alpabetong Romano",
+            "Baybayin"
+          ],
+          "answer": 1,
+          "explanation": "Ang Makabagong Alpabetong Filipino na pinagtibay noong 1987 ay binubuo ng 28 na titik (kasama ang Ñ at Ng)."
+        },
+        {
+          "id": "filipino_47",
+          "question": "Alin sa mga sumusunod ang tamang kahulugan ng salitang 'salat'?",
+          "choices": [
+            "Sobra-sobra",
+            "Kulang o may kakapusan",
+            "Malinis",
+            "Mabilis"
+          ],
+          "answer": 1,
+          "explanation": "Ang ibig sabihin ng 'salat' ay kulang, kapos, o may kakulangan sa mga pangangailangan sa buhay."
+        },
+        {
+          "id": "filipino_48",
+          "question": "Piliin ang wastong gamit ng 'subukin' at 'subukan': 'Gusto kong _______ ang husay niya sa pagbasa.'",
+          "choices": [
+            "subukin",
+            "subukan",
+            "sumubok",
+            "subukang"
+          ],
+          "answer": 0,
+          "explanation": "Ginagamit ang 'subukin' (to test) kapag nais suriin ang bisa, lakas, o husay ng isang tao o bagay. Ang 'subukan' ay ang pagtatangkang gawin ang isang bagay."
+        },
+        {
+          "id": "filipino_49",
+          "question": "Ano ang tinutukoy ng 'aspektong imperpektibo' ng pandiwa?",
+          "choices": [
+            "Kilos na tapos na",
+            "Kilos na ginagawa pa lamang o kasalukuyang nangyayari",
+            "Kilos na gaganapin pa lang",
+            "Kilos na katatapos lang"
+          ],
+          "answer": 1,
+          "explanation": "Ang aspektong imperpektibo ay tumutukoy sa pandiwang nagaganap (present tense), kung saan ang aksyon ay nasimulan na ngunit hindi pa natatapos."
+        },
+        {
+          "id": "filipino_50",
+          "question": "Ano ang kahulugan ng malalim na salitang Filipino na 'alimpuyo'?",
+          "choices": [
+            "Malakas na ulan",
+            "Simbuyo, liyab, o puyo ng hangin/damdamin",
+            "Payapang gabi",
+            "Mabangong hangin"
+          ],
+          "answer": 1,
+          "explanation": "Ang 'alimpuyo' ay tumutukoy sa pag-ikot ng hangin (whirlwind) o matinding udyok at silakbo ng damdamin o liyab."
+        },
+        {
+          "id": "filipino_51",
+          "question": "Ano ang kasingkahulugan ng salitang 'marubdob'?",
+          "choices": [
+            "Mahina",
+            "Matindi",
+            "Mabagal",
+            "Malamig"
+          ],
+          "answer": 1,
+          "explanation": "Ang MARUBDOB ay nangangahulugang matindi o maalab ang damdamin."
+        },
+        {
+          "id": "filipino_52",
+          "question": "Ano ang kasalungat ng 'masinop'?",
+          "choices": [
+            "Maingat",
+            "Matipid",
+            "Waldas",
+            "Maayos"
+          ],
+          "answer": 2,
+          "explanation": "Ang MASINOP ay maingat at matipid; ang WALDAS ay magastos."
+        },
+        {
+          "id": "filipino_54",
+          "question": "Ano ang tawag sa salitang-ugat ng 'pinakamagaganda'?",
+          "choices": [
+            "Ganda",
+            "Maganda",
+            "Pinaka",
+            "Gandahan"
+          ],
+          "answer": 0,
+          "explanation": "Ang salitang-ugat ng PINAKAMAGAGANDA ay GANDA."
+        },
+        {
+          "id": "filipino_55",
+          "question": "Alin sa mga sumusunod ang pang-abay?",
+          "choices": [
+            "Mabait",
+            "Bahay",
+            "Kahapon",
+            "Guro"
+          ],
+          "answer": 2,
+          "explanation": "Ang KAHAPON ay pang-abay na pamanahon; ang Mabait ay pang-uri at ang Bahay at Guro ay pangngalan."
+        },
+        {
+          "id": "filipino_56",
+          "question": "Ano ang kahulugan ng sawikaing 'makapal ang mukha'?",
+          "choices": [
+            "Matapang",
+            "Walang hiya",
+            "Mapagbigay",
+            "Mahiyain"
+          ],
+          "answer": 1,
+          "explanation": "Ang sawikaing ito ay tumutukoy sa taong walang pakundangan o walang hiya."
+        },
+        {
+          "id": "filipino_57",
+          "question": "Alin ang halimbawa ng tambalang salita?",
+          "choices": [
+            "Bahay-kubo",
+            "Maganda",
+            "Tumakbo",
+            "Masaya"
+          ],
+          "answer": 0,
+          "explanation": "Ang BAHAY-KUBO ay binubuo ng dalawang salitang pinagsama upang makabuo ng isang kahulugan."
+        },
+        {
+          "id": "filipino_58",
+          "question": "Anong uri ng pangungusap ang 'Pakisara ang bintana.'?",
+          "choices": [
+            "Pasalaysay",
+            "Patanong",
+            "Pautos",
+            "Padamdam"
+          ],
+          "answer": 2,
+          "explanation": "Ito ay pakiusap o utos kaya ito ay pangungusap na pautos."
+        },
+        {
+          "id": "filipino_59",
+          "question": "Ano ang kasingkahulugan ng 'salimuot'?",
+          "choices": [
+            "Payak",
+            "Magulo",
+            "Malinaw",
+            "Tahimik"
+          ],
+          "answer": 1,
+          "explanation": "Ang SALIMUOT ay nangangahulugang magulo o masalimuot."
+        },
+        {
+          "id": "filipino_60",
+          "question": "Alin ang wastong baybay?",
+          "choices": [
+            "Pangungulila",
+            "Pangungulilae",
+            "Pangungolila",
+            "Pangungulela"
+          ],
+          "answer": 0,
+          "explanation": "Ang wastong baybay ay PANGUNGULILA."
+        },
+        {
+          "id": "filipino_61",
+          "question": "Ano ang tawag sa pahayag na gumagamit ng paghahambing na hindi gumagamit ng mga salitang tulad o parang?",
+          "choices": [
+            "Pagtutulad",
+            "Pagwawangis",
+            "Pagsasatao",
+            "Pagmamalabis"
+          ],
+          "answer": 1,
+          "explanation": "Ang PAGWAWANGIS o metapora ay tuwirang paghahambing na hindi gumagamit ng tulad o parang."
+        },
+        {
+          "id": "filipino_62",
+          "question": "Alin ang panghalip panao sa pangungusap na 'Sila ay dumating nang maaga.'?",
+          "choices": [
+            "Dumating",
+            "Maaga",
+            "Sila",
+            "Nang"
+          ],
+          "answer": 2,
+          "explanation": "Ang SILA ay panghalip panao na tumutukoy sa mga taong pinag-uusapan."
+        },
+        {
+          "id": "filipino_63",
+          "question": "Ano ang kasalungat ng 'marikit'?",
+          "choices": [
+            "Marangya",
+            "Maganda",
+            "Pangit",
+            "Kaaya-aya"
+          ],
+          "answer": 2,
+          "explanation": "Ang MARIKIT ay nangangahulugang maganda; ang kasalungat nito ay pangit."
+        },
+        {
+          "id": "filipino_64",
+          "question": "Alin ang halimbawa ng pangungusap na pasalaysay?",
+          "choices": [
+            "Nasaan ang iyong aklat?",
+            "Isara mo ang pinto.",
+            "Kay ganda ng tanawin!",
+            "Maagang pumasok ang mga mag-aaral."
+          ],
+          "answer": 3,
+          "explanation": "Ang pangungusap na pasalaysay ay naglalahad ng impormasyon o pangyayari."
+        },
+        {
+          "id": "filipino_65",
+          "question": "Ano ang tawag sa bahagi ng pananalita na nagsasaad ng kilos o galaw?",
+          "choices": [
+            "Pangngalan",
+            "Pandiwa",
+            "Pang-uri",
+            "Panghalip"
+          ],
+          "answer": 1,
+          "explanation": "Ang PANDIWA ay salitang nagsasaad ng kilos o galaw."
+        },
+        {
+          "id": "filipino_66",
+          "question": "Alin ang wastong gamit ng 'may' at 'mayroon'?",
+          "choices": [
+            "Mayroon lapis ako.",
+            "May lapis ako.",
+            "Mayroon ako lapis.",
+            "Mayroon sa mesa lapis."
+          ],
+          "answer": 1,
+          "explanation": "Karaniwang ginagamit ang MAY bago ang pangngalan: may lapis ako."
+        },
+        {
+          "id": "filipino_67",
+          "question": "Ano ang kahulugan ng idyomang 'ilaw ng tahanan'?",
+          "choices": [
+            "Ama",
+            "Ina",
+            "Anak",
+            "Lolo"
+          ],
+          "answer": 1,
+          "explanation": "Ang 'ilaw ng tahanan' ay karaniwang tumutukoy sa ina."
+        },
+        {
+          "id": "filipino_68",
+          "question": "Alin ang salitang inuulit?",
+          "choices": [
+            "Araw-araw",
+            "Kabundukan",
+            "Mabait",
+            "Pinakamataas"
+          ],
+          "answer": 0,
+          "explanation": "Ang ARAW-ARAW ay pag-uulit ng buong salitang-ugat na araw."
+        },
+        {
+          "id": "filipino_69",
+          "question": "Ano ang tawag sa maikling tulang may apat na taludtod at karaniwang may sukat at tugma?",
+          "choices": [
+            "Tanaga",
+            "Nobela",
+            "Sanaysay",
+            "Dula"
+          ],
+          "answer": 0,
+          "explanation": "Ang tanaga ay katutubong tulang Pilipino na karaniwang may apat na taludtod at pitong pantig bawat taludtod."
+        },
+        {
+          "id": "filipino_70",
+          "question": "Alin ang halimbawa ng pang-ukol?",
+          "choices": [
+            "Sa",
+            "Mabilis",
+            "Sila",
+            "Tumakbo"
+          ],
+          "answer": 0,
+          "explanation": "Ang SA ay pang-ukol na nag-uugnay sa pangngalan o panghalip sa ibang salita."
+        },
+        {
+          "id": "filipino_71",
+          "question": "Ano ang kasingkahulugan ng 'marangal'?",
+          "choices": [
+            "Duwag",
+            "Kagalang-galang",
+            "Tusong-tuso",
+            "Mapagmataas"
+          ],
+          "answer": 1,
+          "explanation": "Ang MARANGAL ay nangangahulugang kagalang-galang o may dangal."
+        },
+        {
+          "id": "filipino_72",
+          "question": "Alin ang wastong pangungusap?",
+          "choices": [
+            "Nagpunta kami sa palengke kahapon.",
+            "Nagpunta kami nang palengke kahapon.",
+            "Nagpunta kami ng palengke kahapon.",
+            "Nagpunta kami palengke sa kahapon."
+          ],
+          "answer": 0,
+          "explanation": "Tamang gamitin ang SA upang tukuyin ang pook na pinuntahan."
+        },
+        {
+          "id": "filipino_73",
+          "question": "Ano ang tawag sa salitang naglalarawan sa pangngalan o panghalip?",
+          "choices": [
+            "Pang-abay",
+            "Pang-uri",
+            "Pandiwa",
+            "Pangatnig"
+          ],
+          "answer": 1,
+          "explanation": "Ang PANG-URI ay naglalarawan sa pangngalan o panghalip."
+        },
+        {
+          "id": "filipino_74",
+          "question": "Ano ang kasalungat ng 'payapa'?",
+          "choices": [
+            "Tahimik",
+            "Maaliwalas",
+            "Magulo",
+            "Panatag"
+          ],
+          "answer": 2,
+          "explanation": "Ang PAYAPA ay tahimik at walang gulo; ang kasalungat ay MAGULO."
+        },
+        {
+          "id": "filipino_76",
+          "question": "Ano ang tawag sa pangunahing ideya o mensaheng nais ipabatid ng akda?",
+          "choices": [
+            "Tauhan",
+            "Tagpuan",
+            "Tema",
+            "Banghay"
+          ],
+          "answer": 2,
+          "explanation": "Ang TEMA ang pangunahing ideya o mensahe ng akda."
+        },
+        {
+          "id": "filipino_77",
+          "question": "Alin ang pangatnig sa pangungusap na 'Nag-aral siya ngunit hindi siya nakapasa.'?",
+          "choices": [
+            "Nag-aral",
+            "Ngunit",
+            "Hindi",
+            "Nakapasa"
+          ],
+          "answer": 1,
+          "explanation": "Ang NGUNIT ay pangatnig na nagpapakita ng pagsalungat ng dalawang ideya."
+        },
+        {
+          "id": "filipino_78",
+          "question": "Ano ang kahulugan ng 'banaag'?",
+          "choices": [
+            "Ganap na dilim",
+            "Bahagyang liwanag o palatandaan",
+            "Malakas na ulan",
+            "Malalim na hukay"
+          ],
+          "answer": 1,
+          "explanation": "Ang BANAAG ay bahagyang liwanag o munting palatandaan."
+        },
+        {
+          "id": "filipino_79",
+          "question": "Alin ang halimbawa ng pangungusap na padamdam?",
+          "choices": [
+            "Uuwi ako mamaya.",
+            "Saan ka pupunta?",
+            "Aray, ang sakit!",
+            "Pakikuha ang bag."
+          ],
+          "answer": 2,
+          "explanation": "Nagpapahayag ito ng matinding damdamin at nagtatapos sa tandang padamdam."
+        },
+        {
+          "id": "filipino_80",
+          "question": "Ano ang tawag sa mga salitang magkapareho ang baybay ngunit magkaiba ang kahulugan?",
+          "choices": [
+            "Kasingkahulugan",
+            "Homonimo",
+            "Magkasalungat",
+            "Tambalang salita"
+          ],
+          "answer": 1,
+          "explanation": "Ang mga salitang magkapareho ang baybay ngunit magkaiba ang kahulugan ay homonimo."
+        }
       ]
     }
   ]
