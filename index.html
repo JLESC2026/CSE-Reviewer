@@ -1,264 +1,299 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="theme-color" content="#0d1117" id="meta-theme">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#0D1118">
 <title>CSE Professional Reviewer</title>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<script>
-  /* apply saved theme before paint to avoid a flash */
-  (function () {
-    try {
-      var t = localStorage.getItem('cse_theme');
-      if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
-  })();
-</script>
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
-
-<!-- ══ APP BAR ══ -->
-<header class="appbar">
-  <div class="appbar-inner">
-    <div class="brand">
-      <span class="brand-mark" aria-hidden="true">CSE</span>
-      <div class="brand-text">
-        <strong>CSE Reviewer</strong>
-        <span>Professional Level · 170 items</span>
-      </div>
-    </div>
-
-    <nav class="topnav" id="topnav" style="display:none" aria-label="Main">
-      <button class="topnav-btn active" id="nav-quiz" onclick="showSection('quiz')">📝 <span>Quiz</span></button>
-      <button class="topnav-btn" id="nav-lb" onclick="showSection('leaderboard')">🏆 <span>Score Log</span></button>
-      <span class="user-chip" id="user-chip">👤 —</span>
-    </nav>
-
-    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle light / dark theme" title="Toggle theme">🌙</button>
-  </div>
+<!-- ══ HEADER (landing hero; hidden once the exam starts) ══ -->
+<header class="header">
+  <div class="badge">Philippines · Professional Level</div>
+  <h1>CSE <span>Reviewer</span></h1>
+  <p>Civil Service Exam Practice<span id="hdr-total"></span> · Official Structure</p>
 </header>
 
-<main class="container" id="main">
+<!-- ══ APP BAR (hidden until login) ══ -->
+<nav class="topnav" id="topnav" style="display:none" aria-label="Main">
+  <span class="brand">
+    <span class="brand-mark" aria-hidden="true">C</span>
+    <span class="brand-name">CSE <b>Reviewer</b></span>
+  </span>
+  <button class="topnav-btn active" id="nav-quiz" onclick="showSection('quiz')">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    <span>Quiz</span>
+  </button>
+  <button class="topnav-btn" id="nav-lb" onclick="showSection('leaderboard')">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+    <span>Score Log</span>
+  </button>
+  <span class="user-chip" id="user-chip">
+    <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span id="user-name">—</span>
+  </span>
+</nav>
 
-  <!-- ══ LOGIN / START SCREEN ══ -->
-  <section id="username-screen">
-    <div class="hero">
-      <span class="badge">Philippines · Civil Service Exam</span>
-      <h1>Review smarter.<br><span>Pass with confidence.</span></h1>
-      <p>Practice with the official exam structure — verbal, analytical, numerical, general information and Filipino — and track your scores on the leaderboard.</p>
-      <div class="hero-stats" id="hero-stats" aria-label="Exam structure">
-        <div><b>40</b><span>Verbal</span></div>
-        <div><b>30</b><span>Analytical</span></div>
-        <div><b>25</b><span>Numerical</span></div>
-        <div><b>45</b><span>Gen. Info</span></div>
-        <div><b>30</b><span>Filipino</span></div>
-      </div>
-    </div>
+<main class="container">
 
-    <div class="login-card">
-      <h2>Start a session</h2>
+  <!-- ══ USERNAME / START SCREEN ══ -->
+  <div id="username-screen">
+    <section class="login-card">
+      <h2>Welcome, Reviewer</h2>
+      <p class="lead">Enter your username to start the exam and track your scores on the leaderboard.</p>
 
       <div class="input-wrap">
-        <label for="username-input" class="field-label">Username</label>
+        <label for="username-input" class="sr-only">Username</label>
         <input
           type="text"
           id="username-input"
-          placeholder="e.g. Juan D."
+          placeholder="Your username…"
           maxlength="30"
           autocomplete="off"
+          aria-describedby="username-error"
+          aria-invalid="false"
+          oninput="clearUsernameError()"
           onkeydown="if(event.key==='Enter') startWithUsername()"
         />
-        <div class="input-error" id="username-error" role="alert">
-          Use 1–30 characters: letters, numbers, spaces, dots, dashes or underscores.
+        <div class="input-error" id="username-error" role="alert" aria-live="assertive">
+          Please enter a valid username (1–30 characters; letters, numbers, spaces and _ - . only).
         </div>
       </div>
 
-      <div class="timer-picker">
-        <span class="field-label">Timer mode</span>
+      <!-- Timer mode picker -->
+      <fieldset class="timer-picker">
+        <legend>Timer mode</legend>
         <div class="timer-options">
           <label class="timer-option selected" data-value="per-question" onclick="selectTimerOption('per-question')">
             <input type="radio" name="timer-mode" value="per-question" checked>
             <div class="timer-option-text">
-              <strong>Per question</strong>
-              <span>1 minute each, resets when you move on</span>
+              <strong>Per Question</strong>
+              <span>1 minute per question — resets when you navigate</span>
             </div>
           </label>
           <label class="timer-option" data-value="full-exam" onclick="selectTimerOption('full-exam')">
             <input type="radio" name="timer-mode" value="full-exam">
             <div class="timer-option-text">
-              <strong>Full exam countdown</strong>
-              <span>1 minute × number of questions</span>
+              <strong>Full Exam Countdown</strong>
+              <span>Total time = 1 min × number of questions</span>
             </div>
           </label>
           <label class="timer-option" data-value="none" onclick="selectTimerOption('none')">
             <input type="radio" name="timer-mode" value="none">
             <div class="timer-option-text">
-              <strong>No timer</strong>
-              <span>Study at your own pace</span>
+              <strong>No Timer</strong>
+              <span>Practice at your own pace</span>
             </div>
           </label>
         </div>
-      </div>
+      </fieldset>
 
-      <button class="btn primary block" onclick="startWithUsername()">Start reviewing →</button>
-      <p class="hint">Tip: use <kbd>A</kbd>–<kbd>D</kbd> to answer, <kbd>←</kbd> <kbd>→</kbd> to move, <kbd>F</kbd> to flag.</p>
-    </div>
-  </section>
+      <button class="btn primary block" onclick="startWithUsername()">Start Reviewing →</button>
+    </section>
+
+    <aside class="info-card" aria-label="Exam information">
+      <h3>Exam structure</h3>
+      <div id="landing-dist" class="dist-list"><div class="dist-loading">Loading…</div></div>
+
+      <h3>Keyboard shortcuts</h3>
+      <div class="kbd-list">
+        <div class="kbd-row"><span><kbd>A</kbd> – <kbd>D</kbd></span><span>Select an answer</span></div>
+        <div class="kbd-row"><span><kbd>←</kbd> <kbd>→</kbd></span><span>Previous / next question</span></div>
+        <div class="kbd-row"><span><kbd>F</kbd></span><span>Flag question</span></div>
+        <div class="kbd-row"><span><kbd>M</kbd></span><span>Toggle question map</span></div>
+        <div class="kbd-row"><span><kbd>S</kbd> / <kbd>Ctrl</kbd>+<kbd>Enter</kbd></span><span>Submit exam</span></div>
+      </div>
+      <p class="info-note">Questions and choices are randomized every session. Progress is saved on this device for 4 hours.</p>
+    </aside>
+  </div>
 
   <!-- ══ LOADING ══ -->
-  <div id="loading" style="display:none">
-    <div class="spinner" aria-hidden="true"></div>
-    <p>Loading questions…</p>
+  <div id="loading" style="display:none" role="status">
+    Loading questions…
   </div>
 
   <!-- ══ QUIZ SCREEN ══ -->
-  <section id="quiz-screen" style="display:none">
+  <div id="quiz-screen" style="display:none">
+    <div class="quiz-shell">
 
-    <div class="summary-bar" id="summary-bar">
-      <div class="summary-item">
-        <span class="val" id="stat-score" style="color:var(--accent)">0%</span>
-        <div class="lbl">Score</div>
-      </div>
-      <div class="summary-item">
-        <span class="val" id="stat-correct" style="color:var(--success)">0</span>
-        <div class="lbl">Correct</div>
-      </div>
-      <div class="summary-item">
-        <span class="val" id="stat-wrong" style="color:var(--danger)">0</span>
-        <div class="lbl">Wrong</div>
-      </div>
-      <div class="summary-item">
-        <span class="val" id="stat-remaining" style="color:var(--muted)">—</span>
-        <div class="lbl">Remaining</div>
-      </div>
-    </div>
+      <!-- Sticky exam bar: stats + timer -->
+      <div class="exam-bar" id="exam-bar">
+        <div class="summary-bar" aria-label="Live score">
+          <div class="summary-item">
+            <span class="val" id="stat-score" style="color:var(--accent)">0%</span>
+            <div class="lbl">Score</div>
+          </div>
+          <div class="sep"></div>
+          <div class="summary-item">
+            <span class="val" id="stat-correct" style="color:var(--success)">0</span>
+            <div class="lbl">Correct</div>
+          </div>
+          <div class="sep"></div>
+          <div class="summary-item">
+            <span class="val" id="stat-wrong" style="color:var(--danger)">0</span>
+            <div class="lbl">Wrong</div>
+          </div>
+          <div class="sep"></div>
+          <div class="summary-item">
+            <span class="val" id="stat-remaining" style="color:var(--muted)">—</span>
+            <div class="lbl">Left</div>
+          </div>
+        </div>
 
-    <div class="timer-bar" id="timer-bar">
-      <span class="timer-icon" aria-hidden="true">⏱</span>
-      <span class="timer-label" id="timer-label">Time per question</span>
-      <div class="timer-track"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
-      <span class="timer-digits" id="timer-digits" aria-live="off">01:00</span>
-    </div>
-
-    <div class="weak-radar" id="weak-radar" role="status">
-      ⚠️ <span>Weak topics — focus on: <strong id="weak-topics-list"></strong></span>
-    </div>
-
-    <div class="bookmarked-banner" id="bookmarked-banner">
-      <span>🔖 <strong id="bk-count">0</strong> flagged question(s)</span>
-      <button class="btn small" onclick="jumpToBookmarks()">Review flagged →</button>
-    </div>
-
-    <div class="top-controls">
-      <div class="mode-toggle" role="group" aria-label="Mode">
-        <button class="mode-btn active" id="mode-practice" onclick="setMode('practice')">📖 Practice</button>
-        <button class="mode-btn" id="mode-exam" onclick="setMode('exam')">🎯 Exam</button>
-      </div>
-      <span class="shuffle-badge">🔀 Randomized each session</span>
-    </div>
-
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span id="prog-label">Question 1 of 170</span>
-        <span id="prog-pct">0% answered</span>
-      </div>
-      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-    </div>
-
-    <div class="tabs" id="cat-tabs" role="tablist"></div>
-
-    <div id="questions-container" aria-live="polite"></div>
-
-    <div class="nav">
-      <button class="btn" id="btn-prev" onclick="navigate(-1)">← Previous</button>
-      <span class="nav-counter" id="nav-counter">0 / 0 answered</span>
-      <button class="btn" id="btn-next" onclick="navigate(1)">Next →</button>
-    </div>
-
-    <details class="navigator" id="navigator" open>
-      <summary>Question map</summary>
-      <div class="q-map" id="q-map"></div>
-      <div class="map-legend">
-        <span><i class="dot current"></i>Current</span>
-        <span><i class="dot answered"></i>Answered</span>
-        <span id="legend-correct"><i class="dot correct"></i>Correct</span>
-        <span id="legend-wrong"><i class="dot wrong"></i>Wrong</span>
-        <span><i class="dot flagged"></i>Flagged</span>
-      </div>
-    </details>
-
-    <div class="submit-row">
-      <button class="btn primary large" onclick="requestFinish()">Submit &amp; see results</button>
-    </div>
-  </section>
-
-  <!-- ══ RESULTS SCREEN ══ -->
-  <section id="results-screen" style="display:none">
-    <div class="results-card">
-      <p class="eyebrow">Your score</p>
-      <div class="score-ring" id="score-ring" style="--pct:0">
-        <div class="score-ring-inner">
-          <div class="results-score" id="res-score">—</div>
-          <div class="results-sub" id="res-fraction">— / — correct</div>
+        <!-- Timer (hidden in no-timer mode) -->
+        <div class="timer-bar" id="timer-bar" role="timer" aria-live="off">
+          <svg class="ico timer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span class="timer-label" id="timer-label">Time per question</span>
+          <div class="timer-track">
+            <div class="timer-fill" id="timer-fill" style="width:100%"></div>
+          </div>
+          <span class="timer-digits" id="timer-digits">01:00</span>
         </div>
       </div>
-      <div class="pass-chip" id="pass-chip"></div>
+
+      <!-- Toolbar: mode, categories, map -->
+      <div class="toolbar">
+        <div class="top-controls">
+          <div class="mode-toggle" role="group" aria-label="Quiz mode">
+            <button class="mode-btn active" id="mode-practice" aria-pressed="true" onclick="setMode('practice')">Practice</button>
+            <button class="mode-btn" id="mode-exam" aria-pressed="false" onclick="setMode('exam')">Exam</button>
+          </div>
+        </div>
+
+        <div class="tabs-wrap" id="tabs-wrap">
+          <div class="tabs" id="cat-tabs" role="group" aria-label="Question categories"></div>
+        </div>
+
+        <button class="btn map-toggle" id="btn-map-toggle" aria-controls="map-panel" aria-expanded="false" onclick="toggleMap()">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Map</span>
+        </button>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="prog-label">Question 1</span>
+          <span class="shuffle-badge" title="Questions and choices are randomized each session">Randomized</span>
+          <span id="prog-pct">0% answered</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="quiz-body">
+        <div class="q-column">
+          <div class="q-scroll" id="q-scroll">
+            <!-- Weak topic radar banner -->
+            <div class="weak-radar" id="weak-radar">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Weak topics — focus on: <strong id="weak-topics-list"></strong></span>
+            </div>
+
+            <!-- Bookmarked banner -->
+            <div class="bookmarked-banner" id="bookmarked-banner">
+              <span><strong id="bk-count">0</strong> flagged question(s)</span>
+              <button class="btn sm" onclick="jumpToBookmarks()">Review flagged →</button>
+            </div>
+
+            <!-- Question card injected here -->
+            <div id="questions-container"></div>
+          </div>
+
+          <!-- Navigation + submit -->
+          <div class="nav quiz-footer">
+            <button class="btn" id="btn-prev" onclick="navigate(-1)">← Prev</button>
+            <span class="nav-counter" id="nav-counter">0 / 0 answered</span>
+            <button class="btn" id="btn-next" onclick="navigate(1)">Next →</button>
+            <button class="btn primary" onclick="finishQuiz()" aria-label="Submit and see results">Submit<span class="hide-sm"> &amp; see results</span></button>
+          </div>
+        </div>
+
+        <!-- Question map: side panel (desktop) / bottom sheet (mobile) -->
+        <aside class="map-panel" id="map-panel" aria-label="Question map">
+          <div class="map-head">
+            <div>
+              <h3>Question map</h3>
+              <div class="map-summary" id="map-summary">—</div>
+            </div>
+            <button class="icon-btn" id="map-close" onclick="closeMap()" aria-label="Close question map">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="map-legend" aria-hidden="true">
+            <span><i class="lg current"></i>Current</span>
+            <span><i class="lg answered"></i>Answered</span>
+            <span><i class="lg correct"></i>Correct</span>
+            <span><i class="lg incorrect"></i>Incorrect</span>
+            <span><i class="lg flagged"></i>Flagged</span>
+          </div>
+          <div class="map-grid-wrap" id="map-grid-wrap">
+            <div class="map-grid" id="map-grid"></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="map-backdrop" id="map-backdrop" onclick="closeMap()"></div>
+    </div>
+  </div><!-- /quiz-screen -->
+
+  <!-- ══ RESULTS SCREEN ══ -->
+  <div id="results-screen" style="display:none">
+    <div class="results-card">
+      <p class="eyebrow">Your Score</p>
+      <div class="results-score" id="res-score">—</div>
+      <p class="results-sub" id="res-fraction">— / — correct</p>
       <div class="rating-msg" id="res-rating"></div>
       <div class="results-breakdown" id="res-breakdown"></div>
-      <div class="log-status" id="log-status"></div>
+      <div class="log-status" id="log-status" role="status"></div>
       <div class="result-actions">
-        <button class="btn primary" onclick="restartQuiz()">🔄 New shuffle</button>
-        <button class="btn danger" id="btn-retry-wrong" onclick="retryWrongAnswers()" style="display:none">🎯 Retry wrong</button>
-        <button class="btn" onclick="showSection('leaderboard')">🏆 Score log</button>
+        <button class="btn primary" onclick="restartQuiz()">New Shuffle</button>
+        <button class="btn danger" id="btn-retry-wrong" onclick="retryWrongAnswers()" style="display:none">
+          Retry Wrong
+        </button>
+        <button class="btn" onclick="showSection('leaderboard')">Score Log</button>
       </div>
     </div>
 
+    <!-- Wrong answer review -->
     <div id="wrong-review" style="display:none">
-      <div class="section-divider"><h3>❌ Wrong answer review</h3></div>
+      <div class="section-divider">
+        <h3>Wrong Answer Review</h3>
+      </div>
       <div style="text-align:center;margin-bottom:1rem">
-        <button class="btn" id="btn-toggle-review" onclick="toggleWrongReview()">▼ Show wrong answers</button>
+        <button class="btn" id="btn-toggle-review" onclick="toggleWrongReview()">▼ Show Wrong Answers</button>
       </div>
       <div id="wrong-review-list" style="display:none"></div>
     </div>
-  </section>
+  </div><!-- /results-screen -->
 
   <!-- ══ LEADERBOARD SCREEN ══ -->
-  <section id="leaderboard-screen" style="display:none">
+  <div id="leaderboard-screen" style="display:none">
     <div class="lb-header">
-      <h2>🏆 Score log</h2>
+      <h2>Score Log</h2>
       <button class="btn" onclick="loadLeaderboard()">↻ Refresh</button>
     </div>
-    <div id="lb-content"><div class="lb-loading">Loading scores…</div></div>
-  </section>
-
-</main>
-
-<!-- ══ CONFIRM DIALOG ══ -->
-<div class="modal-backdrop" id="modal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div class="modal">
-    <h3 id="modal-title">Submit now?</h3>
-    <p id="modal-body"></p>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal()">Keep going</button>
-      <button class="btn primary" onclick="confirmFinish()">Submit</button>
+    <div id="lb-content">
+      <div class="lb-loading">Loading scores…</div>
     </div>
   </div>
-</div>
+
+</main>
 
 <script src="app.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(() => console.warn('Service worker registration failed'));
+      navigator.serviceWorker.register('./sw.js')
+        .catch(() => {
+          console.warn('Service worker registration failed');
+        });
     });
   }
 </script>

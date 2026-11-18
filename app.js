@@ -3,17 +3,17 @@
    Features: Timer (per-question / full-exam / none),
              Wrong Answer Review, Retry Wrong,
              Bookmarks/Flag, Weak Topic Radar,
-             Question Map, Light/Dark theme, Exam mode
+             Question Map, responsive category tabs
 ═══════════════════════════════════════════════════════ */
 
 const API_URL            = 'api.php';
 const QUESTIONS_URL      = 'questions.json';
 const LOCAL_STORAGE_KEY  = 'cse_reviewer_progress';
 const SESSION_SEED_KEY   = 'cse_reviewer_seed';
-const THEME_KEY          = 'cse_theme';
+const TIMER_KEY          = 'cse_reviewer_timer';
+const MAP_PREF_KEY       = 'cse_reviewer_map_collapsed';
 const SAVE_EXPIRY_MS     = 4 * 60 * 60 * 1000;
 const API_TOKEN_ENDPOINT = API_URL + '?action=token';
-const PASS_MARK          = 80;
 
 /* ── STATE ── */
 let data             = null;
@@ -33,42 +33,32 @@ let timerMode      = 'per-question'; // 'per-question' | 'full-exam' | 'none'
 let timerSeconds   = 0;
 let timerMax       = 0;
 let timerInterval  = null;
-let resumeSeconds  = null;
+let restoredTimer  = null;           // remaining seconds restored for full-exam mode
 
 /* retry mode */
 let isRetryMode    = false;
 let retryQuestions = [];
 
+/* question map / rendering */
+let mapOpen         = true;
+let mapSig          = '';
+let lastRenderedQid = null;
+
 /* ── CONSTANTS ── */
 const LETTERS = ['A','B','C','D'];
 const CAT_COLORS = {
-  verbal:     '#4f8ef7',
-  analytical: '#a66bf5',
-  numerical:  '#2fbf80',
-  geninfo:    '#f0a032',
-  filipino:   '#ee5f5f'
+  verbal:     '#5B94F7',
+  analytical: '#B18AFF',
+  numerical:  '#35C98B',
+  geninfo:    '#F5A742',
+  filipino:   '#F06B75'
 };
 const PER_Q_SECONDS = 60;
 
-/* ══════════════════════════════════════════
-   THEME
-══════════════════════════════════════════ */
-function applyThemeUI() {
-  const t = document.documentElement.getAttribute('data-theme') || 'dark';
-  const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = t === 'dark' ? '🌙' : '☀️';
-  const meta = document.getElementById('meta-theme');
-  if (meta) meta.setAttribute('content', t === 'dark' ? '#0d1117' : '#f4f6fb');
-}
-
-function toggleTheme() {
-  const cur  = document.documentElement.getAttribute('data-theme') || 'dark';
-  const next = cur === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
-  applyThemeUI();
-}
-applyThemeUI();
+const ICON_PATHS = {
+  grid: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+  flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>'
+};
 
 /* ══════════════════════════════════════════
    UTILS
@@ -92,7 +82,15 @@ function shuffleQuestionChoices(q) {
 function escHtml(str) {
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function svgIcon(name) {
+  return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name] || ''}</svg>`;
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 function seededRandom(seed) {
@@ -117,8 +115,7 @@ function shuffleWithSeed(arr, seed) {
 
 function formatDate(str) {
   if (!str) return '—';
-  const d = new Date(String(str).replace(' ', 'T'));
-  if (isNaN(d)) return str;
+  const d = new Date(str);
   return d.toLocaleDateString('en-PH', { month:'short', day:'numeric', year:'numeric' })
     + ' ' + d.toLocaleTimeString('en-PH', { hour:'2-digit', minute:'2-digit' });
 }
@@ -173,8 +170,12 @@ function restoreSavedProgress() {
   timerMode         = saved.timerMode || timerMode;
   sessionSeed       = saved.sessionSeed || sessionSeed;
   isRetryMode       = saved.isRetryMode || false;
-  resumeSeconds     = (timerMode === 'full-exam' && typeof saved.timerSeconds === 'number' && saved.timerSeconds > 0)
-                        ? saved.timerSeconds : null;
+
+  restoredTimer = null;
+  try {
+    const t = parseInt(localStorage.getItem(TIMER_KEY), 10);
+    if (Number.isFinite(t) && t > 0) restoredTimer = t;
+  } catch (e) { /* ignore */ }
   return true;
 }
 
@@ -191,48 +192,116 @@ function saveProgress() {
       currentIndex,
       mode,
       timerMode,
-      timerSeconds,
       sessionSeed,
       isRetryMode
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+    persistTimer();
   } catch (e) {
     console.warn('Could not save progress', e);
   }
 }
 
+function persistTimer() {
+  if (timerMode !== 'full-exam') return;
+  try { localStorage.setItem(TIMER_KEY, String(timerSeconds)); } catch (e) { /* ignore */ }
+}
+
 function clearSavedProgress() {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
+  localStorage.removeItem(SESSION_SEED_KEY);
+  localStorage.removeItem(TIMER_KEY);
+}
+
+/* ══════════════════════════════════════════
+   LANDING INFO (dynamic — read from questions.json)
+══════════════════════════════════════════ */
+function renderLandingDistribution(list) {
+  const el = document.getElementById('landing-dist');
+  if (!el || !Array.isArray(list) || !list.length) return;
+
+  const rows = list.map(t => {
+    const qCount = Array.isArray(t.questions) ? t.questions.length : 0;
+    const count  = Math.min(t.required || qCount, qCount);
+    return { t, count };
+  });
+  const total = rows.reduce((s, r) => s + r.count, 0);
+
+  el.innerHTML = rows.map(({ t, count }) => {
+    const pct = total ? (count / total) * 100 : 0;
+    const col = CAT_COLORS[t.id] || '#929DB2';
+    return `<div class="dist-row">
+      <span>${escHtml(t.icon || '')} ${escHtml(t.name)}</span>
+      <span class="n">${count}</span>
+      <div class="dist-bar"><i style="width:${pct.toFixed(1)}%;background:${col}"></i></div>
+    </div>`;
+  }).join('') + `<div class="dist-total"><span>Total items</span><span>${total}</span></div>`;
+
+  const hdr = document.getElementById('hdr-total');
+  if (hdr) hdr.textContent = ' · ' + total + ' Items';
+}
+
+async function preloadLandingInfo() {
+  const el = document.getElementById('landing-dist');
+  if (!el) return;
   try {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    localStorage.removeItem(SESSION_SEED_KEY);
-  } catch (e) {}
+    const res = await fetch(QUESTIONS_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    data = await res.json();
+    renderLandingDistribution(data.topics || []);
+  } catch (e) {
+    data = null;
+    el.innerHTML = '<div class="dist-loading">Category details appear once the questions load.</div>';
+  }
 }
 
 /* ══════════════════════════════════════════
    USERNAME / START
 ══════════════════════════════════════════ */
-function startWithUsername() {
+function showUsernameError(msg) {
   const input = document.getElementById('username-input');
   const err   = document.getElementById('username-error');
+  if (msg) err.textContent = msg;
+  err.style.display = 'block';
+  input.setAttribute('aria-invalid', 'true');
+  input.focus();
+}
+
+function clearUsernameError() {
+  const input = document.getElementById('username-input');
+  const err   = document.getElementById('username-error');
+  err.style.display = 'none';
+  input.setAttribute('aria-invalid', 'false');
+}
+
+function startWithUsername() {
+  const input = document.getElementById('username-input');
   const val   = input.value.trim();
-  if (!val || !/^[a-zA-Z0-9 _\-\.]{1,30}$/.test(val)) {
-    err.style.display = 'block';
-    input.focus();
+  if (!val) {
+    showUsernameError('Please enter a username to continue.');
     return;
   }
-  err.style.display = 'none';
+  if (!/^[a-zA-Z0-9 _\-\.]{1,30}$/.test(val)) {
+    showUsernameError('Use 1–30 characters: letters, numbers, spaces and _ - . only.');
+    return;
+  }
+  clearUsernameError();
   currentUsername = val;
 
   const timerSel = document.querySelector('input[name="timer-mode"]:checked');
   timerMode = timerSel ? timerSel.value : 'per-question';
 
-  document.getElementById('user-chip').textContent = '👤 ' + val;
+  document.getElementById('user-name').textContent = val;
   document.getElementById('username-screen').style.display = 'none';
   document.getElementById('topnav').style.display = 'flex';
   document.getElementById('loading').style.display = 'block';
+  document.body.classList.add('in-app');
   loadQuestions();
 }
 
+/* ══════════════════════════════════════════
+   TIMER OPTION SELECTION (login screen)
+══════════════════════════════════════════ */
 function selectTimerOption(value) {
   document.querySelectorAll('.timer-option').forEach(el => {
     el.classList.toggle('selected', el.dataset.value === value);
@@ -256,7 +325,10 @@ function showSection(section) {
   const map = { quiz: 'nav-quiz', leaderboard: 'nav-lb' };
   if (map[section]) document.getElementById(map[section]).classList.add('active');
   if (section === 'leaderboard') loadLeaderboard();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (section === 'quiz') {
+    requestAnimationFrame(() => { scrollActiveTabIntoView(); updateTabEdges(); });
+  }
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
 }
 
 /* ══════════════════════════════════════════
@@ -264,14 +336,16 @@ function showSection(section) {
 ══════════════════════════════════════════ */
 async function loadQuestions() {
   try {
-    const res = await fetch(QUESTIONS_URL, { cache: 'no-cache' });
-    data = await res.json();
+    if (!data) {
+      const res = await fetch(QUESTIONS_URL);
+      data = await res.json();
+    }
     topics = data.topics;
     await loadCsrfToken();
     initQuiz();
   } catch(e) {
     document.getElementById('loading').innerHTML =
-      '<p style="color:var(--danger)">⚠️ Could not load questions.json. Make sure it is in the same folder.</p>';
+      '<p style="color:var(--danger)" role="alert">Could not load questions.json. Make sure it is in the same folder.</p>';
   }
 }
 
@@ -282,11 +356,12 @@ function initQuiz(retryList) {
   bookmarks       = new Set();
   currentIndex    = 0;
   currentCategory = 'all';
-  resumeSeconds   = null;
+  lastRenderedQid = null;
+  mapSig          = '';
+  restoredTimer   = null;
 
-  let resumed = false;
   if (!isRetryMode && restoreSavedProgress()) {
-    resumed = true;
+    // Restored progress from localStorage.
   } else if (isRetryMode) {
     displayQuestions = retryList.map(q => shuffleQuestionChoices(q));
   } else {
@@ -294,24 +369,32 @@ function initQuiz(retryList) {
   }
 
   buildTabs();
-  if (bookmarks.size > 0) rebuildBookmarkTab();
-  syncModeButtons();
+  rebuildBookmarkTab();
+  syncModeUI();
+  initMapState();
   renderAll();
   saveProgress();
 
-  document.getElementById('loading').style.display      = 'none';
-  document.getElementById('quiz-screen').style.display  = 'block';
+  document.getElementById('loading').style.display     = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
   document.getElementById('wrong-review').style.display = 'none';
 
+  // Show or hide timer bar based on mode
   const timerBar = document.getElementById('timer-bar');
   if (timerMode === 'none') {
     timerBar.style.display = 'none';
+    stopTimer();
   } else {
     timerBar.style.display = 'flex';
     startTimer();
   }
 
-  if (resumed) showToast('Welcome back — your previous session was restored.');
+  // Layout-dependent work once the screen is visible
+  requestAnimationFrame(() => {
+    scrollActiveTabIntoView();
+    updateTabEdges();
+    updateMapActiveVisibility();
+  });
 }
 
 function buildDisplayQuestions() {
@@ -325,12 +408,12 @@ function buildDisplayQuestions() {
         ...q,
         topicId:    topic.id,
         topicName:  topic.name,
-        topicColor: CAT_COLORS[topic.id] || '#8b91a8'
+        topicColor: CAT_COLORS[topic.id] || '#929DB2'
       });
     });
   });
   sessionSeed = Date.now() >>> 0;
-  try { localStorage.setItem(SESSION_SEED_KEY, String(sessionSeed)); } catch (e) {}
+  localStorage.setItem(SESSION_SEED_KEY, String(sessionSeed));
   displayQuestions = shuffleWithSeed(flat, sessionSeed).map(q => shuffleQuestionChoices(q));
 }
 
@@ -339,11 +422,8 @@ function renderAll() {
   renderQuestion(getFilteredQuestions());
   updateWeakRadar();
   updateBookmarkedBanner();
-}
-
-function syncModeButtons() {
-  document.getElementById('mode-practice').classList.toggle('active', mode === 'practice');
-  document.getElementById('mode-exam').classList.toggle('active', mode === 'exam');
+  syncTabs();
+  scrollActiveTabIntoView();
 }
 
 /* ══════════════════════════════════════════
@@ -358,8 +438,13 @@ function startTimer() {
     timerSeconds = PER_Q_SECONDS;
   } else {
     timerMax     = displayQuestions.length * PER_Q_SECONDS;
-    timerSeconds = resumeSeconds || timerMax;
+    timerSeconds = timerMax;
+    // Resume the full-exam countdown after a reload instead of restarting it
+    if (restoredTimer !== null && restoredTimer > 0) {
+      timerSeconds = Math.min(restoredTimer, timerMax);
+    }
   }
+  restoredTimer = null;
 
   renderTimerBar();
   timerInterval = setInterval(tickTimer, 1000);
@@ -380,25 +465,27 @@ function resetPerQuestionTimer() {
 
 function tickTimer() {
   timerSeconds--;
+  if (timerMode === 'full-exam') persistTimer();
+
   if (timerSeconds <= 0) {
     timerSeconds = 0;
     renderTimerBar();
     if (timerMode === 'per-question') {
       const qs = getFilteredQuestions();
       const q  = qs[currentIndex];
-      if (q && answers[q.id] === undefined) {
-        if (currentIndex < qs.length - 1) {
-          navigate(1);
-        } else {
-          stopTimer();
-        }
+      if (q && answers[q.id] === undefined && currentIndex < qs.length - 1) {
+        showToast('Time is up for this question — moving on');
+        navigate(1);
       } else {
         stopTimer();
       }
     } else {
       stopTimer();
-      showToast('⏰ Time is up — submitting your answers.');
-      finishQuiz();
+      // Same as before: only auto-submit if at least one question was answered
+      if (Object.keys(answers).length > 0) {
+        showToast('Time is up — submitting your exam');
+        finishQuiz();
+      }
     }
     return;
   }
@@ -431,32 +518,61 @@ function renderTimerBar() {
 function buildTabs() {
   const tabs = document.getElementById('cat-tabs');
   tabs.innerHTML = '';
-  tabs.appendChild(makeTab('all', '🗂 All', null));
+  tabs.appendChild(makeTab('all', 'All', null, svgIcon('grid')));
   topics.forEach(t => {
-    tabs.appendChild(makeTab(t.id, t.icon + ' ' + t.name, CAT_COLORS[t.id]));
+    tabs.appendChild(makeTab(t.id, t.name, CAT_COLORS[t.id], escHtml(t.icon || '')));
   });
 }
 
-function makeTab(id, label, color) {
+function makeTab(id, label, color, iconHtml) {
   const btn = document.createElement('button');
+  btn.type = 'button';
   btn.className = 'tab' + (id === currentCategory ? ' active' : '');
   btn.id = 'tab-' + id;
-  btn.setAttribute('role', 'tab');
+  btn.setAttribute('aria-pressed', id === currentCategory ? 'true' : 'false');
+  if (color) btn.style.setProperty('--tab-color', color);
+
+  btn.innerHTML =
+    `<span class="tab-ic" aria-hidden="true">${iconHtml || ''}</span>` +
+    `<span class="tab-label">${escHtml(label)}</span>`;
 
   const dot = document.createElement('span');
   dot.className = 'weak-dot';
-  btn.textContent = label;
+  dot.setAttribute('title', 'Weak topic');
   btn.appendChild(dot);
 
   btn.onclick = () => {
     currentCategory = id;
     currentIndex    = 0;
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
     renderAll();
     if (timerMode === 'per-question') resetPerQuestionTimer();
+    saveProgress();
   };
   return btn;
+}
+
+function syncTabs() {
+  document.querySelectorAll('#cat-tabs .tab').forEach(t => {
+    const on = t.id === 'tab-' + currentCategory;
+    t.classList.toggle('active', on);
+    t.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+
+function scrollActiveTabIntoView() {
+  const wrap = document.getElementById('cat-tabs');
+  const el   = wrap && wrap.querySelector('.tab.active');
+  if (!wrap || !el || wrap.clientWidth === 0) return;
+  const left = el.offsetLeft - (wrap.clientWidth - el.offsetWidth) / 2;
+  wrap.scrollTo({ left: Math.max(0, left), behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+}
+
+function updateTabEdges() {
+  const wrap = document.getElementById('cat-tabs');
+  const box  = document.getElementById('tabs-wrap');
+  if (!wrap || !box) return;
+  box.classList.toggle('can-left',  wrap.scrollLeft > 2);
+  box.classList.toggle('can-right', wrap.scrollLeft + wrap.clientWidth < wrap.scrollWidth - 2);
 }
 
 /* ══════════════════════════════════════════
@@ -475,13 +591,18 @@ function getFilteredQuestions() {
 /* ══════════════════════════════════════════
    RENDER QUESTION
 ══════════════════════════════════════════ */
+function bookmarkBtnHTML(on) {
+  return svgIcon('flag') + `<span>${on ? 'Flagged' : 'Flag'}</span>`;
+}
+
 function renderQuestion(qs) {
   const container = document.getElementById('questions-container');
   if (!qs.length) {
-    container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:2rem">No questions in this view.</p>';
+    container.innerHTML = '<p class="empty-state">No questions in this view.</p>';
+    lastRenderedQid = null;
     updateProgressBar(qs);
     updateNavButtons(qs);
-    renderQuestionMap(qs);
+    renderQuestionMap();
     return;
   }
   if (currentIndex >= qs.length) currentIndex = qs.length - 1;
@@ -491,98 +612,70 @@ function renderQuestion(qs) {
   const choices      = q.shuffledChoices;
   const correctIdx   = q.shuffledAnswer;
   const answered     = answers[q.id];
-  const isAnswered   = answered !== undefined;
   const isBookmarked = bookmarks.has(q.id);
-  const color        = q.topicColor || CAT_COLORS[q.topicId] || '#8b91a8';
-  const practice     = mode === 'practice';
+  const color        = q.topicColor || CAT_COLORS[q.topicId] || '#929DB2';
+  const isNew        = lastRenderedQid !== q.id;
 
-  const pill  = `<span class="q-cat-pill" style="background:${color}22;color:${color};border:1px solid ${color}55">${escHtml(q.topicName || '')}</span>`;
+  // Correct/incorrect feedback is only revealed in practice mode
+  const reveal = answered !== undefined && mode === 'practice';
+
+  const pill  = `<span class="q-cat-pill" style="background:${color}22;color:${color};border:1px solid ${color}44">${escHtml(q.topicName || '')}</span>`;
   const bkCls = isBookmarked ? ' bookmarked' : '';
-  const bkTxt = isBookmarked ? '🔖 Flagged' : '🔖 Flag';
 
   const choicesHTML = choices.map((ch, i) => {
     let cls    = 'choice';
     let status = '';
-    if (isAnswered) {
-      if (practice) {
-        if (i === correctIdx)                     { cls += ' correct'; status = i === answered ? '✓' : ''; }
-        else if (i === answered)                  { cls += ' wrong';   status = '✗'; }
-      } else if (i === answered) {
-        cls += ' selected';
+    if (answered !== undefined) {
+      if (i === answered) cls += ' selected';
+      if (reveal) {
+        if (i === correctIdx)    { cls += ' correct'; status = '✓'; }
+        else if (i === answered) { cls += ' wrong';   status = '✗'; }
       }
     }
-    const locked = isAnswered && practice;
-    return `<button class="${cls}" role="radio" aria-checked="${answered === i ? 'true' : 'false'}" onclick="selectAnswer('${escHtml(q.id)}', ${i}, ${correctIdx})" ${locked ? 'disabled' : ''}>
-      <span class="letter">${LETTERS[i]}</span>
+    return `<button type="button" class="${cls}" role="radio" aria-checked="${answered === i ? 'true' : 'false'}" onclick="selectAnswer('${escHtml(q.id)}', ${i}, ${correctIdx})" ${answered !== undefined ? 'disabled' : ''}>
+      <span class="letter" aria-hidden="true">${LETTERS[i]}</span>
       <span>${escHtml(ch)}</span>
-      ${status ? `<span class="q-status">${status}</span>` : ''}
+      ${status ? `<span class="q-status" aria-label="${status === '✓' ? 'Correct' : 'Incorrect'}">${status}</span>` : ''}
     </button>`;
   }).join('');
 
-  const showExpl = isAnswered && practice;
+  const note = (answered !== undefined && mode === 'exam')
+    ? '<p class="answer-note">Answer recorded. Results are shown when you submit.</p>' : '';
 
   container.innerHTML = `
-    <div class="q-card">
+    <div class="q-card${isNew ? ' enter' : ''}">
       <div class="q-meta">
         <span class="q-num">Q${currentIndex + 1} of ${qs.length}</span>
         ${pill}
-        <button class="bookmark-btn${bkCls}" onclick="toggleBookmark('${escHtml(q.id)}')" id="bk-btn-${escHtml(q.id)}" title="Flag for review (F)">
-          ${bkTxt}
+        <button type="button" class="bookmark-btn${bkCls}" aria-pressed="${isBookmarked}" onclick="toggleBookmark('${escHtml(q.id)}')" id="bk-btn-${escHtml(q.id)}" title="Flag this question (F)">
+          ${bookmarkBtnHTML(isBookmarked)}
         </button>
       </div>
       <div class="q-text">${escHtml(q.question)}</div>
-      <div class="choices" role="radiogroup" aria-label="Question ${currentIndex + 1}">${choicesHTML}</div>
-      <div class="explanation ${showExpl ? 'show' : ''}">
+      <div class="choices" role="radiogroup" aria-label="Answer choices for question ${currentIndex + 1}">${choicesHTML}</div>
+      ${note}
+      <div class="explanation ${reveal ? 'show' : ''}">
         <strong>Explanation:</strong> ${escHtml(q.explanation)}
       </div>
     </div>
   `;
 
+  if (isNew) {
+    const sc = document.getElementById('q-scroll');
+    if (sc) sc.scrollTop = 0;
+  }
+  lastRenderedQid = q.id;
+
   updateProgressBar(qs);
   updateNavButtons(qs);
-  renderQuestionMap(qs);
-}
-
-/* ══════════════════════════════════════════
-   QUESTION MAP
-══════════════════════════════════════════ */
-function renderQuestionMap(qs) {
-  const map = document.getElementById('q-map');
-  if (!map) return;
-  const practice = mode === 'practice';
-  document.getElementById('legend-correct').style.display = practice ? '' : 'none';
-  document.getElementById('legend-wrong').style.display   = practice ? '' : 'none';
-
-  map.innerHTML = '';
-  qs.forEach((q, i) => {
-    const a = answers[q.id];
-    let cls = 'q-dot';
-    if (a !== undefined) {
-      if (practice) cls += a === q.shuffledAnswer ? ' correct' : ' wrong';
-      else          cls += ' answered';
-    }
-    if (bookmarks.has(q.id)) cls += ' flagged';
-    if (i === currentIndex)  cls += ' current';
-    const b = document.createElement('button');
-    b.className = cls;
-    b.textContent = i + 1;
-    b.title = 'Go to question ' + (i + 1);
-    b.onclick = () => {
-      currentIndex = i;
-      renderQuestion(getFilteredQuestions());
-      if (timerMode === 'per-question') resetPerQuestionTimer();
-      saveProgress();
-      document.getElementById('questions-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    };
-    map.appendChild(b);
-  });
+  renderQuestionMap();
 }
 
 /* ══════════════════════════════════════════
    ANSWER
 ══════════════════════════════════════════ */
 function selectAnswer(qId, chosen, correctIdx) {
-  if (answers[qId] !== undefined && mode === 'practice') return;
+  if (answers[qId] !== undefined) return;
   answers[qId] = chosen;
   if (timerMode === 'per-question') resetPerQuestionTimer();
   renderQuestion(getFilteredQuestions());
@@ -594,25 +687,27 @@ function selectAnswer(qId, chosen, correctIdx) {
 /* ══════════════════════════════════════════
    BOOKMARK
 ══════════════════════════════════════════ */
+function bookmarkTabHTML() {
+  return `<span class="tab-ic" aria-hidden="true">${svgIcon('flag')}</span><span class="tab-label">Flagged</span><span class="tab-count">${bookmarks.size}</span>`;
+}
+
 function toggleBookmark(qId) {
   if (bookmarks.has(qId)) {
     bookmarks.delete(qId);
   } else {
     bookmarks.add(qId);
   }
+  const on  = bookmarks.has(qId);
   const btn = document.getElementById('bk-btn-' + qId);
   if (btn) {
-    btn.classList.toggle('bookmarked', bookmarks.has(qId));
-    btn.textContent = bookmarks.has(qId) ? '🔖 Flagged' : '🔖 Flag';
+    btn.classList.toggle('bookmarked', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.innerHTML = bookmarkBtnHTML(on);
   }
   updateBookmarkedBanner();
   rebuildBookmarkTab();
-  renderQuestionMap(getFilteredQuestions());
+  renderQuestionMap();
   saveProgress();
-}
-
-function bookmarkTabLabel() {
-  return `🔖 Flagged <span style="font-size:0.7rem;background:var(--bookmark-soft);color:var(--bookmark);padding:1px 7px;border-radius:99px;margin-left:2px">${bookmarks.size}</span>`;
 }
 
 function rebuildBookmarkTab() {
@@ -620,27 +715,31 @@ function rebuildBookmarkTab() {
   if (bookmarks.size > 0 && !tab) {
     const tabs = document.getElementById('cat-tabs');
     const btn  = document.createElement('button');
+    btn.type = 'button';
     btn.className = 'tab' + (currentCategory === 'bookmarked' ? ' active' : '');
     btn.id = 'tab-bookmarked';
-    btn.innerHTML = bookmarkTabLabel();
+    btn.style.setProperty('--tab-color', '#B18AFF');
+    btn.setAttribute('aria-pressed', currentCategory === 'bookmarked' ? 'true' : 'false');
+    btn.innerHTML = bookmarkTabHTML();
     btn.onclick = () => {
       currentCategory = 'bookmarked';
       currentIndex    = 0;
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
       renderAll();
+      saveProgress();
     };
     tabs.appendChild(btn);
+    updateTabEdges();
   } else if (tab) {
     if (bookmarks.size === 0) {
       tab.remove();
       if (currentCategory === 'bookmarked') {
         currentCategory = 'all';
-        document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+        currentIndex    = 0;
         renderAll();
       }
+      updateTabEdges();
     } else {
-      tab.innerHTML = bookmarkTabLabel();
+      tab.innerHTML = bookmarkTabHTML();
     }
   }
 }
@@ -659,11 +758,8 @@ function updateBookmarkedBanner() {
 function jumpToBookmarks() {
   currentCategory = 'bookmarked';
   currentIndex    = 0;
-  rebuildBookmarkTab();
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const tab = document.getElementById('tab-bookmarked');
-  if (tab) tab.classList.add('active');
   renderAll();
+  saveProgress();
 }
 
 /* ══════════════════════════════════════════
@@ -673,24 +769,18 @@ function updateWeakRadar() {
   const radar    = document.getElementById('weak-radar');
   const weakList = [];
 
-  if (mode === 'exam') {            // don't leak performance during exam mode
-    radar.classList.remove('show');
-    topics.forEach(t => { const tab = document.getElementById('tab-' + t.id); if (tab) tab.classList.remove('weak'); });
-    return;
-  }
-
   topics.forEach(topic => {
     const qs       = displayQuestions.filter(q => q.topicId === topic.id);
     const answered = qs.filter(q => answers[q.id] !== undefined);
-    const tab      = document.getElementById('tab-' + topic.id);
-    if (answered.length < 3) { if (tab) tab.classList.remove('weak'); return; }
+    if (answered.length < 3) return;
     const correct = answered.filter(q => answers[q.id] === q.shuffledAnswer).length;
     const pct     = Math.round((correct / answered.length) * 100);
+    const tab     = document.getElementById('tab-' + topic.id);
     if (pct < 60) {
-      weakList.push(`${topic.icon} ${topic.name} (${pct}%)`);
+      weakList.push(`${topic.icon || ''} ${topic.name} (${pct}%)`);
       if (tab) tab.classList.add('weak');
-    } else if (tab) {
-      tab.classList.remove('weak');
+    } else {
+      if (tab) tab.classList.remove('weak');
     }
   });
 
@@ -700,6 +790,113 @@ function updateWeakRadar() {
   } else {
     radar.classList.remove('show');
   }
+}
+
+/* ══════════════════════════════════════════
+   QUESTION MAP
+══════════════════════════════════════════ */
+function isDesktopLayout() {
+  return window.matchMedia('(min-width: 1024px)').matches;
+}
+
+function initMapState() {
+  let collapsed = false;
+  try { collapsed = localStorage.getItem(MAP_PREF_KEY) === '1'; } catch (e) { /* ignore */ }
+  setMapOpen(isDesktopLayout() ? !collapsed : false, false);
+}
+
+function setMapOpen(open, persist) {
+  if (persist === undefined) persist = true;
+  mapOpen = !!open;
+  const scr = document.getElementById('quiz-screen');
+  const btn = document.getElementById('btn-map-toggle');
+  if (scr) scr.classList.toggle('map-open', mapOpen);
+  if (btn) btn.setAttribute('aria-expanded', mapOpen ? 'true' : 'false');
+  if (persist && isDesktopLayout()) {
+    try { localStorage.setItem(MAP_PREF_KEY, mapOpen ? '0' : '1'); } catch (e) { /* ignore */ }
+  }
+  if (mapOpen) {
+    renderQuestionMap();
+    requestAnimationFrame(updateMapActiveVisibility);
+  }
+}
+
+function toggleMap() { setMapOpen(!mapOpen); }
+function closeMap()  { setMapOpen(false); }
+
+function renderQuestionMap() {
+  const grid = document.getElementById('map-grid');
+  if (!grid) return;
+
+  const qs  = getFilteredQuestions();
+  const sig = currentCategory + '|' + qs.map(q => q.id).join(',');
+  if (sig !== mapSig) {
+    grid.innerHTML = qs.map((q, i) =>
+      `<button type="button" class="map-cell" data-i="${i}">${i + 1}</button>`
+    ).join('');
+    mapSig = sig;
+  }
+
+  const cells = grid.children;
+  let answeredCount = 0;
+  qs.forEach((q, i) => {
+    const el = cells[i];
+    if (!el) return;
+    const a = answers[q.id];
+    const isAnswered = a !== undefined;
+    if (isAnswered) answeredCount++;
+    const isCurrent = i === currentIndex;
+    const flagged   = bookmarks.has(q.id);
+
+    let cls = 'map-cell';
+    let state = 'unanswered';
+    if (isAnswered) {
+      if (mode === 'practice') {
+        const ok = a === q.shuffledAnswer;
+        cls += ok ? ' correct' : ' incorrect';
+        state = ok ? 'answered correctly' : 'answered incorrectly';
+      } else {
+        cls += ' answered';
+        state = 'answered';
+      }
+    }
+    if (flagged)   cls += ' flagged';
+    if (isCurrent) cls += ' current';
+    if (el.className !== cls) el.className = cls;
+
+    const label = `Question ${i + 1}, ${state}${flagged ? ', flagged' : ''}${isCurrent ? ', current' : ''}`;
+    if (el.getAttribute('aria-label') !== label) el.setAttribute('aria-label', label);
+    if (isCurrent) el.setAttribute('aria-current', 'true'); else el.removeAttribute('aria-current');
+  });
+
+  const sum = document.getElementById('map-summary');
+  if (sum) sum.textContent = `${answeredCount} / ${qs.length} answered · ${bookmarks.size} flagged`;
+  updateMapActiveVisibility();
+}
+
+function updateMapActiveVisibility() {
+  const wrap = document.getElementById('map-grid-wrap');
+  const grid = document.getElementById('map-grid');
+  if (!wrap || !grid || !wrap.clientHeight) return;
+  const cell = grid.children[currentIndex];
+  if (!cell) return;
+  const top = cell.offsetTop;
+  const bottom = top + cell.offsetHeight;
+  if (top < wrap.scrollTop + 4) {
+    wrap.scrollTop = Math.max(0, top - 8);
+  } else if (bottom > wrap.scrollTop + wrap.clientHeight - 4) {
+    wrap.scrollTop = bottom - wrap.clientHeight + 8;
+  }
+}
+
+function goToQuestion(i) {
+  const qs = getFilteredQuestions();
+  if (i < 0 || i >= qs.length) return;
+  currentIndex = i;
+  renderQuestion(qs);
+  if (timerMode === 'per-question') resetPerQuestionTimer();
+  saveProgress();
+  if (!isDesktopLayout()) closeMap();
 }
 
 /* ══════════════════════════════════════════
@@ -716,7 +913,8 @@ function navigate(dir) {
 function updateProgressBar(qs) {
   const answered = qs.filter(q => answers[q.id] !== undefined).length;
   const pct      = qs.length ? Math.round((answered / qs.length) * 100) : 0;
-  document.getElementById('prog-label').textContent = `Question ${qs.length ? currentIndex + 1 : 0} of ${qs.length}`;
+  document.getElementById('prog-label').textContent = qs.length
+    ? `Question ${currentIndex + 1} of ${qs.length}` : 'No questions';
   document.getElementById('prog-pct').textContent   = pct + '% answered';
   document.getElementById('prog-fill').style.width  = pct + '%';
   document.getElementById('nav-counter').textContent = `${answered} / ${qs.length} answered`;
@@ -727,15 +925,16 @@ function updateNavButtons(qs) {
   document.getElementById('btn-next').disabled = currentIndex >= qs.length - 1;
 }
 
-function modalOpen() {
-  return document.getElementById('modal').style.display !== 'none';
-}
-
 function handleKeyboardShortcuts(e) {
   if (['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
-  if (e.altKey) return;
-  if (modalOpen()) { if (e.key === 'Escape') closeModal(); return; }
-  if (document.getElementById('quiz-screen').style.display === 'none') return;
+
+  // Only act while the quiz screen is showing
+  const quizEl = document.getElementById('quiz-screen');
+  if (!quizEl || quizEl.style.display !== 'block') return;
+
+  if (e.key === 'Escape' && mapOpen && !isDesktopLayout()) { closeMap(); return; }
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { finishQuiz(); return; }
+  if (e.ctrlKey || e.metaKey || e.altKey) return; // leave browser shortcuts alone
 
   const qs = getFilteredQuestions();
   if (!qs.length) return;
@@ -743,24 +942,22 @@ function handleKeyboardShortcuts(e) {
   if (!q) return;
 
   const key = e.key.toLowerCase();
-  if (e.ctrlKey || e.metaKey) {
-    if (e.key === 'Enter') requestFinish();
-    return;
-  }
-  if (['a','b','c','d'].includes(key)) {
+  if (['a','b','c','d'].includes(key) && answers[q.id] === undefined) {
     const index = LETTERS.indexOf(key.toUpperCase());
     if (index >= 0) selectAnswer(q.id, index, q.shuffledAnswer);
   }
   if (key === 'arrowright' || key === 'l') navigate(1);
   if (key === 'arrowleft'  || key === 'h') navigate(-1);
   if (key === 'f') toggleBookmark(q.id);
+  if (key === 'm') toggleMap();
+  if (key === 's') finishQuiz();
 
   try {
     if (!localStorage.getItem('kb_hints_shown')) {
-      showToast('Tip: A/B/C/D to answer · ← → to navigate · F to flag');
+      showToast('Tip: A–D to answer, ← → to navigate, F to flag, M for the map');
       localStorage.setItem('kb_hints_shown', '1');
     }
-  } catch (err) {}
+  } catch (err) { /* ignore */ }
 }
 
 function showToast(message) {
@@ -789,47 +986,29 @@ function updateStats() {
   const wrong    = answered.length - correct;
   const pct      = answered.length ? Math.round((correct / answered.length) * 100) : 0;
 
-  if (mode === 'exam') {            // results stay hidden until submission
-    document.getElementById('stat-score').textContent   = '—';
-    document.getElementById('stat-correct').textContent = '—';
-    document.getElementById('stat-wrong').textContent   = '—';
-  } else {
-    document.getElementById('stat-score').textContent   = pct + '%';
-    document.getElementById('stat-correct').textContent = correct;
-    document.getElementById('stat-wrong').textContent   = wrong;
-  }
+  document.getElementById('stat-score').textContent     = pct + '%';
+  document.getElementById('stat-correct').textContent   = correct;
+  document.getElementById('stat-wrong').textContent     = wrong;
   document.getElementById('stat-remaining').textContent = total - answered.length;
 }
 
 /* ══════════════════════════════════════════
    MODE
 ══════════════════════════════════════════ */
+function syncModeUI() {
+  const p = document.getElementById('mode-practice');
+  const x = document.getElementById('mode-exam');
+  p.classList.toggle('active', mode === 'practice');
+  x.classList.toggle('active', mode === 'exam');
+  p.setAttribute('aria-pressed', mode === 'practice' ? 'true' : 'false');
+  x.setAttribute('aria-pressed', mode === 'exam' ? 'true' : 'false');
+}
+
 function setMode(m) {
   mode = m;
-  syncModeButtons();
-  renderAll();
+  syncModeUI();
+  renderQuestion(getFilteredQuestions()); // also refreshes the question map
   saveProgress();
-}
-
-/* ══════════════════════════════════════════
-   SUBMIT CONFIRMATION
-══════════════════════════════════════════ */
-function requestFinish() {
-  const unanswered = displayQuestions.filter(q => answers[q.id] === undefined).length;
-  const body = document.getElementById('modal-body');
-  body.textContent = unanswered > 0
-    ? `You still have ${unanswered} unanswered question${unanswered === 1 ? '' : 's'}. Unanswered items count as incorrect.`
-    : 'You have answered every question. Ready to see your results?';
-  document.getElementById('modal').style.display = 'grid';
-}
-
-function closeModal() {
-  document.getElementById('modal').style.display = 'none';
-}
-
-function confirmFinish() {
-  closeModal();
-  finishQuiz();
 }
 
 /* ══════════════════════════════════════════
@@ -838,47 +1017,39 @@ function confirmFinish() {
 async function finishQuiz() {
   stopTimer();
   clearSavedProgress();
+  closeMap();
   const total   = displayQuestions.length;
   const correct = displayQuestions.filter(q => answers[q.id] === q.shuffledAnswer).length;
   const pct     = total ? Math.round((correct / total) * 100) : 0;
 
   let rating = '';
-  if (pct >= 80)      rating = '🏆 Excellent! You\'re ready for the CSE!';
-  else if (pct >= 60) rating = '👍 Good job! Keep reviewing.';
-  else if (pct >= 40) rating = '📖 Keep practicing — you\'re getting there!';
-  else                rating = '💪 More review needed. Don\'t give up!';
-
-  const ringColor = pct >= PASS_MARK ? 'var(--success)' : pct >= 60 ? 'var(--accent)' : pct >= 40 ? 'var(--warning)' : 'var(--danger)';
-  const ring = document.getElementById('score-ring');
-  ring.style.setProperty('--ring', ringColor);
-  ring.style.setProperty('--pct', '0');
-  requestAnimationFrame(() => requestAnimationFrame(() => ring.style.setProperty('--pct', pct)));
+  if (pct >= 80)      rating = 'Excellent! You\'re ready for the CSE!';
+  else if (pct >= 60) rating = 'Good job! Keep reviewing.';
+  else if (pct >= 40) rating = 'Keep practicing — you\'re getting there!';
+  else                rating = 'More review needed. Don\'t give up!';
 
   document.getElementById('res-score').textContent    = pct + '%';
-  document.getElementById('res-fraction').textContent = `${correct} / ${total} correct`;
+  document.getElementById('res-fraction').textContent = `${correct} out of ${total} correct`;
   document.getElementById('res-rating').textContent   = rating;
 
-  const chip = document.getElementById('pass-chip');
-  const passed = pct >= PASS_MARK;
-  chip.className = 'pass-chip ' + (passed ? 'pass' : 'fail');
-  chip.textContent = passed ? `✓ Above the ${PASS_MARK}% passing mark` : `Below the ${PASS_MARK}% passing mark`;
-
+  // Per-topic breakdown
   const breakdown = document.getElementById('res-breakdown');
   breakdown.innerHTML = topics.map(t => {
     const qs      = displayQuestions.filter(q => q.topicId === t.id);
-    if (!qs.length) return '';
     const catCorr = qs.filter(q => answers[q.id] === q.shuffledAnswer).length;
-    const catPct  = Math.round((catCorr / qs.length) * 100);
-    const col     = CAT_COLORS[t.id] || '#8b91a8';
+    const catPct  = qs.length ? Math.round((catCorr / qs.length) * 100) : 0;
+    const col     = CAT_COLORS[t.id] || '#929DB2';
     return `<div class="breakdown-item">
       <div class="b-score" style="color:${col}">${catPct}%</div>
-      <div class="b-label">${escHtml(t.icon)} ${escHtml(t.name)}</div>
+      <div class="b-label">${escHtml(t.icon || '')} ${escHtml(t.name)}</div>
       <div class="b-frac">${catCorr}/${qs.length}</div>
     </div>`;
   }).join('');
 
+  // Wrong review
   buildWrongReview();
 
+  // Retry button
   const wrongQs = displayQuestions.filter(q =>
     answers[q.id] !== undefined && answers[q.id] !== q.shuffledAnswer
   );
@@ -886,39 +1057,33 @@ async function finishQuiz() {
 
   document.getElementById('quiz-screen').style.display    = 'none';
   document.getElementById('results-screen').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
 
   // Save score (skip for retry sessions)
-  const logEl = document.getElementById('log-status');
-  if (isRetryMode) { logEl.className = 'log-status'; logEl.textContent = 'Retry sessions are not added to the score log.'; return; }
-
-  logEl.className = 'log-status saving';
-  logEl.textContent = 'Saving your score…';
-  try {
-    if (!csrfToken) await loadCsrfToken();
-    const payload = { username: currentUsername, score_pct: pct, correct, total, mode, token: csrfToken };
-    let resp = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    let json = await resp.json();
-    if (!json.success && /token/i.test(json.error || '')) {   // token is hour-based: refresh once and retry
-      await loadCsrfToken();
-      payload.token = csrfToken;
-      resp = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      json = await resp.json();
-    }
-    if (json.success) {
-      logEl.className = 'log-status ok';
-      logEl.textContent = '✓ Score saved to the score log!';
-    } else {
+  if (!isRetryMode) {
+    const logEl = document.getElementById('log-status');
+    logEl.className = 'log-status saving';
+    logEl.textContent = 'Saving your score…';
+    try {
+      if (!csrfToken) await loadCsrfToken();
+      const payload = { username: currentUsername, score_pct: pct, correct, total, mode, token: csrfToken };
+      const resp = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await resp.json();
+      if (json.success) {
+        logEl.className = 'log-status ok';
+        logEl.textContent = '✓ Score saved to leaderboard!';
+      } else {
+        logEl.className = 'log-status err';
+        logEl.textContent = 'Score not saved: ' + (json.error || 'unknown error');
+      }
+    } catch(e) {
       logEl.className = 'log-status err';
-      logEl.textContent = '⚠️ Score not saved: ' + (json.error || 'unknown error');
+      logEl.textContent = 'Could not reach api.php — score not saved.';
     }
-  } catch(e) {
-    logEl.className = 'log-status err';
-    logEl.textContent = '⚠️ Could not reach api.php — score not saved.';
   }
 }
 
@@ -940,17 +1105,17 @@ function buildWrongReview() {
   listEl.innerHTML = wrongQs.map((q, i) => {
     const yourChoice    = q.shuffledChoices[answers[q.id]];
     const correctChoice = q.shuffledChoices[q.shuffledAnswer];
-    const col           = q.topicColor || CAT_COLORS[q.topicId] || '#8b91a8';
+    const col           = q.topicColor || CAT_COLORS[q.topicId] || '#929DB2';
     return `
       <div class="wrong-review-card">
         <div class="q-meta" style="margin-bottom:0.6rem">
           <span class="q-num">Wrong #${i+1}</span>
-          <span class="q-cat-pill" style="background:${col}22;color:${col};border:1px solid ${col}55">${escHtml(q.topicName)}</span>
+          <span class="q-cat-pill" style="background:${col}22;color:${col};border:1px solid ${col}44">${escHtml(q.topicName)}</span>
         </div>
         <div class="q-text">${escHtml(q.question)}</div>
-        <div class="review-label" style="color:var(--danger)">Your answer</div>
+        <div class="review-label" style="color:var(--danger)">Your Answer</div>
         <div class="review-answer your-answer">✗ ${escHtml(yourChoice)}</div>
-        <div class="review-label" style="color:var(--success)">Correct answer</div>
+        <div class="review-label" style="color:var(--success)">Correct Answer</div>
         <div class="review-answer correct-answer">✓ ${escHtml(correctChoice)}</div>
         <div class="review-explanation"><strong>Explanation:</strong> ${escHtml(q.explanation)}</div>
       </div>
@@ -958,9 +1123,10 @@ function buildWrongReview() {
   }).join('');
 
   container.style.display = 'block';
+  // reset toggle state
   listEl.style.display = 'none';
   const btn = document.getElementById('btn-toggle-review');
-  if (btn) btn.textContent = '▼ Show wrong answers';
+  if (btn) btn.textContent = '▼ Show Wrong Answers';
 }
 
 function toggleWrongReview() {
@@ -968,7 +1134,7 @@ function toggleWrongReview() {
   const btn  = document.getElementById('btn-toggle-review');
   const hidden = list.style.display === 'none';
   list.style.display = hidden ? 'block' : 'none';
-  btn.textContent = hidden ? '▲ Hide wrong answers' : '▼ Show wrong answers';
+  btn.textContent = hidden ? '▲ Hide Wrong Answers' : '▼ Show Wrong Answers';
 }
 
 /* ══════════════════════════════════════════
@@ -986,7 +1152,7 @@ function retryWrongAnswers() {
 
   const enriched = wrongQs.map(q => ({
     ...q,
-    topicColor: q.topicColor || CAT_COLORS[q.topicId] || '#8b91a8',
+    topicColor: q.topicColor || CAT_COLORS[q.topicId] || '#929DB2',
     topicName:  q.topicName  || q.topicId
   }));
 
@@ -1023,7 +1189,7 @@ async function loadLeaderboard() {
     renderLeaderboard(rows);
   } catch(e) {
     document.getElementById('lb-content').innerHTML =
-      `<div class="lb-empty">⚠️ Could not load scores.<br><small>${escHtml(e.message)}</small></div>`;
+      `<div class="lb-empty">Could not load scores.<br><small style="color:var(--muted)">${escHtml(e.message)}</small></div>`;
   }
 }
 
@@ -1035,26 +1201,50 @@ function renderLeaderboard(rows) {
   }
   const rankClass  = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
   const scoreClass = p => p >= 80 ? 'high' : p >= 50 ? 'mid' : 'low';
-  const me         = (currentUsername || '').toLowerCase();
-  const rows_html  = rows.map((r, i) => {
-    const mine = me && String(r.username).toLowerCase() === me;
-    return `
-    <tr class="${mine ? 'me' : ''}">
+  const rows_html  = rows.map((r, i) => `
+    <tr>
       <td><span class="rank-badge ${rankClass(i)}">${i+1}</span></td>
-      <td><strong>${escHtml(r.username)}</strong>${mine ? '<span class="you-tag">YOU</span>' : ''}</td>
-      <td><span class="score-pill ${scoreClass(r.score_pct)}">${Number(r.score_pct)}%</span></td>
-      <td>${Number(r.correct)} / ${Number(r.total)}</td>
-      <td style="color:var(--muted)">${r.mode === 'exam' ? '🎯 Exam' : '📖 Practice'}</td>
-      <td style="color:var(--muted);font-size:0.8rem">${escHtml(formatDate(r.taken_at))}</td>
-    </tr>`;
-  }).join('');
+      <td><strong>${escHtml(r.username)}</strong></td>
+      <td><span class="score-pill ${scoreClass(r.score_pct)}">${r.score_pct}%</span></td>
+      <td>${r.correct} / ${r.total}</td>
+      <td class="col-mode" style="color:var(--muted)">${r.mode === 'exam' ? 'Exam' : 'Practice'}</td>
+      <td class="col-date" style="color:var(--muted);font-size:0.8rem;white-space:nowrap">${formatDate(r.taken_at)}</td>
+    </tr>
+  `).join('');
   document.getElementById('lb-content').innerHTML = `
-    <div class="lb-wrap">
+    <div class="lb-scroll">
       <table class="lb-table">
-        <thead><tr><th>#</th><th>Username</th><th>Score</th><th>Correct</th><th>Mode</th><th>Date</th></tr></thead>
+        <thead><tr><th>#</th><th>Username</th><th>Score</th><th>Correct</th><th class="col-mode">Mode</th><th class="col-date">Date</th></tr></thead>
         <tbody>${rows_html}</tbody>
       </table>
     </div>
-    <p class="lb-note">Top 50 attempts · sorted by score</p>
+    <p class="lb-note">Showing last 50 attempts · sorted by score</p>
   `;
 }
+
+/* ══════════════════════════════════════════
+   BOOT — listeners that need the DOM
+══════════════════════════════════════════ */
+(function boot() {
+  const grid = document.getElementById('map-grid');
+  if (grid) {
+    grid.addEventListener('click', e => {
+      const b = e.target.closest('.map-cell');
+      if (b) goToQuestion(parseInt(b.dataset.i, 10));
+    });
+  }
+
+  const tabs = document.getElementById('cat-tabs');
+  if (tabs) tabs.addEventListener('scroll', updateTabEdges, { passive: true });
+  window.addEventListener('resize', updateTabEdges);
+
+  // Reset the map's default open/closed state when crossing the desktop breakpoint
+  const mq = window.matchMedia('(min-width: 1024px)');
+  const onBreakpoint = () => {
+    if (document.getElementById('quiz-screen').style.display === 'block') initMapState();
+  };
+  if (mq.addEventListener) mq.addEventListener('change', onBreakpoint);
+  else if (mq.addListener) mq.addListener(onBreakpoint);
+
+  preloadLandingInfo();
+})();
